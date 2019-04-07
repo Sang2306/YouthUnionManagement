@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Personal page {% endblock title %}
+<!--active tab-->
+{% block personal_info_active %} active {% endblock %}
+<!--Tat login button-->
+{% block login_button %} {% endblock login_button%}
+<!-- Xin chao Ten nguoi dung -->
+{% block hello_user %}
+{% if user.name is not None %}
+(Xin chào {{ user.name }})
+{% endif %}
+{% endblock hello_user %}
+<!--Bang hoat dong-->
+{% block content %}
+
+ <h1>Thong tin ca nhan</h1>
+ <h2>Tên: {{ user.name }}</h2>
+ <h2>ID: {{ user.user_ID }}</h2>
+ <h2>Lớp: {{ user.class_ID }}</h2>
+ <h2>Ngày sinh: {{ user.date_of_birth }}</h2>
+ <h2>Chức vụ: {{ user.role }} </h2>
+
+{% endblock %}
+<!--Insert short script-->
+{% block short_script %}
+
+{% endblock %}

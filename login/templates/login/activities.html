@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %} Activities page {% endblock title %}
+<!--active tab-->
+{% block activities_active %} active {% endblock %}
+<!--Tat login button-->
+{% block login_button %} {% endblock login_button%}
+<!-- Xin chao Ten nguoi dung -->
+{% block hello_user %}
+{% if user.name is not None %}
+(Xin chào {{ user.name }})
+{% endif %}
+{% endblock hello_user %}
+<!--Bang hoat dong-->
+{% block content %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Tên hoạt động</th>
+            <th scope="col">BTC</th>
+            <th scope="col">Ngày diễn ra</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Đăng ký</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in activities_list %}
+        <tr>
+            <th scope="row">{{ activity.activity_ID }}</th>
+            <td>{{ activity.name }}</td>
+            <td>{{ activity.organizers }}</td>
+            <td>{{ activity.start_date }}</td>
+            <td>{{ activity.description }}</td>
+            <td>
+                <form action="#" method="GET">
+                    <input type="submit" class="btn btn-success" name="reg" value="Đăng ký" id="{{ forloop.counter }}"
+                        onclick="change('button{{ forloop.counter }}')"></input>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+<!--Insert short script-->
+{% block short_script %}
+<script>
+    function change(button_id) {
+        var oldtext = document.getElementById(button_id).value;
+        window.alert(oldtext)
+        if (oldtext == 'Đăng ký') {
+            document.getElementById(button_id).value = 'Hủy';
+        } else {
+            document.getElementById(button_id).value = 'Đăng ký';
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Home page {% endblock title %}
+<!--active tab-->
+{% block home_active %} active {% endblock %}
+<!--Tat login button-->
+{% block login_button %} {% endblock login_button%}
+<!--Thong bao trang chu-->
+{% block content %} Đây là trang chủ {% endblock content %}
+<!-- Xin chao Ten nguoi dung -->
+{% block hello_user %}
+    {% if name is not None %}
+        (Xin chào {{ name }})
+    {% endif %}
+{% endblock hello_user %}

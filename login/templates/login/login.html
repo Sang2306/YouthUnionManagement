@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+<!--Load static file nhu css...-->
+{% block add_static_files %}
+{% endblock add_static_files %}
+{% block logout_button %} {% endblock logout_button %}
+<!-- tieu de cua trang dang nhap-->
+{% block title %} Login page {% endblock %}
+<!-- Noi dung cua trang dang nhap -->
+{% block content %}
+{% if logged is False or logged is None%}
+<div class="wrapper">
+    <form class="form-signin" action="{% url 'login:login' %}" method="POST">
+        {% csrf_token %}
+        <h2 class="form-signin-heading">Đăng nhập</h2>
+        <input type="text" class="form-control" name="ID" placeholder="ID" value="{{ ID }}"
+            oninvalid="this.setCustomValidity('Nhập vào MSSV')" oninput="setCustomValidity('')" required=""
+            autofocus="" />
+        <input type="password" class="form-control" name="password" placeholder="Password"
+            oninvalid="this.setCustomValidity('Nhập vào mật khẩu')" required="" oninput="setCustomValidity('')" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <div class="login-status">
+            {% if user_not_found %}<strong> {{ user_not_found }} </strong> {% endif %}
+            {% if login_status is not None %} <strong>{{ login_status }}</strong> {% endif %}
+        </div>
+    </form>
+</div>
+{% else %}
+<h2> Bạn đã đăng nhập rồi ! </h2>
+{% endif %}
+{% endblock %}
