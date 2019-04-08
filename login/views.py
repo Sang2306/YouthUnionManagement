@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 
@@ -48,7 +48,7 @@ def clear_session_data(request):
         Xoa du lieu luu trong session
     """
     request.session.flush()
-    return HttpResponse('Đăng xuất thành công')
+    return HttpResponseRedirect(reverse('login:login'))
 
 def activities(request):
     """
