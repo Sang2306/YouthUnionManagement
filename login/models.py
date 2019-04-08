@@ -15,10 +15,34 @@ class Role(models.Model):
         return self.role_name
 
 
+class Activity(models.Model):
+    """
+        Tao bang hoat dong
+        moi user co the tham gia nhieu hoat dong,
+        moi hoat dong co the duoc tham gia boi nhieu user
+    """
+    activity_ID = models.IntegerField(primary_key=True)
+    name = models.CharField(verbose_name="Tên hoạt động", max_length=255)
+    organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
+    start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
+    # Chon nam hoc mac dinh
+    school_year_default = str(datetime.now().year - 1) + \
+        "-" + str(datetime.now().year)
+    school_year = models.CharField(
+        verbose_name="Năm học", max_length=50, default=school_year_default)
+    description = models.TextField(verbose_name="Mô tả hoạt động")
+    point = models.SmallIntegerField(verbose_name="Điểm")
+
+    def __str__(self):
+        return self.name
+
+
 class User(models.Model):
     """
         Tao co so du lieu cho nguoi dung
     """
+    #user co the co nhieu hoat dong va nguoc lai
+    acctivities = models.ManyToManyField(Activity)
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
     class_ID = models.CharField(verbose_name="Lớp ID", max_length=12)
@@ -43,25 +67,3 @@ class Mail(models.Model):
 
     def __str__(self):
         return self.mail_address
-
-
-class Activity(models.Model):
-    """
-        Tao bang hoat dong
-        moi user co the tham gia nhieu hoat dong,
-        moi hoat dong co the duoc tham gia boi nhieu user
-    """
-    activity_ID = models.IntegerField(primary_key=True)
-    name = models.CharField(verbose_name="Tên hoạt động", max_length=255)
-    organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
-    start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
-    # Chon nam hoc mac dinh
-    school_year_default = str(datetime.now().year - 1) + \
-        "-" + str(datetime.now().year)
-    school_year = models.CharField(
-        verbose_name="Năm học", max_length=50, default=school_year_default)
-    description = models.TextField(verbose_name="Mô tả hoạt động")
-    point = models.SmallIntegerField(verbose_name="Điểm")
-
-    def __str__(self):
-        return self.name
