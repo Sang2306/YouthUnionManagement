@@ -42,7 +42,7 @@ class User(models.Model):
         Tao co so du lieu cho nguoi dung
     """
     #user co the co nhieu hoat dong va nguoc lai
-    acctivities = models.ManyToManyField(Activity)
+    activities = models.ManyToManyField(Activity)
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
     class_ID = models.CharField(verbose_name="Lớp ID", max_length=12)
