@@ -36,11 +36,21 @@
                 <form action="{% url 'login:activities' %}" method="GET">
                     {% csrf_token %}
                     {% if activity in user.activities.all %}
-                    <button type="submit" class="btn btn-danger" name="status"
-                        value="rmo-{{ activity.activity_ID }}"> Hủy </button>
+                        {% if activity.start_date > nowplustimedelta  %}
+                            <button type="submit" class="btn btn-danger" name="status"
+                                value="rmo-{{ activity.activity_ID }}"> Hủy </button>
+                        {% else %}
+                            <button type="submit" class="btn btn-danger" name="status" disabled
+                                value="rmo-{{ activity.activity_ID }}"> Hủy </button>
+                        {% endif %}
                     {% else %}
-                    <button type="submit" class="btn btn-success" name="status"
-                        value="add-{{ activity.activity_ID }}"> Đăng ký </button>
+                        {% if activity.start_date > nowplustimedelta  %}
+                            <button type="submit" class="btn btn-success" name="status"
+                                value="add-{{ activity.activity_ID }}"> Đăng ký </button>
+                        {% else %}
+                            <button type="submit" class="btn btn-success" name="status" disabled
+                                value="add-{{ activity.activity_ID }}"> Đăng ký </button>
+                        {% endif %}
                     {% endif %}
                 </form>
             </td>
