@@ -33,9 +33,14 @@
             <td>{{ activity.start_date }}</td>
             <td>{{ activity.description }}</td>
             <td>
-                <form action="#" method="GET">
-                    <input type="submit" class="btn btn-success" name="reg" value="Đăng ký" id="{{ forloop.counter }}"
-                        onclick="change('button{{ forloop.counter }}')"></input>
+                <form action="{% url 'login:activities' %}" method="GET">
+                    {% if activity in user.activities.all %}
+                    <button type="submit" class="btn btn-danger" name="status"
+                        value="rmo-{{ activity.activity_ID }}"> Hủy </button>
+                    {% else %}
+                    <button type="submit" class="btn btn-success" name="status"
+                        value="add-{{ activity.activity_ID }}"> Đăng ký </button>
+                    {% endif %}
                 </form>
             </td>
         </tr>
@@ -45,15 +50,5 @@
 {% endblock %}
 <!--Insert short script-->
 {% block short_script %}
-<script>
-    function change(button_id) {
-        var oldtext = document.getElementById(button_id).value;
-        window.alert(oldtext)
-        if (oldtext == 'Đăng ký') {
-            document.getElementById(button_id).value = 'Hủy';
-        } else {
-            document.getElementById(button_id).value = 'Đăng ký';
-        }
-    }
-</script>
+<!--Nothing yet-->
 {% endblock %}

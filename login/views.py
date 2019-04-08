@@ -61,6 +61,18 @@ def activities(request):
     try:
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
+        #kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
+        try:
+            behaviour = request.GET['status'][:3] #rmo - remove, add
+            acttivityID = request.GET['status'][4:] #22
+            #Lay activty voi acttivity_ID trong request
+            activity = Activity.objects.get(activity_ID=acttivityID)
+            if str(behaviour)=='rmo':
+                user.activities.remove(activity)
+            else:
+                user.activities.add(activity)
+        except KeyError:
+            pass
         context = {
             'user' : user,
         }
