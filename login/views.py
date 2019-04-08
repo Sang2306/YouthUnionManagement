@@ -61,20 +61,20 @@ def activities(request):
     try:
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
-        #kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
+        # kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
         try:
-            behaviour = request.GET['status'][:3] #rmo - remove, add
-            acttivityID = request.GET['status'][4:] #22
-            #Lay activty voi acttivity_ID trong request
+            behaviour = request.GET['status'][:3]  # rmo - remove, add
+            acttivityID = request.GET['status'][4:]  # 22
+            # Lay activty voi acttivity_ID trong request
             activity = Activity.objects.get(activity_ID=acttivityID)
-            if str(behaviour)=='rmo':
+            if str(behaviour) == 'rmo':
                 user.activities.remove(activity)
             else:
                 user.activities.add(activity)
         except KeyError:
             pass
         context = {
-            'user' : user,
+            'user': user,
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
@@ -82,6 +82,7 @@ def activities(request):
     activities_list = Activity.objects.all()
     context['activities_list'] = activities_list
     return render(request, 'login/activities.html', context)
+
 
 def personal(request):
     """
@@ -93,7 +94,7 @@ def personal(request):
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
         context = {
-            'user' : user,
+            'user': user,
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
