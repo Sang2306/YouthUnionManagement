@@ -50,7 +50,11 @@ def clear_session_data(request):
     request.session.flush()
     return HttpResponseRedirect(reverse('login:login'))
 
-ACTIVITIES_LIST = Activity.objects.all() #tap cac hoat dong co trong co so du lieu
+
+# tap cac hoat dong co trong co so du lieu
+ACTIVITIES_LIST = Activity.objects.all()
+
+
 def activities(request):
     """
         Hien thi thong tin cac hoat dong chuan bi dien ra
@@ -76,7 +80,7 @@ def activities(request):
             pass
         context = {
             'user': user,
-            'nowplustimedelta' : timezone.now() + timezone.timedelta(days=3),
+            'nowplustimedelta': timezone.now() + timezone.timedelta(days=3),
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
@@ -112,10 +116,16 @@ def check_attendance(request):
     try:
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
+        try:
+            pass
+        except expression as identifier:
+            pass
         context = {
             'user': user,
+            'entire_class_member': User.objects.filter(class_ID=user.class_ID),
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
 
+    context['activities_list'] = ACTIVITIES_LIST
     return render(request, 'login/check_attendance.html', context)

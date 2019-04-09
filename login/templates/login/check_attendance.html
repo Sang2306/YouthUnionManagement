@@ -7,26 +7,68 @@
 {% block login_button %} {% endblock login_button%}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
-    {% if user.name is not None %}
-        (Xin chào {{ user.name }})
-    {% endif %}
+{% if user.name is not None %}
+(Xin chào {{ user.name }})
+{% endif %}
 {% endblock hello_user %}
 <!--Bang hoat dong-->
 {% block content %}
-    <!--
-        sinh vien : 1
-        lop truong : 2
-        can bo : 3
-    -->
-    {% if user.role.role_ID == 2 %}
-
-    {% else %}
-        <div class="alert alert-info" role="alert">
-            Người dùng không có quyền điểm danh
-        </div>
-    {% endif %}
+<!--
+    sinh vien : 1
+    lop truong : 2
+    can bo : 3
+-->
+{% if user.role.role_ID == 2 %}
+<form action="{{ url 'login:check_attendance' }}" method="GET">
+    <ul class="list-group" id="eventList">
+        {% for activity in activities_list %}
+        {% if activity.is_opening %}
+        <button class="btn btn-primary" name="activityID" value="{{ activity.activity_ID }}">{{ activity }}</button>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</form>
+{% else %}
+<div class="alert alert-info" role="alert">
+    Người dùng không có quyền điểm danh
+</div>
+{% endif %}
+<!--hien thi thong tin sinh vien cua lop tham gia-->
+<br>
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+<br>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>MSSV</th>
+            <th>Tên</th>
+            <th>Trạng thái tham gia</th>
+        </tr>
+    </thead>
+    <tbody id="myTable">
+        {% for member in entire_class_member %}
+        <tr>
+            <td>{{ member.user_ID }}</td>
+            <td>{{ member.name }}</td>
+            <td>
+                <button type="button" class="btn btn-success">Có tham gia</button>
+                <button type="button" class="btn btn-danger">Không tham gia</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 <!--Insert short script-->
 {% block short_script %}
-<!--Nothing yet-->
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 {% endblock %}
