@@ -121,8 +121,7 @@
                 </tr>
             </thead>
             <tbody id="myTable">
-                {% for member in entire_class_member %}
-                {% if choosed_activity in member.activities.all %}
+                {% for member in members_registered %}
                 <tr>
                     <td>{{ member.user_ID }}</td>
                     <td>{{ member.name }}</td>
@@ -135,7 +134,6 @@
                         </label>
                     </td>
                 </tr>
-                {% endif %}
                 {% endfor %}
             </tbody>
         </table>

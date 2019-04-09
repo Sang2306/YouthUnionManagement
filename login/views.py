@@ -50,6 +50,7 @@ def clear_session_data(request):
     request.session.flush()
     return HttpResponseRedirect(reverse('login:login'))
 
+
 def activities(request):
     """
         Hien thi thong tin cac hoat dong chuan bi dien ra
@@ -101,6 +102,7 @@ def personal(request):
 
     return render(request, 'login/personal.html', context)
 
+
 def check_attendance(request):
     """
         kiem tra su tham gia cua sinh vien,
@@ -112,14 +114,22 @@ def check_attendance(request):
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
         choosed_activity = None
+        members_registered = []
         try:
             activityID = request.GET['activityID']
             choosed_activity = Activity.objects.get(activity_ID=activityID)
+            # loc danh sach sinh vien chung lop voi lop truong
+            class_member = User.objects.filter(class_ID=user.class_ID)
+            # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
+            for member in class_member:
+                if choosed_activity in member.activities.all():
+                    members_registered.append(member)
+
         except KeyError:
             pass
         context = {
             'user': user,
-            'entire_class_member': User.objects.filter(class_ID=user.class_ID),
+            'members_registered': members_registered,
         }
         context['choosed_activity'] = choosed_activity
     except (ObjectDoesNotExist, KeyError):
