@@ -124,7 +124,6 @@ def check_attendance(request):
             for member in class_member:
                 if choosed_activity in member.activities.all():
                     members_registered.append(member)
-
         except KeyError:
             pass
         context = {
@@ -137,3 +136,38 @@ def check_attendance(request):
 
     context['activities_list'] = Activity.objects.all()
     return render(request, 'login/check-attendance.html', context)
+
+
+def confirm_check(request):
+    """
+        Xac nhan danh dach diem danh do check_attendance views chuyen huong den
+    """
+    context = {}
+    # hien thi thong tin nguoi dung dang nhap
+    try:
+        ID = request.session.get('ID')
+        user = User.objects.get(user_ID=ID)
+        choosed_activity = None
+        members_registered = []
+        try:
+            activityID = request.POST['activityID']
+            choosed_activity = Activity.objects.get(activity_ID=activityID)
+            # loc danh sach sinh vien chung lop voi lop truong
+            class_member = User.objects.filter(class_ID=user.class_ID)
+            # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
+            for member in class_member:
+                if choosed_activity in member.activities.all():
+                    members_registered.append(member)
+            # duyet danh sach dang ky neu request.POST[mssv] gay ra exception la khong co tham gia
+            # nen ta se remove hoat dong khoi activities cua sinh vien
+            for member in members_registered:
+                try:
+                    request.POST[member.user_ID]
+                except KeyError:
+                    member.activities.remove(choosed_activity)
+
+        except KeyError:
+            pass
+        return HttpResponseRedirect(reverse('login:check-attendance'))
+    except (ObjectDoesNotExist, KeyError):
+        return HttpResponseRedirect(reverse('login:login'))
