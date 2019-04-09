@@ -259,15 +259,6 @@
 {% endblock hello_user %}
 <!--Bang hoat dong-->
 {% block content %}
-<!-- <div class="col-sm-5 col-xs-6 tital ">Họ tên:{{ user.name }}</div>
-
-<div class="col-sm-5 col-xs-6 tital ">ID:{{ user.user_ID }}</div>
-
-<div class="col-sm-5 col-xs-6 tital ">Lớp:{{ user.class_ID }}</div>
-
-<div class="col-sm-5 col-xs-6 tital ">Ngày sinh:{{ user.date_of_birth }}</div>
-
-<div class="col-sm-5 col-xs-6 tital ">Vai trò:{{ user.role }}</div> -->
 <!--Circle-->
 <div class="container">
     <div class="row">
@@ -287,6 +278,15 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-3 col-md-8">
+            <ul class="list-group">
+                <strong class="list-group-item">Họ tên:   {{ user.name }}</strong>
+                <strong class="list-group-item">ID:       {{ user.user_ID }}</strong>
+                <strong class="list-group-item">Lớp:      {{ user.class_ID }}</strong>
+                <strong class="list-group-item">Ngày sinh:{{ user.date_of_birth }}</strong>
+                <!-- <strong class="list-group-item">Vai trò:{{ user.role }}</strong> -->
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock content%}
@@ -294,10 +294,6 @@
 {% block short_script %}
 <script
     src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script>
-<script id="rendered-js">
-      //No js!
-      //# sourceURL=pen.js
-</script>
 <script
     src="https://static.codepen.io/assets/editor/live/css_reload-5619dc0905a68b2e6298901de54f73cefe4e079f65a75406858d92924b4938bf.js"></script>
 {% endblock %}

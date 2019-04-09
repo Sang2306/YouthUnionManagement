@@ -11,6 +11,72 @@
 (Xin chào {{ user.name }})
 {% endif %}
 {% endblock hello_user %}
+{% block add_stylesheet %}
+<style>
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>
+{% endblock %}
 <!--Bang hoat dong-->
 {% block content %}
 <!--
@@ -44,29 +110,41 @@
 <br>
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
 <br>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>MSSV</th>
-            <th>Tên</th>
-            <th>Trạng thái tham gia</th>
-        </tr>
-    </thead>
-    <tbody id="myTable">
-        {% for member in entire_class_member %}
-            {% if choosed_activity in member.activities.all %}
+<div class="overflow-auto">
+    <form action="#" method="GET">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>MSSV</th>
+                    <th>Tên</th>
+                    <th>Trạng thái tham gia</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                {% for member in entire_class_member %}
+                {% if choosed_activity in member.activities.all %}
                 <tr>
                     <td>{{ member.user_ID }}</td>
                     <td>{{ member.name }}</td>
                     <td>
-                        <button type="button" class="btn btn-success">Có tham gia</button>
-                        <button type="button" class="btn btn-danger">Không tham gia</button>
+                        <!-- Rectangular switch -->
+                        <label class="switch">
+                            <input type="checkbox" name="{{ member.user_ID }}"
+                                value="{{ choosed_activity.activity_ID }}">
+                            <span class="slider"></span>
+                        </label>
                     </td>
                 </tr>
-            {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Xac nhan danh sach diem danh -->
+        {% if choosed_activity is not None %}
+            <button type="submit" class="btn btn-danger btn-lg btn-block">Xác nhận danh sách</button>
+        {% endif %}    
+    </form>
+</div>
 {% endblock %}
 <!--Insert short script-->
 {% block short_script %}

@@ -7,59 +7,61 @@
 {% block login_button %} {% endblock login_button%}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
-    {% if user.name is not None %}
-        (Xin chào {{ user.name }})
-    {% endif %}
+{% if user.name is not None %}
+(Xin chào {{ user.name }})
+{% endif %}
 {% endblock hello_user %}
 <!--Bang hoat dong-->
 {% block content %}
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Tên hoạt động</th>
-            <th scope="col">BTC</th>
-            <th scope="col">Ngày diễn ra</th>
-            <th scope="col">Mô tả</th>
-            <th scope="col">Đăng ký</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for activity in activities_list %}
+<div class="overflow-auto">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tên hoạt động</th>
+                <th scope="col">BTC</th>
+                <th scope="col">Ngày diễn ra</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Đăng ký</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activities_list %}
             {% if activity.is_opening %}
-                <tr>
-                    <th scope="row">{{ activity.activity_ID }}</th>
-                    <td>{{ activity.name }}</td>
-                    <td>{{ activity.organizers }}</td>
-                    <td>{{ activity.start_date }}</td>
-                    <td>{{ activity.description }}</td>
-                    <td>
-                        <form action="{% url 'login:activities' %}" method="GET">
-                            {% csrf_token %}
-                            {% if activity in user.activities.all %}
-                                {% if activity.start_date > nowplustimedelta  %}
-                                    <button type="submit" class="btn btn-danger" name="status"
-                                        value="rmo-{{ activity.activity_ID }}"> Hủy </button>
-                                {% else %}
-                                    <button type="submit" class="btn btn-danger" name="status" disabled
-                                        value="rmo-{{ activity.activity_ID }}"> Hủy </button>
-                                {% endif %}
-                            {% else %}
-                                {% if activity.start_date > nowplustimedelta  %}
-                                    <button type="submit" class="btn btn-success" name="status"
-                                        value="add-{{ activity.activity_ID }}"> Đăng ký </button>
-                                {% else %}
-                                    <button type="submit" class="btn btn-success" name="status" disabled
-                                        value="add-{{ activity.activity_ID }}"> Đăng ký </button>
-                                {% endif %}
-                            {% endif %}
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <th scope="row">{{ activity.activity_ID }}</th>
+                <td>{{ activity.name }}</td>
+                <td>{{ activity.organizers }}</td>
+                <td>{{ activity.start_date }}</td>
+                <td>{{ activity.description }}</td>
+                <td>
+                    <form action="{% url 'login:activities' %}" method="GET">
+                        {% csrf_token %}
+                        {% if activity in user.activities.all %}
+                        {% if activity.start_date > nowplustimedelta  %}
+                        <button type="submit" class="btn btn-danger" name="status"
+                            value="rmo-{{ activity.activity_ID }}"> Hủy </button>
+                        {% else %}
+                        <button type="submit" class="btn btn-danger" name="status" disabled
+                            value="rmo-{{ activity.activity_ID }}"> Hủy </button>
+                        {% endif %}
+                        {% else %}
+                        {% if activity.start_date > nowplustimedelta  %}
+                        <button type="submit" class="btn btn-success" name="status"
+                            value="add-{{ activity.activity_ID }}"> Đăng ký </button>
+                        {% else %}
+                        <button type="submit" class="btn btn-success" name="status" disabled
+                            value="add-{{ activity.activity_ID }}"> Đăng ký </button>
+                        {% endif %}
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
             {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 <!--Insert short script-->
 {% block short_script %}
