@@ -100,3 +100,4 @@ def personal(request):
         return HttpResponseRedirect(reverse('login:login'))
 
     return render(request, 'login/personal.html', context)
+

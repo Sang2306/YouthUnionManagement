@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 # Create your models here.
 
 
@@ -26,12 +26,16 @@ class Activity(models.Model):
     organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
     # Chon nam hoc mac dinh
-    school_year_default = str(datetime.now().year - 1) + \
-        "-" + str(datetime.now().year)
+    school_year_default = str(timezone.now().year - 1) + \
+        "-" + str(timezone.now().year)
     school_year = models.CharField(
         verbose_name="Năm học", max_length=50, default=school_year_default)
     description = models.TextField(verbose_name="Mô tả hoạt động")
     point = models.SmallIntegerField(verbose_name="Điểm")
+
+    def isOpening(self):
+        now = timezone.now()
+        return self.start_date > now
 
     def __str__(self):
         return self.name
