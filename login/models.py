@@ -33,7 +33,10 @@ class Activity(models.Model):
     description = models.TextField(verbose_name="Mô tả hoạt động")
     point = models.SmallIntegerField(verbose_name="Điểm")
 
-    def isOpening(self):
+    def is_opening(self):
+        """
+            tra ve True neu hoat dong nay chua dien ra, nguoc lai False
+        """
         now = timezone.now()
         return self.start_date > now
 
@@ -45,7 +48,7 @@ class User(models.Model):
     """
         Tao co so du lieu cho nguoi dung
     """
-    #user co the co nhieu hoat dong va nguoc lai
+    # user co the co nhieu hoat dong va nguoc lai
     activities = models.ManyToManyField(Activity)
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
