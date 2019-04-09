@@ -50,11 +50,6 @@ def clear_session_data(request):
     request.session.flush()
     return HttpResponseRedirect(reverse('login:login'))
 
-
-# tap cac hoat dong co trong co so du lieu
-ACTIVITIES_LIST = Activity.objects.all()
-
-
 def activities(request):
     """
         Hien thi thong tin cac hoat dong chuan bi dien ra
@@ -85,7 +80,7 @@ def activities(request):
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
     # lay thong tin cac hoat dong trong co so du lieu va render vao tab hoat dong
-    context['activities_list'] = ACTIVITIES_LIST
+    context['activities_list'] = Activity.objects.all()
     return render(request, 'login/activities.html', context)
 
 
@@ -130,5 +125,5 @@ def check_attendance(request):
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
 
-    context['activities_list'] = ACTIVITIES_LIST
+    context['activities_list'] = Activity.objects.all()
     return render(request, 'login/check-attendance.html', context)
