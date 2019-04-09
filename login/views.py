@@ -102,3 +102,20 @@ def personal(request):
 
     return render(request, 'login/personal.html', context)
 
+def check_attendance(request):
+    """
+        kiem tra su tham gia cua sinh vien,
+        lop truong co quyen nay
+    """
+    context = {}
+    # hien thi thong tin nguoi dung dang nhap
+    try:
+        ID = request.session.get('ID')
+        user = User.objects.get(user_ID=ID)
+        context = {
+            'user': user,
+        }
+    except (ObjectDoesNotExist, KeyError):
+        return HttpResponseRedirect(reverse('login:login'))
+
+    return render(request, 'login/check_attendance.html', context)

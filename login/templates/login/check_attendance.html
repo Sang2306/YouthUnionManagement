@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %} Check attendance page {% endblock title %}
+<!--active tab-->
+{% block check_attendance_active %} active {% endblock %}
+<!--Tat login button-->
+{% block login_button %} {% endblock login_button%}
+<!-- Xin chao Ten nguoi dung -->
+{% block hello_user %}
+    {% if user.name is not None %}
+        (Xin chào {{ user.name }})
+    {% endif %}
+{% endblock hello_user %}
+<!--Bang hoat dong-->
+{% block content %}
+    <!--
+        sinh vien : 1
+        lop truong : 2
+        can bo : 3
+    -->
+    {% if user.role.role_ID == 2 %}
+
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Người dùng không có quyền điểm danh
+        </div>
+    {% endif %}
+{% endblock %}
+<!--Insert short script-->
+{% block short_script %}
+<!--Nothing yet-->
+{% endblock %}

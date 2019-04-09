@@ -31,7 +31,7 @@
         <li class="{% block personal_info_active %}  {% endblock %}"><a href="{% url 'login:personal' %}"><span
               class="glyphicon glyphicon-user"></span> Thông tin cá nhân{% block hello_user %}
             {% endblock %}</a></li>
-        <li><a href="{% block attendance_url %} # {% endblock attendance_url %}">Điểm danh</a></li>
+        <li class="{% block check_attendance_active %}  {% endblock %}"><a href="{% url 'login:check_attendance' %}">Điểm danh</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% block login_button %}

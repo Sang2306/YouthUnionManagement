@@ -7,9 +7,9 @@
 {% block login_button %} {% endblock login_button%}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
-{% if user.name is not None %}
-(Xin chào {{ user.name }})
-{% endif %}
+    {% if user.name is not None %}
+        (Xin chào {{ user.name }})
+    {% endif %}
 {% endblock hello_user %}
 <!--Bang hoat dong-->
 {% block content %}
