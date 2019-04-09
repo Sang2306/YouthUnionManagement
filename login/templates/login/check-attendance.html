@@ -19,11 +19,11 @@
     can bo : 3
 -->
 {% if user.role.role_ID == 2 %}
-<form action="{{ url 'login:check_attendance' }}" method="GET">
+<form action="{% url 'login:check-attendance' %}" method="GET">
     <ul class="list-group" id="eventList">
         {% for activity in activities_list %}
         {% if activity.is_opening %}
-        <button class="btn btn-primary" name="activityID" value="{{ activity.activity_ID }}">{{ activity }}</button>
+        <button class="btn btn-default" name="activityID" value="{{ activity.activity_ID }}">#{{ activity }}</button>
         {% endif %}
         {% endfor %}
     </ul>
@@ -33,6 +33,13 @@
     Người dùng không có quyền điểm danh
 </div>
 {% endif %}
+<!--hien thi ten cua hoat dong da lua chon-->
+{% if choosed_activity %}
+<div class="alert alert-success" role="alert">
+    Đã chọn {{ choosed_activity.name }}
+</div>
+{% endif %}
+
 <!--hien thi thong tin sinh vien cua lop tham gia-->
 <br>
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -47,14 +54,16 @@
     </thead>
     <tbody id="myTable">
         {% for member in entire_class_member %}
-        <tr>
-            <td>{{ member.user_ID }}</td>
-            <td>{{ member.name }}</td>
-            <td>
-                <button type="button" class="btn btn-success">Có tham gia</button>
-                <button type="button" class="btn btn-danger">Không tham gia</button>
-            </td>
-        </tr>
+            {% if choosed_activity in member.activities.all %}
+                <tr>
+                    <td>{{ member.user_ID }}</td>
+                    <td>{{ member.name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success">Có tham gia</button>
+                        <button type="button" class="btn btn-danger">Không tham gia</button>
+                    </td>
+                </tr>
+            {% endif %}
         {% endfor %}
     </tbody>
 </table>

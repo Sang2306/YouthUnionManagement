@@ -69,9 +69,9 @@ def activities(request):
         # kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
         try:
             behaviour = request.GET['status'][:3]  # rmo - remove, add
-            acttivityID = request.GET['status'][4:]  # 22
+            activityID = request.GET['status'][4:]  # 22
             # Lay activty voi acttivity_ID trong request
-            activity = Activity.objects.get(activity_ID=acttivityID)
+            activity = Activity.objects.get(activity_ID=activityID)
             if str(behaviour) == 'rmo':
                 user.activities.remove(activity)
             else:
@@ -116,16 +116,19 @@ def check_attendance(request):
     try:
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
+        choosed_activity = None
         try:
-            pass
-        except expression as identifier:
+            activityID = request.GET['activityID']
+            choosed_activity = Activity.objects.get(activity_ID=activityID)
+        except KeyError:
             pass
         context = {
             'user': user,
             'entire_class_member': User.objects.filter(class_ID=user.class_ID),
         }
+        context['choosed_activity'] = choosed_activity
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
 
     context['activities_list'] = ACTIVITIES_LIST
-    return render(request, 'login/check_attendance.html', context)
+    return render(request, 'login/check-attendance.html', context)
