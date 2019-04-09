@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User, Activity, Role  # import cac models
+from .models import User, Activity  # import cac models
 # login view
 
 
@@ -142,7 +142,6 @@ def confirm_check(request):
     """
         Xac nhan danh dach diem danh do check_attendance views chuyen huong den
     """
-    context = {}
     # hien thi thong tin nguoi dung dang nhap
     try:
         ID = request.session.get('ID')
