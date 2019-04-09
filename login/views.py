@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 
 from .models import User, Activity, Role  # import cac models
 # login view
@@ -47,8 +48,7 @@ def clear_session_data(request):
         Xoa du lieu luu trong session
     """
     request.session.flush()
-    return HttpResponse('Đăng xuất thành công')
-
+    return HttpResponseRedirect(reverse('login:login'))
 
 def activities(request):
     """
@@ -75,6 +75,7 @@ def activities(request):
             pass
         context = {
             'user': user,
+            'nowplustimedelta' : timezone.now() + timezone.timedelta(days=3),
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
