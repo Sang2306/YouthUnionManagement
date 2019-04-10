@@ -104,10 +104,15 @@
 <div class="alert alert-success" role="alert">
     Đã chọn {{ choosed_activity.name }}
 </div>
+{% if size_of_members_registered == 0%}
+<div class="alert alert-info" role="alert">
+    <b> Whoops! Hình như không ai trong lớp bạn tham gia hoạt dộng này</b>
+</div>
+{% endif %}
 {% endif %}
 <!--hien thi thong tin sinh vien cua lop tham gia-->
 <br>
-<input class="form-control" id="myInput" type="text" placeholder="Search..">
+<input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm..">
 <br>
 <div class="overflow-auto">
     <form action="{% url 'login:confirm-check' %}" method="POST" id="confirm-check">
