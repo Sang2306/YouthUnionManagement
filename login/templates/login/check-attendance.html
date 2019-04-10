@@ -139,7 +139,7 @@
         </table>
     </form>
     <!-- Dieu kien de hien nut xac nhan danh sach diem danh -->
-    {% if choosed_activity is not None %}
+    {% if choosed_activity is not None and size_of_members_registered != 0 %}
     <div data-placement="top" data-toggle="tooltip">
         <button class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#confirm">
             Xác nhận danh sách

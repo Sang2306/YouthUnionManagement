@@ -97,7 +97,8 @@ def personal(request):
         user.refresh_accumulated_point()
         context = {
             'user': user,
-            'style' : 'style', #{{style}}="width: {{ user.accumulated_point }}%"
+            # {{style}}="width: {{ user.accumulated_point }}%"
+            'style': 'style',
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
@@ -130,11 +131,13 @@ def check_attendance(request):
             pass
         context = {
             'user': user,
-            'members_registered' : members_registered,
-            'checked_activity_list' : [
-                #lay id cua cac hoat dong da diem danh
+            'members_registered': members_registered,
+            'checked_activity_list': [
+                # lay id cua cac hoat dong da diem danh
                 act.activity_ID for act in user.checked_activities.all()
             ],
+            # chi hien thi nut xac nhan neu co nguoi dung thuoc lop dang ky hoat dong
+            'size_of_members_registered': members_registered.__len__(),
         }
         context['choosed_activity'] = choosed_activity
     except (ObjectDoesNotExist, KeyError):
