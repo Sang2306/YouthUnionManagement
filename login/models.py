@@ -71,6 +71,8 @@ class User(models.Model):
     role = models.ForeignKey(
         Role, verbose_name="Vai trò", on_delete=models.CASCADE)
     password = models.CharField(verbose_name="Mật khẩu", max_length=256)
+    #muc diem chuyen can mac dinh = 69
+    accumulated_point = models.IntegerField(verbose_name="Điểm chuyên cần", default=69)
 
     def __str__(self):
         return self.user_ID
