@@ -29,8 +29,6 @@
 				<li class="{% block activities_active %}  {% endblock %}"><a href="{% url 'login:activities' %}">Hoạt
 						động</a>
 				</li>
-				<li class="{% block accumulated_active %}  {% endblock %}"><a
-						href="{% block accumulated_url %} # {% endblock %}">Điểm tích lũy</a></li>
 				<li class="{% block personal_info_active %}  {% endblock %}"><a href="{% url 'login:personal' %}"><span
 							class="glyphicon glyphicon-user"></span> Thông tin cá nhân{% block hello_user %}
 						{% endblock %}</a></li>
@@ -56,12 +54,6 @@
 	{% block short_script %}
 	<!--Insert nhung doan javascript ngan vao day-->
 	{% endblock %}
-	<!--Footer-->
-	<!-- <div class="footer">
-    <footer>
-      <p>YouthPTIT 2019</p>
-    </footer>
-  </div> -->
 </body>
 
 </html>

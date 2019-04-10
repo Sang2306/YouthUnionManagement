@@ -110,7 +110,7 @@
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
 <br>
 <div class="overflow-auto">
-    <form action="{% url 'login:confirm-check' %}" method="POST" onsubmit="return submitForm(this);">
+    <form action="{% url 'login:confirm-check' %}" method="POST" id="confirm-check">
         {% csrf_token %}
         <table class="table table-bordered table-striped">
             <thead>
@@ -137,19 +137,48 @@
                 {% endfor %}
             </tbody>
         </table>
-        <!-- Xac nhan danh sach diem danh -->
-        {% if choosed_activity is not None %}
-        <button type="submit" class="btn btn-danger btn-lg btn-block" name="activityID"
-            value="{{ choosed_activity.activity_ID }}">Xác
-            nhận danh sách</button>
-        <div class="alert alert-danger" role="alert">
-            *Lưu ý bạn sẽ không thể khôi phục hành động này
-        </div>
-        {% endif %}
     </form>
+    <!-- Dieu kien de hien nut xac nhan danh sach diem danh -->
+    {% if choosed_activity is not None %}
+    <div data-placement="top" data-toggle="tooltip">
+        <button class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#confirm">
+            Xác nhận danh sách
+        </button>
+    </div>
+    <div class="alert alert-danger" role="alert">
+        *Lưu ý bạn sẽ không thể khôi phục hành động này
+    </div>
+    {% endif %}
+</div>
+<!-- Dialog hien thi thong bao ban co chac chan muon xac nhan danh sach -->
+<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                <h4 class="modal-title custom_align" id="Heading">Xác nhận danh sách</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Bạn có chắc chắn
+                    với hành động này?</div>
+
+            </div>
+            <div class="modal-footer ">
+                <button type="submit" name="activityID" value="{{ choosed_activity.activity_ID }}"
+                    class="btn btn-success" form="confirm-check"><span class="glyphicon glyphicon-ok-sign"></span>Tôi
+                    chắc chắn</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span>Trở lại</button>
+            </div>
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
 </div>
 {% endblock %}
-<!--Insert short script-->
+
 {% block short_script %}
 <script>
     $(document).ready(function () {
@@ -161,9 +190,10 @@
         });
     });
 </script>
+<!--Mo tooltip de chon yes/no -->
 <script>
-    function submitForm() {
-        return confirm('Bạn có chắc chắn với hành động này?');
-    }
+    $(document).ready(function () {
+        $("[data-toggle=tooltip]").tooltip();
+    });
 </script>
 {% endblock %}
