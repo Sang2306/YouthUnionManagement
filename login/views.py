@@ -64,8 +64,8 @@ def activities(request):
         user = User.objects.get(user_ID=ID)
         # kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
         try:
-            behaviour = request.GET['status'][:3]  # rmo - remove, add
-            activityID = request.GET['status'][4:]  # 22
+            behaviour = request.POST['status'][:3]  # rmo - remove, add
+            activityID = request.POST['status'][4:]  # 22
             # Lay activty voi acttivity_ID trong request
             activity = Activity.objects.get(activity_ID=activityID)
             if str(behaviour) == 'rmo':
