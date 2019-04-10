@@ -25,7 +25,7 @@ class Activity(models.Model):
     name = models.CharField(verbose_name="Tên hoạt động", max_length=255)
     organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
-    # Chon nam hoc mac dinh
+    # hoc ky mac dinh gan nhat
     school_year_default = str(timezone.now().year - 1) + \
         "-" + str(timezone.now().year)
     school_year = models.CharField(
@@ -61,7 +61,8 @@ class User(models.Model):
     # user co the co nhieu hoat dong
     activities = models.ManyToManyField(Activity, blank=True, editable=False)
     # user ( lop truong ) co the diem danh nhieu hoat dong
-    checked_activities = models.ManyToManyField(CheckedActivity, editable=False)
+    checked_activities = models.ManyToManyField(
+        CheckedActivity, editable=False)
     # Cac cot khac cua User table
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
@@ -71,8 +72,19 @@ class User(models.Model):
     role = models.ForeignKey(
         Role, verbose_name="Vai trò", on_delete=models.CASCADE)
     password = models.CharField(verbose_name="Mật khẩu", max_length=256)
-    #muc diem chuyen can mac dinh = 69
-    accumulated_point = models.IntegerField(verbose_name="Điểm chuyên cần", default=69)
+    # muc diem chuyen can mac dinh = 69
+    accumulated_point = models.IntegerField(
+        verbose_name="Điểm chuyên cần", default=69)
+
+    def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) +
+                                  "-" + str(timezone.now().year)):
+        """
+            Refresh lai diem cho user moi khi chon hoc ky khac,
+            mac dinh la la hoc ky gan nhat
+        """
+        for act in self.activities.all():
+            if act.school_year == school_year:
+                self.accumulated_point += act.point
 
     def __str__(self):
         return self.user_ID

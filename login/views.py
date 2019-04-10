@@ -94,6 +94,7 @@ def personal(request):
     try:
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
+        user.refresh_accumulated_point()
         context = {
             'user': user,
         }
