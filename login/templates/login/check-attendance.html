@@ -110,7 +110,7 @@
 <input class="form-control" id="myInput" type="text" placeholder="Search..">
 <br>
 <div class="overflow-auto">
-    <form action="{% url 'login:confirm-check' %}" method="POST">
+    <form action="{% url 'login:confirm-check' %}" method="POST" onsubmit="return submitForm(this);">
         {% csrf_token %}
         <table class="table table-bordered table-striped">
             <thead>
@@ -139,8 +139,8 @@
         </table>
         <!-- Xac nhan danh sach diem danh -->
         {% if choosed_activity is not None %}
-        <button type="submit" onclick="window.alert('Điểm danh thành công xin cảm ơn!')"
-            class="btn btn-danger btn-lg btn-block" name="activityID" value="{{ choosed_activity.activity_ID }}">Xác
+        <button type="submit" class="btn btn-danger btn-lg btn-block" name="activityID"
+            value="{{ choosed_activity.activity_ID }}">Xác
             nhận danh sách</button>
         <div class="alert alert-danger" role="alert">
             *Lưu ý bạn sẽ không thể khôi phục hành động này
@@ -160,5 +160,10 @@
             });
         });
     });
+</script>
+<script>
+    function submitForm() {
+        return confirm('Bạn có chắc chắn với hành động này?');
+    }
 </script>
 {% endblock %}
