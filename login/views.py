@@ -150,6 +150,10 @@ def confirm_check(request):
         members_registered = []
         try:
             activityID = request.POST['activityID']
+            # tao mot record trong cac hoat dong da diem danh
+            # luu lai
+            # them record vao danh sach da diem danh cua nguoi dung
+
             choosed_activity = Activity.objects.get(activity_ID=activityID)
             # loc danh sach sinh vien chung lop voi lop truong
             class_member = User.objects.filter(class_ID=user.class_ID)
@@ -164,7 +168,7 @@ def confirm_check(request):
                     request.POST[member.user_ID]
                 except KeyError:
                     member.activities.remove(choosed_activity)
-
+        # them id hoat dong vao danh sach da diem danh
         except KeyError:
             pass
         return HttpResponseRedirect(reverse('login:check-attendance'))

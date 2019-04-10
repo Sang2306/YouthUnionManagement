@@ -111,7 +111,7 @@
 <br>
 <div class="overflow-auto">
     <form action="{% url 'login:confirm-check' %}" method="POST">
-    {% csrf_token %}
+        {% csrf_token %}
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -139,8 +139,9 @@
         </table>
         <!-- Xac nhan danh sach diem danh -->
         {% if choosed_activity is not None %}
-        <button type="submit" onclick="window.alert('Điểm danh thành công xin cảm ơn!')" class="btn btn-danger btn-lg btn-block" name="activityID"
-            value="{{ choosed_activity.activity_ID }}">Xác nhận danh sách</button>
+        <button type="submit" onclick="window.alert('Điểm danh thành công xin cảm ơn!')"
+            class="btn btn-danger btn-lg btn-block" name="activityID" value="{{ choosed_activity.activity_ID }}">Xác
+            nhận danh sách</button>
         {% endif %}
     </form>
 </div>

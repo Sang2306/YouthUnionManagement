@@ -44,12 +44,25 @@ class Activity(models.Model):
         return self.name
 
 
+class CheckedActivity(models.Model):
+    """
+        cac hoat dong da duoc nguoi dung( lop truong ) diem danh
+    """
+    activity_ID = models.IntegerField(primary_key=True)
+
+    def __str__(self):
+        return str(self.activity_ID)
+
+
 class User(models.Model):
     """
         Tao co so du lieu cho nguoi dung
     """
-    # user co the co nhieu hoat dong va nguoc lai
+    # user co the co nhieu hoat dong
     activities = models.ManyToManyField(Activity, blank=True, editable=False)
+    # user ( lop truong ) co the diem danh nhieu hoat dong
+    checked_activities = models.ManyToManyField(CheckedActivity, editable=False)
+    # Cac cot khac cua User table
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
     class_ID = models.CharField(verbose_name="Lớp ID", max_length=12)
