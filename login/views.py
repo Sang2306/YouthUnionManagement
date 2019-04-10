@@ -97,6 +97,7 @@ def personal(request):
         user.refresh_accumulated_point()
         context = {
             'user': user,
+            'style' : 'style', #{{style}}="width: {{ user.accumulated_point }}%"
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
