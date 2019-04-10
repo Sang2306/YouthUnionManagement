@@ -88,7 +88,7 @@
 <form action="{% url 'login:check-attendance' %}" method="GET">
     <ul class="list-group" id="eventList">
         {% for activity in activities_list %}
-        {% if activity.is_opening %}
+        {% if activity.is_opening and activity.activity_ID not in checked_activity_list %}
         <button class="btn btn-default" name="activityID" value="{{ activity.activity_ID }}">#{{ activity }}</button>
         {% endif %}
         {% endfor %}
@@ -142,6 +142,9 @@
         <button type="submit" onclick="window.alert('Điểm danh thành công xin cảm ơn!')"
             class="btn btn-danger btn-lg btn-block" name="activityID" value="{{ choosed_activity.activity_ID }}">Xác
             nhận danh sách</button>
+        <div class="alert alert-danger" role="alert">
+            *Lưu ý bạn sẽ không thể khôi phục hành động này
+        </div>
         {% endif %}
     </form>
 </div>

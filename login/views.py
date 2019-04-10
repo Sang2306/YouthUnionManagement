@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User, Activity  # import cac models
+from .models import User, Activity, CheckedActivity  # import cac models
 # login view
 
 
@@ -128,7 +128,11 @@ def check_attendance(request):
             pass
         context = {
             'user': user,
-            'members_registered': members_registered,
+            'members_registered' : members_registered,
+            'checked_activity_list' : [
+                #lay id cua cac hoat dong da diem danh
+                act.activity_ID for act in user.checked_activities.all()
+            ],
         }
         context['choosed_activity'] = choosed_activity
     except (ObjectDoesNotExist, KeyError):
@@ -150,9 +154,19 @@ def confirm_check(request):
         members_registered = []
         try:
             activityID = request.POST['activityID']
-            # tao mot record trong cac hoat dong da diem danh
-            # luu lai
-            # them record vao danh sach da diem danh cua nguoi dung
+            try:
+                # kiem tra trong CheckedActivity.objects da co id hoat dong nay chua
+                # neu chua co thi raise exception ObjectDoesNotExist
+                checked_activity = CheckedActivity.objects.get(pk=activityID)
+                user.checked_activities.add(checked_activity)
+            except ObjectDoesNotExist:
+                # tao mot record trong cac hoat dong da diem danh
+                # luu lai
+                # them record vao danh sach da diem danh cua nguoi dung
+                checked_activity = CheckedActivity.objects.create(
+                    activity_ID=activityID)
+                checked_activity.save()
+                user.checked_activities.add(checked_activity)
 
             choosed_activity = Activity.objects.get(activity_ID=activityID)
             # loc danh sach sinh vien chung lop voi lop truong
