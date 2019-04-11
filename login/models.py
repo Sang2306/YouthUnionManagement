@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.utils import timezone
 # Create your models here.
 
@@ -25,11 +26,18 @@ class Activity(models.Model):
     name = models.CharField(verbose_name="Tên hoạt động", max_length=255)
     organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
-    # hoc ky mac dinh gan nhat
+    # nam hoc mac dinh gan nhat 2018-2019 hien tai
     school_year_default = str(timezone.now().year - 1) + \
         "-" + str(timezone.now().year)
     school_year = models.CharField(
         verbose_name="Năm học", max_length=50, default=school_year_default)
+    # hoc ky
+    SEMESTER_1, SEMESTER_2 = 1, 2
+    SEMESTER_IN_SCHOOL = (
+        (SEMESTER_1, 'HỌC KỲ 1'),
+        (SEMESTER_2, 'HỌC KỲ 2'),
+    )
+    semester = models.SmallIntegerField(verbose_name="Học kỳ", choices=SEMESTER_IN_SCHOOL)
     description = models.TextField(verbose_name="Mô tả hoạt động")
     point = models.SmallIntegerField(verbose_name="Điểm")
 
@@ -89,6 +97,11 @@ class User(models.Model):
     def __str__(self):
         return self.user_ID
 
+class UserAdmin(admin.ModelAdmin):
+    """
+        Tao search field cho model USer trong admin site
+    """
+    search_fields = ('user_ID',)
 
 class Mail(models.Model):
     """
@@ -97,7 +110,8 @@ class Mail(models.Model):
         each MAIL has owned by one USER 
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    mail_address = models.EmailField(null=True)
+    mail_address = models.EmailField(
+        unique=True, default='n16dccn131@student.ptithcm.edu.vn')
 
     def __str__(self):
         return self.mail_address
