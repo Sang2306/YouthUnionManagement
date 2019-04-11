@@ -8,9 +8,9 @@ class Role(models.Model):
     """
         Tao bang vai tro
     """
-    role_ID = models.IntegerField(primary_key=True)
+    role_ID = models.SmallIntegerField(primary_key=True)
     role_name = models.CharField(
-        verbose_name="Tên vai trò", max_length=100, default='')
+        verbose_name="Tên vai trò", max_length=100, default='', unique=True)
 
     def __str__(self):
         return self.role_name
@@ -23,7 +23,7 @@ class Activity(models.Model):
         moi hoat dong co the duoc tham gia boi nhieu user
     """
     activity_ID = models.IntegerField(primary_key=True)
-    name = models.CharField(verbose_name="Tên hoạt động", max_length=255)
+    name = models.CharField(verbose_name="Tên hoạt động", max_length=255, unique=True)
     organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
     # nam hoc mac dinh gan nhat 2018-2019 hien tai
