@@ -1,3 +1,6 @@
+"""
+    Cai dat cac views de xu ly request va hien thi cho nguoi dung
+"""
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
@@ -60,14 +63,14 @@ def activities(request):
     context = {}
     # hien thi thong tin nguoi dung dang nhap
     try:
-        ID = request.session.get('ID')
-        user = User.objects.get(user_ID=ID)
+        user_id = request.session.get('ID')
+        user = User.objects.get(user_ID=user_id)
         # kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
         try:
             behaviour = request.POST['status'][:3]  # rmo - remove, add
-            activityID = request.POST['status'][4:]  # 22
+            activity_id = request.POST['status'][4:]  # 22
             # Lay activty voi acttivity_ID trong request
-            activity = Activity.objects.get(activity_ID=activityID)
+            activity = Activity.objects.get(activity_ID=activity_id)
             if str(behaviour) == 'rmo':
                 user.activities.remove(activity)
             else:
@@ -91,6 +94,7 @@ class SemesterCodeError(Exception):
     """
 
     def __init__(self, message_string):
+        super().__init__()
         self.message_string = message_string
 
     def __str__(self):
@@ -108,8 +112,8 @@ def personal(request):
     school_semester = None
     activities_in_semester = []
     try:
-        ID = request.session.get('ID')
-        user = User.objects.get(user_ID=ID)
+        user_id = request.session.get('ID')
+        user = User.objects.get(user_ID=user_id)
         try:
             # Lay semester code tu request
             semester_code = request.GET['semester']
@@ -151,13 +155,13 @@ def check_attendance(request):
     context = {}
     # hien thi thong tin nguoi dung dang nhap
     try:
-        ID = request.session.get('ID')
-        user = User.objects.get(user_ID=ID)
+        user_id = request.session.get('ID')
+        user = User.objects.get(user_ID=user_id)
         choosed_activity = None
         members_registered = []
         try:
-            activityID = request.GET['activityID']
-            choosed_activity = Activity.objects.get(activity_ID=activityID)
+            activity_id = request.GET['activityID']
+            choosed_activity = Activity.objects.get(activity_ID=activity_id)
             # loc danh sach sinh vien chung lop voi lop truong
             class_member = User.objects.filter(class_ID=user.class_ID)
             # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
@@ -190,27 +194,27 @@ def confirm_check(request):
     """
     # hien thi thong tin nguoi dung dang nhap
     try:
-        ID = request.session.get('ID')
-        user = User.objects.get(user_ID=ID)
+        user_id = request.session.get('ID')
+        user = User.objects.get(user_ID=user_id)
         choosed_activity = None
         members_registered = []
         try:
-            activityID = request.POST['activityID']
+            activity_id = request.POST['activityID']
             try:
                 # kiem tra trong CheckedActivity.objects da co id hoat dong nay chua
                 # neu chua co thi raise exception ObjectDoesNotExist
-                checked_activity = CheckedActivity.objects.get(pk=activityID)
+                checked_activity = CheckedActivity.objects.get(pk=activity_id)
                 user.checked_activities.add(checked_activity)
             except ObjectDoesNotExist:
                 # tao mot record trong cac hoat dong da diem danh
                 # luu lai
                 # them record vao danh sach da diem danh cua nguoi dung
                 checked_activity = CheckedActivity.objects.create(
-                    activity_ID=activityID)
+                    activity_ID=activity_id)
                 checked_activity.save()
                 user.checked_activities.add(checked_activity)
 
-            choosed_activity = Activity.objects.get(activity_ID=activityID)
+            choosed_activity = Activity.objects.get(activity_ID=activity_id)
             # loc danh sach sinh vien chung lop voi lop truong
             class_member = User.objects.filter(class_ID=user.class_ID)
             # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity

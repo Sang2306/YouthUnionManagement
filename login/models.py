@@ -1,3 +1,6 @@
+"""
+    Cai dat cac bang trong co so du lieu
+"""
 from django.db import models
 from django.contrib import admin
 from django.utils import timezone
@@ -111,7 +114,7 @@ class Mail(models.Model):
     """
         Tao co so du lieu luu tru mail cua nguoi dung
         each USER has many MAIl
-        each MAIL has owned by one USER 
+        each MAIL has owned by one USER
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mail_address = models.EmailField(
