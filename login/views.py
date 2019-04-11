@@ -111,6 +111,7 @@ def personal(request):
     school_year = None
     school_semester = None
     activities_in_semester = []
+    message_wrong_input = None
     try:
         user_id = request.session.get('ID')
         user = User.objects.get(user_ID=user_id)
@@ -118,8 +119,11 @@ def personal(request):
             # Lay semester code tu request
             semester_code = request.GET['semester']
             if len(semester_code) != 5:
-                raise SemesterCodeError('Loi ma hoc ky vuot qua khac 5 so')
-        except (SemesterCodeError, KeyError):
+                raise SemesterCodeError('Loi ma hoc ky khac 5 so')
+        except SemesterCodeError:
+            message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
+            semester_code = str(timezone.now().year-1) + '1'
+        except  KeyError:
             pass
         # chuyen doi semester_code thanh ten hoc ky
         school_year = int(semester_code[:4])  # 2019
@@ -140,6 +144,7 @@ def personal(request):
             'activities_in_semester_is_empty': activities_in_semester.__len__() == 0,
             'school_year': school_year,
             'school_semester': school_semester,
+            'message_wrong_input': message_wrong_input,
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))

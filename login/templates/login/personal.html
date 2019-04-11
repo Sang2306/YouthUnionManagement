@@ -116,8 +116,16 @@
         </form>
     </div>
     <div class="col-sm-3 col-md-5">
-        {% if school_semester is not None and school_year is not None %}
-        <h3>HỌC KỲ {{ school_semester }} {{ school_year }}</h3>
+        {% if message_wrong_input %}
+        <div class="alert alert-info" role="alert">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            {{ message_wrong_input }} ---
+            HỌC KỲ {{ school_semester }} {{ school_year }} <i>(mặc định)</i>
+        </div>
+        {% elif school_semester is not None and school_year is not None %}
+        <div class="alert alert-success" role="alert">
+            HỌC KỲ {{ school_semester }} {{ school_year }}
+        </div>
         {% endif %}
     </div>
 </div>
