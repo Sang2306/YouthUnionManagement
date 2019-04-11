@@ -116,7 +116,9 @@
         </form>
     </div>
     <div class="col-sm-3 col-md-5">
+        {% if school_semester is not None and school_year is not None %}
         <h3>HỌC KỲ {{ school_semester }} {{ school_year }}</h3>
+        {% endif %}
     </div>
 </div>
 <div class="row">
