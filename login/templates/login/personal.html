@@ -2,7 +2,8 @@
 {% block title %} Personal page {% endblock title %}
 <!--Them library-->
 {% block add_lib %}
-
+<!-- Load icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 {% block add_stylesheet %}
 <style>
@@ -27,6 +28,46 @@
         text-transform: uppercase;
     }
 </style>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Style the search field */
+    form.search-semester input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        width: 80%;
+        background: #f1f1f1;
+    }
+
+    /* Style the submit button */
+    form.search-semester button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        /* Prevent double borders */
+        cursor: pointer;
+    }
+
+    form.search-semester button:hover {
+        background: #0b7dda;
+    }
+
+    /* Clear floats */
+    form.search-semester::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
 {% endblock %}
 <!--active tab-->
 {% block personal_info_active %} active {% endblock %}
@@ -46,7 +87,8 @@
         <div class="progress">
             <!--  {{ style }} de khong bi bao loi-->
             <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                aria-valuenow="{{ user.accumulated_point }}" aria-valuemin="0" aria-valuemax="100" {{ style }}="width: {{ user.accumulated_point }}%">
+                aria-valuenow="{{ user.accumulated_point }}" aria-valuemin="0" aria-valuemax="100"
+                {{ style }}="width: {{ user.accumulated_point }}%">
             </div>
         </div>
         <div class="progress-value">
@@ -64,6 +106,45 @@
             <strong class="list-group-item">Ngày sinh:{{ user.date_of_birth }}</strong>
             <!-- <strong class="list-group-item">Vai trò:{{ user.role }}</strong> -->
         </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3 col-md-5">
+        <form class="search-semester" action="{% url 'login:personal' %}" method="GET">
+            <input type="text" placeholder="Nhập năm học..(ví dụ 20191)" name="semester" required>
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <div class="col-sm-3 col-md-5">
+        <h3>HỌC KỲ {{ school_semester }} {{ school_year }}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3 col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Tên hoạt động</th>
+                    <th>BTC</th>
+                    <th>Điểm</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if activities_in_semester_is_empty %}
+                <div class="alert alert-info" role="alert">
+                    <b> Whoops! Bạn không tham gia bất kỳ hoạt dộng nào trong kỳ học này</b>
+                </div>
+                {% else %}
+                {% for activity in user.activities.all %}
+                <tr>
+                    <td>{{ activity.name }}</td>
+                    <td>{{ activity.organizers }}</td>
+                    <td>{{ activity.point }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock content%}

@@ -23,7 +23,8 @@ class Activity(models.Model):
         moi hoat dong co the duoc tham gia boi nhieu user
     """
     activity_ID = models.IntegerField(primary_key=True)
-    name = models.CharField(verbose_name="Tên hoạt động", max_length=255, unique=True)
+    name = models.CharField(verbose_name="Tên hoạt động",
+                            max_length=255, unique=True)
     organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
     # nam hoc mac dinh gan nhat 2018-2019 hien tai
@@ -37,7 +38,8 @@ class Activity(models.Model):
         (SEMESTER_1, 'HỌC KỲ 1'),
         (SEMESTER_2, 'HỌC KỲ 2'),
     )
-    semester = models.SmallIntegerField(verbose_name="Học kỳ", choices=SEMESTER_IN_SCHOOL)
+    semester = models.SmallIntegerField(
+        verbose_name="Học kỳ", choices=SEMESTER_IN_SCHOOL)
     description = models.TextField(verbose_name="Mô tả hoạt động")
     point = models.SmallIntegerField(verbose_name="Điểm")
 
@@ -85,23 +87,25 @@ class User(models.Model):
         verbose_name="Điểm chuyên cần", default=69)
 
     def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) +
-                                  "-" + str(timezone.now().year)):
+                                  "-" + str(timezone.now().year), school_semester=1):
         """
             Refresh lai diem cho user moi khi chon hoc ky khac,
             mac dinh la la hoc ky gan nhat
         """
-        for act in self.activities.all():
-            if act.school_year == school_year:
-                self.accumulated_point += act.point
+        for activity in self.activities.all():
+            if activity.school_year == school_year and activity.semester == school_semester:
+                self.accumulated_point += activity.point
 
     def __str__(self):
         return self.user_ID
+
 
 class UserAdmin(admin.ModelAdmin):
     """
         Tao search field cho model USer trong admin site
     """
     search_fields = ('user_ID',)
+
 
 class Mail(models.Model):
     """

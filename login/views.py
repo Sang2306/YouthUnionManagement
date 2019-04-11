@@ -85,20 +85,57 @@ def activities(request):
     return render(request, 'login/activities.html', context)
 
 
+class SemesterCodeError(Exception):
+    """
+        Exception cho viec nhap semester_code sai!
+    """
+
+    def __init__(self, message_string):
+        self.message_string = message_string
+
+    def __str__(self):
+        return self.message_string
+
+
 def personal(request):
     """
         hien thi thong tin cua nguoi dung so diem hien tai
     """
     context = {}
     # hien thi thong tin nguoi dung dang nhap
+    semester_code = None
+    school_year = None
+    school_semester = None
+    activities_in_semester = []
     try:
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
-        user.refresh_accumulated_point()
+        try:
+            # Lay semester code tu request
+            semester_code = request.GET['semester']
+            if len(semester_code) != 5:
+                raise SemesterCodeError('Loi ma hoc ky vuot qua khac 5 so')
+            # chuyen doi semester_code thanh ten hoc ky
+            school_year = int(semester_code[:4])  # 2019
+            school_year = str(school_year) + '-' + \
+                str(school_year + 1)  # '2019-2020'
+            school_semester = int(semester_code[-1:])
+            for activity in user.activities.all():
+                if activity.school_year == school_year and activity.semester == school_semester:
+                    activities_in_semester.append(activity)
+
+            # tinh diem lai cho hoc ky hien tai dang chon
+            user.refresh_accumulated_point(school_year, school_semester)
+        except (SemesterCodeError, KeyError):
+            pass
         context = {
             'user': user,
             # {{style}}="width: {{ user.accumulated_point }}%"
             'style': 'style',
+            'activities_in_semester': activities_in_semester,
+            'activities_in_semester_is_empty': activities_in_semester.__len__() == 0,
+            'school_year': school_year,
+            'school_semester': school_semester,
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
