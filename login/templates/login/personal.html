@@ -137,7 +137,7 @@
                     <b> Whoops! Bạn không tham gia bất kỳ hoạt dộng nào trong kỳ học này</b>
                 </div>
                 {% else %}
-                {% for activity in user.activities.all %}
+                {% for activity in activities_in_semester %}
                 <tr>
                     <td>{{ activity.name }}</td>
                     <td>{{ activity.organizers }}</td>

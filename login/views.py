@@ -103,7 +103,7 @@ def personal(request):
     """
     context = {}
     # hien thi thong tin nguoi dung dang nhap
-    semester_code = None
+    semester_code = str(timezone.now().year-1) + '1'
     school_year = None
     school_semester = None
     activities_in_semester = []
@@ -115,19 +115,19 @@ def personal(request):
             semester_code = request.GET['semester']
             if len(semester_code) != 5:
                 raise SemesterCodeError('Loi ma hoc ky vuot qua khac 5 so')
-            # chuyen doi semester_code thanh ten hoc ky
-            school_year = int(semester_code[:4])  # 2019
-            school_year = str(school_year) + '-' + \
-                str(school_year + 1)  # '2019-2020'
-            school_semester = int(semester_code[-1:])
-            for activity in user.activities.all():
-                if activity.school_year == school_year and activity.semester == school_semester:
-                    activities_in_semester.append(activity)
-
-            # tinh diem lai cho hoc ky hien tai dang chon
-            user.refresh_accumulated_point(school_year, school_semester)
         except (SemesterCodeError, KeyError):
             pass
+        # chuyen doi semester_code thanh ten hoc ky
+        school_year = int(semester_code[:4])  # 2019
+        school_year = str(school_year) + '-' + \
+            str(school_year + 1)  # '2019-2020'
+        school_semester = int(semester_code[-1:])
+        for activity in user.activities.all():
+            if activity.school_year == school_year and activity.semester == school_semester:
+                activities_in_semester.append(activity)
+
+        # tinh diem lai cho hoc ky hien tai dang chon
+        user.refresh_accumulated_point(school_year, school_semester)
         context = {
             'user': user,
             # {{style}}="width: {{ user.accumulated_point }}%"
