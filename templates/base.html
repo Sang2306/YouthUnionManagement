@@ -5,49 +5,120 @@
 	<title>{% block title%} {% endblock %}</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	{% load staticfiles %}
-	<link rel="stylesheet" type="text/css" href="{% static 'login/main.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'login/progressbar.css' %}" />
 	{% block add_lib %}
 	{% endblock %}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+	<!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet"
+		id="bootstrap-css"> -->
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			var sideslider = $('[data-toggle=collapse-side]');
+			var sel = sideslider.attr('data-target');
+			var sel2 = sideslider.attr('data-target-2');
+			sideslider.click(function (event) {
+				$(sel).toggleClass('in');
+				$(sel2).toggleClass('out');
+			});
+		});
+	</script>
+	<style>
+		body {
+			background-color: #eee;
+			padding-top: 50px;
+			position: relative;
+		}
+
+		pre {
+			tab-size: 8;
+		}
+
+		@media screen and (max-width: 768px) {
+			.side-collapse-container {
+				width: 100%;
+				position: relative;
+				left: 0;
+				transition: left .1s;
+			}
+
+			.side-collapse-container.out {
+				left: 200px;
+			}
+
+			.side-collapse {
+				top: 50px;
+				bottom: 0;
+				left: 0;
+				width: 200px;
+				position: fixed;
+				overflow: hidden;
+				transition: width .1s;
+			}
+
+			.side-collapse.in {
+				width: 0;
+			}
+		}
+	</style>
 	{% block add_stylesheet %}
 	{% endblock %}
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
+	<header role="banner" class="navbar navbar-fixed-top navbar-inverse">
+		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="{% url 'home:home' %}"><span
-						class="glyphicon glyphicon-home"></span>YouthPTIT</a>
+				<button data-toggle="collapse-side" data-target=".side-collapse"
+					data-target-2=".side-collapse-container" type="button" class="navbar-toggle pull-left"><span
+						class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
 			</div>
-			<ul class="nav navbar-nav">
-				<li class="{% block home_active %} {% endblock %}"><a href="{% url 'home:home' %}">Trang chủ</a></li>
-				<li class="{% block activities_active %}  {% endblock %}"><a href="{% url 'login:activities' %}">Hoạt
-						động</a>
-				</li>
-				<li class="{% block personal_info_active %}  {% endblock %}"><a href="{% url 'login:personal' %}"><span
-							class="glyphicon glyphicon-user"></span> Thông tin cá nhân{% block hello_user %}
-						{% endblock %}</a></li>
-				<li class="{% block check_attendance_active %}  {% endblock %}"><a
-						href="{% url 'login:check-attendance' %}">Điểm danh</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				{% block login_button %}
-				<li><a href="{% url 'login:login' %}"><span class="glyphicon glyphicon-log-in"></span> Đăng nhập</a>
-				</li>
-				{% endblock %}
-				{% block logout_button %}
-				<li><a href="{% url 'login:exit' %}"><span class="glyphicon glyphicon-log-out"></span> Đăng xuất</a>
-				</li>
-				{% endblock %}
-			</ul>
+			<div class="navbar-inverse side-collapse in">
+				<nav role="navigation" class="navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li class="{% block home_active %}{% endblock %}">
+							<a href="{% url 'home:home' %}" style="color: yellow;">
+								<i class="glyphicon glyphicon-home"></i>
+								YouthPTIT
+							</a>
+						</li>
+						<li class="{% block activities_active %}{% endblock %}">
+							<a href="{% url 'login:activities' %}">Hoạt động</a>
+						</li>
+						<li class="{% block personal_info_active %}{% endblock %}">
+							<a href="{% url 'login:personal' %}">
+								<span class="glyphicon glyphicon-user"></span>
+								Account
+								{% block hello_user %}
+								{% endblock %}
+							</a>
+						</li>
+						<li class="{% block check_attendance_active %}  {% endblock %}">
+							<a href="{% url 'login:check-attendance' %}">Điểm danh</a>
+						</li>
+						{% block login_button %}
+						<li>
+							<a href="{% url 'login:login' %}"><span class="glyphicon glyphicon-log-in"></span>
+								Đăng nhập
+							</a>
+						</li>
+						{% endblock %}
+						{% block logout_button %}
+						<li>
+							<a href="{% url 'login:exit' %}"><span class="glyphicon glyphicon-log-out"></span>
+								Đăng xuất
+							</a>
+						</li>
+						{% endblock %}
+					</ul>
+				</nav>
+			</div>
 		</div>
-	</nav>
-	<div class="container">
+	</header>
+	<br>
+	<div class="container side-collapse-container">
 		{% block content %}
 		{% endblock content %}
 	</div>

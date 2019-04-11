@@ -83,7 +83,7 @@
 {% block content %}
 <!--Circle-->
 <div class="row">
-    <div class="col-sm-3 col-md-4">
+    <div class="col col-md-4">
         <div class="progress">
             <!--  {{ style }} de khong bi bao loi-->
             <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-3 col-md-8">
+    <div class="col col-md-8">
         <ul class="list-group">
             <strong class="list-group-item">Họ tên: {{ user.name }}</strong>
             <strong class="list-group-item">ID: {{ user.user_ID }}</strong>
@@ -109,13 +109,13 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-3 col-md-5">
+    <div class="col col-md-5">
         <form class="search-semester" action="{% url 'login:personal' %}" method="GET">
             <input type="text" placeholder="Nhập học kỳ..(ví dụ 20191)" name="semester" required>
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
     </div>
-    <div class="col-sm-3 col-md-5">
+    <div class="col col-md-5">
         {% if message_wrong_input %}
         <div class="alert alert-info" role="alert">
             <span class="glyphicon glyphicon-info-sign"></span>
@@ -130,7 +130,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-3 col-md-12">
+    <div class="col col-md-12">
         <table class="table table-hover">
             <thead>
                 <tr>
