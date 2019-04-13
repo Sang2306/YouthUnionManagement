@@ -102,14 +102,6 @@ class User(models.Model):
     def __str__(self):
         return self.user_ID
 
-
-class UserAdmin(admin.ModelAdmin):
-    """
-        Tao search field cho model USer trong admin site
-    """
-    search_fields = ('user_ID',)
-
-
 class Mail(models.Model):
     """
         Tao co so du lieu luu tru mail cua nguoi dung
