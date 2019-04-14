@@ -195,7 +195,7 @@
                     required>
             </div>
             <div class="modal-footer">
-                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok" class="btn btn-success"
+                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok" onclick="return checkNewPassword();" class="btn btn-success"
                     form="confirm-check"><span class="glyphicon glyphicon-ok-sign"></span>OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span>Trở lại</button>
@@ -206,5 +206,14 @@
 {% endblock content%}
 <!--Insert short script-->
 {% block short_script %}
-
+<script>
+    function checkNewPassword() {
+        var newpass = document.getElementById('new-Passwd').value;
+        var retypeNewPass = document.getElementById('retype-NewPasswd').value;
+        if (newpass == retypeNewPass){
+            return true
+        }
+        return false
+    }
+</script>
 {% endblock %}
