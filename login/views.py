@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .models import User, Activity, CheckedActivity  # import cac models
+import hashlib
 # login view
 
 
@@ -145,6 +146,7 @@ def personal(request):
             'school_year': school_year,
             'school_semester': school_semester,
             'message_wrong_input': message_wrong_input,
+            'hashed_user_pass' : hashlib.sha512(user.password.encode()).hexdigest,
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))

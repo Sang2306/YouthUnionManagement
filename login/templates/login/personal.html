@@ -4,6 +4,8 @@
 {% block add_lib %}
 <!-- Load icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% load static %}
+<script type="module" src="{% static 'login/sha512.js' %}"></script>
 {% endblock %}
 {% block add_stylesheet %}
 <style>
@@ -195,8 +197,9 @@
                     required>
             </div>
             <div class="modal-footer">
-                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok" onclick="return checkNewPassword();" class="btn btn-success"
-                    form="confirm-check"><span class="glyphicon glyphicon-ok-sign"></span>OK</button>
+                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok"
+                    onclick="return checkNewPassword();" class="btn btn-success" form="confirm-check"><span
+                        class="glyphicon glyphicon-ok-sign"></span>OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span>Trở lại</button>
             </div>
@@ -207,13 +210,35 @@
 <!--Insert short script-->
 {% block short_script %}
 <script>
+    // Ham kiem tra mat khau moi nha vao voi mat khau nhap lai
     function checkNewPassword() {
+        var userspassword = "{{ hashed_user_pass }}";
+        var oldPasswd = document.getElementById('old-Passwd').value;
         var newpass = document.getElementById('new-Passwd').value;
         var retypeNewPass = document.getElementById('retype-NewPasswd').value;
-        if (newpass == retypeNewPass){
-            return true
+        try {
+            import Sha512 from "//rawcdn.githack.com/chrisveness/crypto/bafe342/sha512.js";
+            var hash = Sha512.hash(oldPasswd)
+        } catch (error) {
+            alert(error)
         }
-        return false
+        if (oldPasswd.length == 0) {
+            alert('Nhập mật khẩu cũ!')
+            return false
+        }
+        if (hash != userspassword) {
+            alert('Mật khẩu cũ không đúng!')
+            return false
+        }
+        if (newpass.length == 0 || retypeNewPass.length == 0) {
+            alert('Vui lòng điền password mới!')
+            return false
+        }
+        if (newpass != retypeNewPass) {
+            alert('Mật khẩu nhập lại không khớp!')
+            return false
+        }
+        return true
     }
 </script>
 {% endblock %}
