@@ -29,8 +29,7 @@
         font-size: 12px;
         text-transform: uppercase;
     }
-</style>
-<style>
+
     #changePwd {
         background-color: green;
         color: #f1f1f1;
@@ -42,8 +41,7 @@
         color: green;
         transition: .4s;
     }
-</style>
-<style>
+
     * {
         box-sizing: border-box;
     }
@@ -117,7 +115,8 @@
             <strong class="list-group-item">Ngày sinh:{{ user.date_of_birth }}</strong>
             <!-- <strong class="list-group-item">Vai trò:{{ user.role }}</strong> -->
             <strong class="list-group-item">
-                <form action="#" method="GET" id="changePwd-form">
+                <form action="{% url 'login:exit' %}" method="POST" id="changePwd-form">
+                    {% csrf_token %}
                     <button type="button" id="changePwd" data-toggle="modal" data-target=".change-pwd-dialog">
                         Đổi mật khẩu
                     </button>
@@ -185,20 +184,18 @@
             </div>
             <div class="modal-body">
                 <label for="old-Passwd">Nhập mật khẩu cũ</label>
-                <input form="changePwd-form" name="oldPwd" type="password" class="form-control" id="old-Passwd"
-                    required>
+                <input form="changePwd-form" type="password" class="form-control" id="old-Passwd" required>
                 <br>
                 <label label for="new-Passwd">Nhập mật khẩu mới</label>
-                <input form="changePwd-form" name="newPwd-1" type="password" class="form-control" id="new-Passwd"
+                <input form="changePwd-form" name="newPwd" type="password" class="form-control" id="new-Passwd"
                     required>
                 <br>
                 <label for="retype-NewPasswd">Nhập lại mật khẩu mới</label>
-                <input form="changePwd-form" name="newPwd-2" type="password" class="form-control" id="retype-NewPasswd"
-                    required>
+                <input form="changePwd-form" type="password" class="form-control" id="retype-NewPasswd" required>
             </div>
             <div class="modal-footer">
-                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok" class="btn btn-success"
-                    form="confirm-check" id="ok-button"><span class="glyphicon glyphicon-ok-sign"></span>OK</button>
+                <button form="changePwd-form" type="submit" value="ok" class="btn btn-success" form="confirm-check"
+                    id="ok-button"><span class="glyphicon glyphicon-ok-sign"></span>OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span>Trở lại</button>
             </div>

@@ -50,7 +50,18 @@ def save_session_data(request):
 def clear_session_data(request):
     """
         Xoa du lieu luu trong session
+        + Truong hop 1 nguoi dung logout
+        + Truong hop 2 neu nguoi dung doi mat khau thi cung se dieu huong toi day
+        trong request ma nguoi dung gui di co chua keyword newPwd voi gia tri la mat khau
     """
+    try:
+        new_password = request.POST['newPwd']
+        user_id = request.session.get('ID')
+        user = User.objects.get(user_ID=user_id)
+        user.set_new_password(new_password)
+        user.save()
+    except KeyError:
+        pass
     request.session.flush()
     return HttpResponseRedirect(reverse('login:login'))
 
@@ -124,7 +135,7 @@ def personal(request):
         except SemesterCodeError:
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
             semester_code = str(timezone.now().year-1) + '1'
-        except  KeyError:
+        except KeyError:
             pass
         # chuyen doi semester_code thanh ten hoc ky
         school_year = int(semester_code[:4])  # 2019
@@ -146,7 +157,7 @@ def personal(request):
             'school_year': school_year,
             'school_semester': school_semester,
             'message_wrong_input': message_wrong_input,
-            'hashed_user_pass' : hashlib.sha512(user.password.encode()).hexdigest,
+            'hashed_user_pass': hashlib.sha512(user.password.encode()).hexdigest,
         }
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))

@@ -99,8 +99,15 @@ class User(models.Model):
             if activity.school_year == school_year and activity.semester == school_semester:
                 self.accumulated_point += activity.point
 
+    def set_new_password(self, new_password):
+        """
+            Thiet lap mat khau khac neu nguoi dung doi mat khau
+        """
+        self.password = new_password
+
     def __str__(self):
         return self.user_ID
+
 
 class Mail(models.Model):
     """
