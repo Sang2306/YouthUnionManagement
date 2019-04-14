@@ -5,7 +5,7 @@
 <!-- Load icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% load static %}
-<script type="module" src="{% static 'login/sha512.js' %}"></script>
+<script src="{% static 'login/sha512.js' %}"> </script>
 {% endblock %}
 {% block add_stylesheet %}
 <style>
@@ -197,9 +197,8 @@
                     required>
             </div>
             <div class="modal-footer">
-                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok"
-                    onclick="return checkNewPassword();" class="btn btn-success" form="confirm-check"><span
-                        class="glyphicon glyphicon-ok-sign"></span>OK</button>
+                <button form="changePwd-form" type="submit" name="confirm-changePwd" value="ok" class="btn btn-success"
+                    form="confirm-check" id="ok-button"><span class="glyphicon glyphicon-ok-sign"></span>OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span>Trở lại</button>
             </div>
@@ -209,36 +208,33 @@
 {% endblock content%}
 <!--Insert short script-->
 {% block short_script %}
-<script>
-    // Ham kiem tra mat khau moi nha vao voi mat khau nhap lai
+<script type="module">
+    import Sha512 from "{% static 'login/sha512.js' %}";
     function checkNewPassword() {
-        var userspassword = "{{ hashed_user_pass }}";
-        var oldPasswd = document.getElementById('old-Passwd').value;
-        var newpass = document.getElementById('new-Passwd').value;
-        var retypeNewPass = document.getElementById('retype-NewPasswd').value;
-        try {
-            import Sha512 from "//rawcdn.githack.com/chrisveness/crypto/bafe342/sha512.js";
-            var hash = Sha512.hash(oldPasswd)
-        } catch (error) {
-            alert(error)
+        var curpwd = "{{ hashed_user_pass }}";
+        var oldpwd = document.getElementById('old-Passwd').value;
+        var nxpwd_1 = document.getElementById('new-Passwd').value;
+        var nxpwd_2 = document.getElementById('retype-NewPasswd').value;
+        var hash = Sha512.hash(oldpwd)
+        if (oldpwd.length == 0) {
+            window.alert('Nhập mật khẩu cũ!')
+            return;
         }
-        if (oldPasswd.length == 0) {
-            alert('Nhập mật khẩu cũ!')
-            return false
+        if (hash != curpwd) {
+            document.getElementById('old-Passwd').value = '';
+            window.alert('Mật khẩu cũ không đúng!')
+            return;
         }
-        if (hash != userspassword) {
-            alert('Mật khẩu cũ không đúng!')
-            return false
+        if (nxpwd_1.length == 0 || nxpwd_2.length == 0) {
+            window.alert('Vui lòng hoàn thành các trường còn lại!')
+            return;
         }
-        if (newpass.length == 0 || retypeNewPass.length == 0) {
-            alert('Vui lòng điền password mới!')
-            return false
+        if (nxpwd_1 != nxpwd_2) {
+            document.getElementById('retype-NewPasswd').value = '';
+            window.alert('Mật khẩu nhập lại không khớp!')
+            return;
         }
-        if (newpass != retypeNewPass) {
-            alert('Mật khẩu nhập lại không khớp!')
-            return false
-        }
-        return true
     }
+    document.getElementById("ok-button").addEventListener('click', checkNewPassword);
 </script>
 {% endblock %}
