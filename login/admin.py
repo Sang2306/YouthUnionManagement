@@ -24,7 +24,8 @@ class ActivityAdmin(admin.ModelAdmin):
     """
         Hien thi thong tin cua hoat dong va tim kiem hoat dong dua vao thoi gian
     """
-    list_display = ["activity_ID", "name", "start_date", "get_number_of_joins"]
+    search_fields = ["start_date"]
+    list_display = ["activity_ID", "name", "start_date", "get_number_of_register", "get_number_of_joins"]
 
     def get_number_of_joins(self, obj):
         """
@@ -38,6 +39,7 @@ class ActivityAdmin(admin.ModelAdmin):
             Trả về  số  lượng đăng ký
         """
         return 0
+    get_number_of_register.short_description = "Số lượng đăng ký"
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
