@@ -15,7 +15,7 @@ class MailAdmin(admin.ModelAdmin):
     """
         Hien thi thong tin co ban cua mail VD user_ID, mail address
     """
-    search_fields = ["user", ]
+    search_fields = ["mail_address", ]
     list_display = ["user_id", "mail_address"]
 
 
