@@ -5,6 +5,7 @@ import hashlib
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -84,10 +85,10 @@ def activities(request):
             # Lay activty voi acttivity_ID trong request
             activity = Activity.objects.get(activity_ID=activity_id)
             if str(behaviour) == 'rmo':
-                activity.number_of_register -= 1
+                activity.number_of_register = F("number_of_register") - 1
                 user.activities.remove(activity)
             else:
-                activity.number_of_register += 1
+                activity.number_of_register = F("number_of_register") + 1
                 user.activities.add(activity)
             #Luu lai thay doi gia tri number_of_register
             activity.save()

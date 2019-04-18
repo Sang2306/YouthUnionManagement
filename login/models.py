@@ -56,6 +56,7 @@ class Activity(models.Model):
     class Meta:
         verbose_name = "Hoạt động"
         verbose_name_plural = "Hoạt động"
+        ordering = ["start_date"]
 
     def is_opening(self):
         """
