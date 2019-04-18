@@ -17,19 +17,18 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Tên hoạt động</th>
                 <th scope="col">BTC</th>
                 <th scope="col">Ngày diễn ra</th>
                 <th scope="col">Mô tả</th>
                 <th scope="col">Đăng ký</th>
+                <th scope="col">Lượng đăng ký</th>
             </tr>
         </thead>
         <tbody>
             {% for activity in activities_list %}
             {% if activity.is_opening %}
             <tr>
-                <th scope="row">{{ activity.activity_ID }}</th>
                 <td>{{ activity.name }}</td>
                 <td>{{ activity.organizers }}</td>
                 <td>{{ activity.start_date }}</td>
@@ -56,6 +55,7 @@
                         {% endif %}
                     </form>
                 </td>
+                <td>{{ activity.number_of_register }}</td>
             </tr>
             {% endif %}
             {% endfor %}
