@@ -14,6 +14,10 @@ class Role(models.Model):
     role_name = models.CharField(
         verbose_name="Tên vai trò", max_length=100, default='', unique=True)
 
+    class Meta:
+        verbose_name = "Vai trò"
+        verbose_name_plural = "Vai trò"
+
     def __str__(self):
         return self.role_name
 
@@ -44,6 +48,10 @@ class Activity(models.Model):
         verbose_name="Học kỳ", choices=SEMESTER_IN_SCHOOL)
     description = models.TextField(verbose_name="Mô tả hoạt động")
     point = models.SmallIntegerField(verbose_name="Điểm")
+
+    class Meta:
+        verbose_name = "Hoạt động"
+        verbose_name_plural = "Hoạt động"
 
     def is_opening(self):
         """
@@ -87,6 +95,10 @@ class User(models.Model):
     # muc diem chuyen can mac dinh = 69
     accumulated_point = models.IntegerField(
         verbose_name="Điểm chuyên cần", default=69)
+
+    class Meta:
+        verbose_name = "Người dùng"
+        verbose_name_plural = "Người dùng"
 
     def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) +
                                   "-" + str(timezone.now().year), school_semester=1):
