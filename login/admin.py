@@ -30,6 +30,7 @@ class ActivityAdmin(admin.ModelAdmin):
         Hien thi thong tin cua hoat dong va tim kiem hoat dong dua vao thoi gian
     """
     search_fields = ["start_date"]
+    ordering = ["start_date"]
     list_display = ["activity_ID", "name", "start_date",
                     "number_of_register", "get_number_of_joins"]
 
