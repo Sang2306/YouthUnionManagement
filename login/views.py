@@ -1,6 +1,7 @@
 """
     Cai dat cac views de xu ly request va hien thi cho nguoi dung
 """
+import hashlib
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,7 +10,6 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .models import User, Activity, CheckedActivity  # import cac models
-import hashlib
 # login view
 
 
