@@ -84,9 +84,13 @@ def activities(request):
             # Lay activty voi acttivity_ID trong request
             activity = Activity.objects.get(activity_ID=activity_id)
             if str(behaviour) == 'rmo':
+                activity.number_of_register -= 1
                 user.activities.remove(activity)
             else:
+                activity.number_of_register += 1
                 user.activities.add(activity)
+            #Luu lai thay doi gia tri number_of_register
+            activity.save()
         except KeyError:
             pass
         context = {

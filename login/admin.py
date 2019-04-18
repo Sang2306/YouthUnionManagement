@@ -1,7 +1,10 @@
 from django.contrib import admin
 from .models import User, Mail, Role, Activity
+from django.utils import timezone
 
 # Tao fmodel quan tri User
+
+
 class UserAdmin(admin.ModelAdmin):
     """
         Hien thi thong tin co ban cua user, va tim kiem thong tin user
@@ -9,8 +12,10 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ["user_ID", ]
     ordering = ["user_ID", ]
     list_display = ['user_ID', "name", "password"]
-    
+
 # Tao model quan tri mail
+
+
 class MailAdmin(admin.ModelAdmin):
     """
         Hien thi thong tin co ban cua mail VD user_ID, mail address
@@ -19,27 +24,24 @@ class MailAdmin(admin.ModelAdmin):
     list_display = ["user_id", "mail_address"]
 
 
-#Tao model quan tri cho Activity
+# Tao model quan tri cho Activity
 class ActivityAdmin(admin.ModelAdmin):
     """
         Hien thi thong tin cua hoat dong va tim kiem hoat dong dua vao thoi gian
     """
     search_fields = ["start_date"]
-    list_display = ["activity_ID", "name", "start_date", "get_number_of_register", "get_number_of_joins"]
+    list_display = ["activity_ID", "name", "start_date",
+                    "number_of_register", "get_number_of_joins"]
 
     def get_number_of_joins(self, obj):
         """
             Trả về số  lượng người tham gia
         """
-        return len(obj.user_set.all())
+        if obj.start_date < timezone.now():
+            return len(obj.user_set.all())
+        return '_'
     get_number_of_joins.short_description = "Số lượng tham dự"
 
-    def get_number_of_register(self, obj):
-        """
-            Trả về  số  lượng đăng ký
-        """
-        return 0
-    get_number_of_register.short_description = "Số lượng đăng ký"
 
 # Register your models here.
 admin.site.register(User, UserAdmin)

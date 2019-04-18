@@ -49,6 +49,10 @@ class Activity(models.Model):
     description = models.TextField(verbose_name="Mô tả hoạt động")
     point = models.SmallIntegerField(verbose_name="Điểm")
 
+    # So luong nguoi dang ky tham gia
+    number_of_register = models.SmallIntegerField(
+        verbose_name="Số lượng dăng ký", default=0, editable=False)
+
     class Meta:
         verbose_name = "Hoạt động"
         verbose_name_plural = "Hoạt động"
@@ -95,8 +99,6 @@ class User(models.Model):
     # muc diem chuyen can mac dinh = 69
     accumulated_point = models.IntegerField(
         verbose_name="Điểm chuyên cần", default=69)
-    # So luong nguoi dang ky tham gia
-    number_of_register = models.SmallIntegerField(default=0, editable=False)
 
     class Meta:
         verbose_name = "Người dùng"
