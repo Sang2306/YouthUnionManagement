@@ -1,6 +1,6 @@
+from django.utils import timezone
 from django.contrib import admin
 from .models import User, Mail, Role, Activity
-from django.utils import timezone
 
 # Tao fmodel quan tri User
 
@@ -44,6 +44,7 @@ class ActivityAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
+admin.site.site_header = "Admin YouthPTIT"
 admin.site.register(User, UserAdmin)
 admin.site.register(Mail, MailAdmin)
 admin.site.register(Role)
