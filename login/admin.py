@@ -1,3 +1,6 @@
+"""
+    Cau hinh trang quan tri YouthPTIT
+"""
 from django.utils import timezone
 from django.contrib import admin
 from .models import User, Mail, Role, Activity
