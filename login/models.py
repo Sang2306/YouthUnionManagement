@@ -95,6 +95,8 @@ class User(models.Model):
     # muc diem chuyen can mac dinh = 69
     accumulated_point = models.IntegerField(
         verbose_name="Điểm chuyên cần", default=69)
+    # So luong nguoi dang ky tham gia
+    number_of_register = models.SmallIntegerField(default=0, editable=False)
 
     class Meta:
         verbose_name = "Người dùng"
