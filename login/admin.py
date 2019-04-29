@@ -48,7 +48,9 @@ class ActivityAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.site_header = "Admin YouthPTIT"
+admin.site.site_header = "YouthPTIT Admin"
+admin.site.site_title = "YouthPTIT Admin Portal"
+admin.site.index_title = "Welcome to YouthPTIT Portal"
 admin.site.register(User, UserAdmin)
 admin.site.register(Mail, MailAdmin)
 admin.site.register(Role)

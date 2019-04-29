@@ -31,7 +31,7 @@
             <tr>
                 <td>{{ activity.name }}</td>
                 <td>{{ activity.organizers }}</td>
-                <td>{{ activity.start_date }}</td>
+                <td>{{ activity.start_date.day }}/{{ activity.start_date.month }}/{{ activity.start_date.year }}</td>
                 <td>{{ activity.description }}</td>
                 <td>
                     <form action="{% url 'login:activities' %}" method="POST">

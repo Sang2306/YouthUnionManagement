@@ -112,7 +112,9 @@
             <strong class="list-group-item">Họ tên: {{ user.name }}</strong>
             <strong class="list-group-item">ID: {{ user.user_ID }}</strong>
             <strong class="list-group-item">Lớp: {{ user.class_ID }}</strong>
-            <strong class="list-group-item">Ngày sinh:{{ user.date_of_birth }}</strong>
+            <strong class="list-group-item">Ngày sinh:
+                {{ user.date_of_birth.day }}/{{ user.date_of_birth.month }}/{{ user.date_of_birth.year}}
+            </strong>
             <!-- <strong class="list-group-item">Vai trò:{{ user.role }}</strong> -->
             <strong class="list-group-item">
                 <form action="{% url 'login:exit' %}" method="POST" id="changePwd-form">
