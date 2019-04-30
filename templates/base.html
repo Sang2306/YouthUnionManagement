@@ -21,9 +21,11 @@
 			});
 		});
 	</script>
+	<!-- {% load staticfiles %} -->
 	<style>
 		body {
-			background-color: #eee;
+			/* background-image: url("{% static 'media/Dingo.png' %}"); */
+			background-color: rgb(247, 247, 247);
 			padding-top: 50px;
 			position: relative;
 		}
@@ -83,19 +85,9 @@
 						<li class="{% block activities_active %}{% endblock %}">
 							<a href="{% url 'login:activities' %}">Hoạt động</a>
 						</li>
-						
+
 						{% block admin %}
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-								aria-haspopup="true" aria-expanded="false">Quản trị <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{% url 'login:export-xls' %}">Export XLS file</a></li>
-								<li role="separator" class="divider"></li>
-								<li class="{% block check_attendance_active %}  {% endblock %}">
-									<a href="{% url 'login:check-attendance' %}">Điểm danh</a>
-								</li>
-							</ul>
-						</li>
+						<!-- Amdin option here -->
 						{% endblock admin %}
 
 						<li class="{% block personal_info_active %}{% endblock %}">
@@ -107,13 +99,6 @@
 							</a>
 						</li>
 
-						{% block login_button %}
-						<li>
-							<a href="{% url 'login:login' %}"><span class="glyphicon glyphicon-log-in"></span>
-								Đăng nhập
-							</a>
-						</li>
-						{% endblock %}
 						{% block logout_button %}
 						<li>
 							<a href="{% url 'login:exit' %}"><span class="glyphicon glyphicon-log-out"></span>
@@ -130,6 +115,28 @@
 	<div class="container side-collapse-container">
 		{% block content %}
 		{% endblock content %}
+	</div>
+	<!-- Small modal Input semester code to export excel file-->
+	<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>Nhập học kỳ muốn xuất</h4>
+				</div>
+				<div class="modal-body">
+					<form id="input-semester-form" action="{% url 'login:export-xls' %}" method="GET">
+						<input type="number" placeholder="E.g. 20192" name="semester-code" class="form-control"
+							id="semester-code-input" required>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button form="input-semester-form" type="submit" value="ok" class="btn btn-success"
+						form="confirm-check" id="ok-button"><span class="glyphicon glyphicon-ok-sign"></span>OK
+					</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	{% block short_script %}
 	<!--Insert nhung doan javascript ngan vao day-->

@@ -191,9 +191,6 @@ def check_attendance(request):
             # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
             for member in class_member:
                 if choosed_activity in member.activities.all():
-                    # upper case truoc khi render len web
-                    member.user_ID = member.user_ID.upper()
-                    member.name = member.name.upper()
                     members_registered.append(member)
         except KeyError:
             pass

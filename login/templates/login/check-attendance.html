@@ -1,16 +1,30 @@
 {% extends 'base.html' %}
 
 {% block title %} Check attendance page {% endblock title %}
-<!--active tab-->
-{% block check_attendance_active %} active {% endblock %}
-<!--Tat login button-->
-{% block login_button %} {% endblock login_button%}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
 {% if user.name is not None %}
 (Xin chào {{ user.name }})
 {% endif %}
 {% endblock hello_user %}
+<!-- Block admin -->
+{% block admin %}
+{% if user.role.role_ID != 2 %}
+{% else %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+        aria-expanded="false">Quản trị <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="#" data-toggle="modal" data-target=".bd-example-modal-sm">Export XLS file
+            </a></li>
+        <li role="separator" class="divider"></li>
+        <li class="active">
+            <a href="{% url 'login:check-attendance' %}">Điểm danh</a>
+        </li>
+    </ul>
+</li>
+{% endif %}
+{% endblock %}
 {% block add_stylesheet %}
 <style>
     /* The switch - the box around the slider */
@@ -79,12 +93,6 @@
 {% endblock %}
 <!--Bang hoat dong-->
 {% block content %}
-<!--
-    sinh vien : 1
-    lop truong : 2
-    can bo : 3
--->
-{% if user.role.role_ID == 2 %}
 <form action="{% url 'login:check-attendance' %}" method="GET">
     <ul class="list-group" id="eventList">
         {% for activity in activities_list %}
@@ -94,11 +102,6 @@
         {% endfor %}
     </ul>
 </form>
-{% else %}
-<div class="alert alert-info" role="alert">
-    Người dùng không có quyền điểm danh
-</div>
-{% endif %}
 <!--hien thi ten cua hoat dong da lua chon-->
 {% if choosed_activity %}
 <div class="alert alert-success" role="alert">
@@ -128,8 +131,8 @@
             <tbody id="myTable">
                 {% for member in members_registered %}
                 <tr>
-                    <td>{{ member.user_ID }}</td>
-                    <td>{{ member.name }}</td>
+                    <td>{{ member.user_ID.upper }}</td>
+                    <td>{{ member.name.upper }}</td>
                     <td>
                         <!-- Rectangular switch -->
                         <label class="switch">

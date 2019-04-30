@@ -2,10 +2,13 @@
 {% block logout_button %} {% endblock logout_button %}
 <!-- tieu de cua trang dang nhap-->
 {% block title %} Login page {% endblock %}
+<!-- Block admin -->
+{% block admin %}
+{% endblock %}
 {% block add_stylesheet %}
 <style>
     .login-status {
-        color: red;
+        color: rgb(255, 255, 255);
     }
 
     .wrapper {
@@ -63,18 +66,20 @@
 {% block content %}
 {% if logged is False or logged is None%}
 <div class="wrapper">
-    <form class="form-signin" action="{% url 'login:login' %}" method="POST">
+    <form style="background-color: #89bcf3; color: rgb(61, 58, 58)" class="form-signin" action="{% url 'login:login' %}"
+        method="POST">
         {% csrf_token %}
-        <h2 class="form-signin-heading">Đăng nhập</h2>
+        <h2 class="form-signin-heading" style="font-family: 'Courier New', Courier, monospace; text-align: center;">Đăng
+            nhập</h2>
         <input type="text" class="form-control" name="ID" placeholder="ID" value="{{ ID }}"
             oninvalid="this.setCustomValidity('Nhập vào MSSV')" oninput="setCustomValidity('')" required=""
             autofocus="" />
         <input type="password" class="form-control" name="password" placeholder="Password"
             oninvalid="this.setCustomValidity('Nhập vào mật khẩu')" required="" oninput="setCustomValidity('')" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
         <div class="login-status">
-            {% if user_not_found %}<strong> {{ user_not_found }} </strong> {% endif %}
-            {% if login_status is not None %} <strong>{{ login_status }}</strong> {% endif %}
+            {% if user_not_found %}<i> {{ user_not_found }}!</i> {% endif %}
+            {% if login_status is not None %} <i>{{ login_status }}!</i> {% endif %}
         </div>
     </form>
 </div>

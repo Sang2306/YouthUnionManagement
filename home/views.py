@@ -16,7 +16,7 @@ def home(request):
         ID = request.session.get('ID')
         user = User.objects.get(user_ID=ID)
         context = {
-            'name': user.name,
+            'user': user,
         }
         return render(request, 'home/index.html', context)
     except (ObjectDoesNotExist, KeyError):
