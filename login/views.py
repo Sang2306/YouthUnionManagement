@@ -2,11 +2,12 @@
     Cai dat cac views de xu ly request va hien thi cho nguoi dung
 """
 import hashlib
+import xlwt
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 
@@ -90,7 +91,7 @@ def activities(request):
             else:
                 activity.number_of_register = F("number_of_register") + 1
                 user.activities.add(activity)
-            #Luu lai thay doi gia tri number_of_register
+            # Luu lai thay doi gia tri number_of_register
             activity.save()
         except KeyError:
             pass
@@ -257,3 +258,49 @@ def confirm_check(request):
         return HttpResponseRedirect(reverse('login:check-attendance'))
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
+
+
+def export_excel(request):
+    """
+        Xuat file excel du lieu diem ren luyen cua sinh vien do lop truong quan ly,
+        Dua vao hoc ky de xuat du lieu.
+    """
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = None
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    response = HttpResponse()
+    response['content_type'] = 'application/ms-excel'
+    file_name = '_report.xls'
+    try:
+        user_id = request.session.get('ID')
+        user = User.objects.get(user_ID=user_id)
+        # Sheet Dxxxxxxx
+        ws = wb.add_sheet('{}'.format(str(user.class_ID).upper()))
+        # N16dccn130_report.xls
+        file_name = user.class_ID + file_name
+        response['Content-Disposition'] = 'attachment; filename="{file_name}"'.format(
+            file_name=file_name)
+        columns = [
+            'Tên sinh viên', 'MSSV', 'Điểm rèn luyện',
+        ]
+        # Ghi hang dau tien cua file excel la ten cac cot
+        for col_num in range(len(columns)):
+            ws.write(0, col_num, columns[col_num], font_style)
+        # loc danh sach sinh vien chung lop voi lop truong
+        class_member = User.objects.filter(class_ID=user.class_ID)
+        # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
+        row_num = 1
+        for member in class_member:
+            ws.write(row_num, 0, str(member.name).upper())
+            ws.write(row_num, 1, str(member.user_ID).upper())
+            ws.write(row_num, 2, member.accumulated_point)
+            row_num += 1
+
+        wb.save(response)
+
+    except (ObjectDoesNotExist, KeyError):
+        return HttpResponseRedirect(reverse('login:login'))
+
+    return response
