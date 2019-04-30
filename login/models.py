@@ -121,6 +121,9 @@ class User(models.Model):
         """
         self.password = new_password
 
+    def __lt__(self, other):
+        return self.user_ID < other.user_ID
+        
     def __str__(self):
         return self.user_ID
 

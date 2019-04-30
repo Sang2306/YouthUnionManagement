@@ -67,7 +67,6 @@ def clear_session_data(request):
     request.session.flush()
     return HttpResponseRedirect(reverse('login:login'))
 
-
 def activities(request):
     """
         Hien thi thong tin cac hoat dong chuan bi dien ra
@@ -194,6 +193,7 @@ def check_attendance(request):
                     members_registered.append(member)
         except KeyError:
             pass
+        members_registered.sort()
         context = {
             'user': user,
             'members_registered': members_registered,
