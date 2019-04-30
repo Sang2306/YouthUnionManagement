@@ -191,6 +191,9 @@ def check_attendance(request):
             # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
             for member in class_member:
                 if choosed_activity in member.activities.all():
+                    # upper case truoc khi render len web
+                    member.user_ID = member.user_ID.upper()
+                    member.name = member.name.upper()
                     members_registered.append(member)
         except KeyError:
             pass
@@ -286,8 +289,8 @@ def export_excel(request):
             'Tên sinh viên', 'MSSV', 'Điểm rèn luyện',
         ]
         # Ghi hang dau tien cua file excel la ten cac cot
-        for col_num in range(len(columns)):
-            ws.write(0, col_num, columns[col_num], font_style)
+        for col in enumerate(columns):
+            ws.write(0, col[0], col[1], font_style)
         # loc danh sach sinh vien chung lop voi lop truong
         class_member = User.objects.filter(class_ID=user.class_ID)
         # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
