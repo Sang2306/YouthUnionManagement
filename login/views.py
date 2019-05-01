@@ -144,6 +144,14 @@ def personal(request):
             pass
         # chuyen doi semester_code thanh ten hoc ky
         school_year = int(semester_code[:4])  # 2019
+        # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
+        begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
+        begin_course = 2000+begin_course
+        if school_year < begin_course or school_year > timezone.now().year:
+            message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
+            semester_code = str(timezone.now().year-1) + '1'
+            school_year = int(semester_code[:4])  # 2019
+
         school_year = str(school_year) + '-' + \
             str(school_year + 1)  # '2019-2020'
         school_semester = int(semester_code[-1:])
@@ -265,6 +273,19 @@ def export_excel(request):
         Xuat file excel du lieu diem ren luyen cua sinh vien do lop truong quan ly,
         Dua vao hoc ky de xuat du lieu.
     """
+    # Thong tin hoc ky can trich xuat
+    semester_code = None
+    try:
+        # Lay semester code tu request
+        semester_code = request.GET['semester-code']
+        if len(semester_code) != 5:
+            raise SemesterCodeError('Loi ma hoc ky khac 5 so')
+    except (SemesterCodeError, KeyError):
+        return HttpResponse("<script> window.alert('Khong tim thay {}') </script>".format(semester_code))
+        # chuyen doi semester_code thanh ten hoc ky
+    school_year = int(semester_code[:4])  # 2019
+    school_semester = int(semester_code[-1:])
+    # Thong tin file excel
     wb = xlwt.Workbook(encoding='utf-8')
     ws = None
     font_style = xlwt.XFStyle()
@@ -275,11 +296,20 @@ def export_excel(request):
     file_name = '_report.xls'
     try:
         user_id = request.session.get('ID')
+        # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
+        begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
+        begin_course = 2000+begin_course
+        if school_year < begin_course or school_year > timezone.now().year:
+            return HttpResponse("<script> window.alert('Khong tim thay {}') </script>".format(semester_code))
+
+        school_year = str(school_year) + '-' + \
+            str(school_year + 1)  # '2019-2020'
         user = User.objects.get(user_ID=user_id)
         # Sheet Dxxxxxxx
         ws = wb.add_sheet('{}'.format(str(user.class_ID).upper()))
         # N16dccn130_report.xls
-        file_name = user.class_ID + file_name
+        file_name = user.class_ID.upper() + '_HK' + str(school_semester) + \
+            '_' + school_year + file_name
         response['Content-Disposition'] = 'attachment; filename="{file_name}"'.format(
             file_name=file_name)
         columns = [
@@ -289,10 +319,14 @@ def export_excel(request):
         for col in enumerate(columns):
             ws.write(0, col[0], col[1], font_style)
         # loc danh sach sinh vien chung lop voi lop truong
-        class_member = User.objects.filter(class_ID=user.class_ID)
-        # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
+        class_member = User.objects.filter(
+            class_ID=user.class_ID).order_by('user_ID')
+        # tinh diem cho sinh vien dua vao hoc ky (school_year, school_semester)
         row_num = 1
         for member in class_member:
+            # Tinh diem dua vao hoc ky truoc khi xuat diem ra file excel
+            member.refresh_accumulated_point(school_year, school_semester)
+            # Ghi du lieu vao file
             ws.write(row_num, 0, str(member.name).upper())
             ws.write(row_num, 1, str(member.user_ID).upper())
             ws.write(row_num, 2, member.accumulated_point)
