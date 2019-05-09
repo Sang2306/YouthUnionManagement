@@ -59,7 +59,7 @@ def clear_session_data(request):
     try:
         new_password = request.POST['newPwd']
         user_id = request.session.get('ID')
-        user = User.objects.get(user_ID=user_id)
+        user = User.objects.get(user_ID__iexact=user_id)
         user.set_new_password(new_password)
         user.save()
     except KeyError:
@@ -77,7 +77,7 @@ def activities(request):
     # hien thi thong tin nguoi dung dang nhap
     try:
         user_id = request.session.get('ID')
-        user = User.objects.get(user_ID=user_id)
+        user = User.objects.get(user_ID__iexact=user_id)
         # kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
         try:
             behaviour = request.POST['status'][:3]  # rmo - remove, add
@@ -131,7 +131,7 @@ def personal(request):
     message_wrong_input = None
     try:
         user_id = request.session.get('ID')
-        user = User.objects.get(user_ID=user_id)
+        user = User.objects.get(user_ID__iexact=user_id)
         try:
             # Lay semester code tu request
             semester_code = request.GET['semester']
@@ -187,7 +187,7 @@ def check_attendance(request):
     # hien thi thong tin nguoi dung dang nhap
     try:
         user_id = request.session.get('ID')
-        user = User.objects.get(user_ID=user_id)
+        user = User.objects.get(user_ID__iexact=user_id)
         choosed_activity = None
         members_registered = []
         try:
@@ -227,7 +227,7 @@ def confirm_check(request):
     # hien thi thong tin nguoi dung dang nhap
     try:
         user_id = request.session.get('ID')
-        user = User.objects.get(user_ID=user_id)
+        user = User.objects.get(user_ID__iexact=user_id)
         choosed_activity = None
         members_registered = []
         try:
@@ -304,7 +304,7 @@ def export_excel(request):
 
         school_year = str(school_year) + '-' + \
             str(school_year + 1)  # '2019-2020'
-        user = User.objects.get(user_ID=user_id)
+        user = User.objects.get(user_ID__iexact=user_id)
         # Sheet Dxxxxxxx
         ws = wb.add_sheet('{}'.format(str(user.class_ID).upper()))
         # N16dccn130_report.xls
