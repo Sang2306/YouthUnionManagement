@@ -9,17 +9,27 @@
 {% endblock hello_user %}
 <!-- Block admin -->
 {% block admin %}
-{% if user.role.role_ID != 2 %}
-{% else %}
+{% if user.role.role_ID == 2 %}
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
         aria-expanded="false">Quản trị <span class="caret"></span></a>
     <ul class="dropdown-menu">
-        <li><a href="#" data-toggle="modal" data-target=".bd-example-modal-sm" class="glyphicon glyphicon-export"> Export XLS
+        <li><a href="#" data-toggle="modal" data-target=".bd-example-modal-sm" class="glyphicon glyphicon-export">
+                Export XLS
             </a></li>
         <li role="separator" class="divider"></li>
-        <li class="{% block check_attendance_active %}  {% endblock %}">
+        <li>
             <a href="{% url 'login:check-attendance' %}" class="glyphicon glyphicon-check"> Điểm danh</a>
+        </li>
+    </ul>
+</li>
+{% elif user.role.role_ID == 3%}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+        aria-expanded="false">Quản trị <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="{% url 'login:upload' %}" class="glyphicon glyphicon-cloud-upload"> Upload thông báo</a>
         </li>
     </ul>
 </li>

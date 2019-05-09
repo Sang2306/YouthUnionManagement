@@ -22,7 +22,7 @@
                 Export XLS
             </a></li>
         <li role="separator" class="divider"></li>
-        <li class="{% block check_attendance_active %}  {% endblock %}">
+        <li>
             <a href="{% url 'login:check-attendance' %}" class="glyphicon glyphicon-check"> Điểm danh</a>
         </li>
     </ul>
@@ -39,26 +39,9 @@
 </li>
 {% endif %}
 {% endblock %}
-<!--Thong bao trang chu-->
+<!--Upload page-->
 {% block content %}
 
-<strong style="font-style: italic; color: #006699;">*THÔNG BÁO</strong>
-<object data="http://www.pdf995.com/samples/pdf.pdf" type="application/pdf" width="100%" height="480">
-</object>
-
-<ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1">Trước đó</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active">
-        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-        <a class="page-link" href="#">Tiếp</a>
-    </li>
-</ul>
 
 {% endblock content %}
 {% block short_script %}

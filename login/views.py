@@ -338,3 +338,6 @@ def export_excel(request):
         return HttpResponseRedirect(reverse('login:login'))
 
     return response
+
+def upload(request):
+    return HttpResponse("You're at up load page")
