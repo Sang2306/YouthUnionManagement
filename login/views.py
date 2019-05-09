@@ -27,7 +27,7 @@ def login(request):
             'ID': request.POST['ID'],
             'password': request.POST['password'],
         }
-        user = User.objects.get(user_ID=context['ID'])
+        user = User.objects.get(user_ID__iexact=context['ID'])
         if user.password == context['password']:
             # Luu lai thong tin trong session truoc khi chuyen huong den trang chu
             save_session_data(request)
