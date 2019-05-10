@@ -123,7 +123,7 @@ class User(models.Model):
 
     def __lt__(self, other):
         return self.user_ID < other.user_ID
-        
+
     def __str__(self):
         return self.user_ID
 
@@ -140,3 +140,10 @@ class Mail(models.Model):
 
     def __str__(self):
         return self.mail_address
+
+# Upload pdf file
+class UploadPdfFile(models.Model):
+    """
+        Model de luu file vao co so du lieu
+    """
+    pdf_file = models.FileField(upload_to='announcements/%Y/%m/%d')
