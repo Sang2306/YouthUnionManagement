@@ -11,7 +11,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User, Activity, CheckedActivity  # import cac models
+from .models import User, Activity, CheckedActivity, UploadPdfFile  # import cac models
+from .form import UploadFileForm
 # login view
 
 
@@ -66,6 +67,7 @@ def clear_session_data(request):
         pass
     request.session.flush()
     return HttpResponseRedirect(reverse('login:login'))
+
 
 def activities(request):
     """
@@ -338,3 +340,24 @@ def export_excel(request):
         return HttpResponseRedirect(reverse('login:login'))
 
     return response
+
+
+def upload(request):
+    ID = request.session.get('ID')
+    user = User.objects.get(user_ID__iexact=ID)
+    # Kiem tra form co hop le
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Tao doi tuong va luu file
+            instance = UploadPdfFile(pdf_file=request.FILES['pdf_file'])
+            instance.save()
+            return HttpResponse('Successfully')
+    else:
+        form = UploadFileForm()
+
+    context = {
+        'user': user,
+        'form': form,
+    }
+    return render(request, 'login/upload.html', context)
