@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
-{% block title %} Home page {% endblock title %}
+{% block title %} Upload {% endblock title %}
 <!--active tab-->
-{% block home_active %} active {% endblock %}
 {% block add_lib %}
 {% endblock %}
 <!-- Xin chao Ten nguoi dung -->
@@ -32,7 +31,7 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
         aria-expanded="false">Quản trị <span class="caret"></span></a>
     <ul class="dropdown-menu">
-        <li>
+        <li class="active">
             <a href="{% url 'login:upload' %}" class="glyphicon glyphicon-cloud-upload"> Upload thông báo</a>
         </li>
     </ul>
