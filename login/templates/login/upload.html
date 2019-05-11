@@ -50,7 +50,8 @@
 {% block content %}
 
 {% for file in all_files %}
-<form action="{% url 'login:upload' %}" method="GET">
+<form action="{% url 'login:upload' %}" method="POST">
+    {% csrf_token %}
     <button title="Xóa file" type="submit" class="btn btn-danger btn-sm" name="pdf_file_id" value="{{ file.id }}">
         <i class="glyphicon glyphicon-minus"></i>
     </button>
