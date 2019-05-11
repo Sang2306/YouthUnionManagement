@@ -25,7 +25,7 @@ SECRET_KEY = '3a3%(+923o%=1rekp9ep4ta(^1y=ok+i)j+07&(u0+2rq^gci&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sang4vn.pythonanywhere.com']
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.sqlite3',
         'NAME' : os.path.join(BASE_DIR, 'youth_union.sqlite3')
-    
+
         # 'ENGINE' : 'django.db.backends.postgresql',
         # 'NAME' : 'youth_union',
         # 'USER' : 'postgres',
