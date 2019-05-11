@@ -52,7 +52,9 @@
     <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
     {% if announce.has_previous %}
     <li class="page-item">
-        <a class="page-link" href="?page={{ announce.previous_page_number }}" tabindex="-1">Trước đó</a>
+        <a class="page-link" href="?page={{ announce.previous_page_number }}" tabindex="-1">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+        </a>
     </li>
     {% endif %}
     <li class="page-item active">
@@ -60,7 +62,9 @@
     </li>
     {% if announce.has_next %}
     <li class="page-item">
-        <a class="page-link" href="?page={{ announce.next_page_number }}">Tiếp</a>
+        <a class="page-link" href="?page={{ announce.next_page_number }}">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
     </li>
     {% endif %}
     <li class="page-item"><a class="page-link" href="?page={{ announce.paginator.num_pages }}">Last</a></li>

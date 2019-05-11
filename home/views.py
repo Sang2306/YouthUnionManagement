@@ -24,7 +24,7 @@ def home(request):
         announce = paginator.get_page(page)
         context = {
             'user': user,
-            'announce' : announce,
+            'announce': announce,
         }
         return render(request, 'home/index.html', context)
     except (ObjectDoesNotExist, KeyError):

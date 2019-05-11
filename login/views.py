@@ -344,25 +344,40 @@ def export_excel(request):
 
 
 def upload(request):
-    ID = request.session.get('ID')
-    user = User.objects.get(user_ID__iexact=ID)
-    # Lay tat ca file pdf va hien thi
-    all_files = UploadPdfFile.objects.all().order_by('-pdf_file')
-    # Kiem tra form co hop le
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            # Tao doi tuong va luu file
-            instance = UploadPdfFile(pdf_file=request.FILES['pdf_file'])
-            instance.pdf_file.name = time.strftime('%Y-%m-%d') + '-' + instance.pdf_file.name
-            instance.save()
-            return HttpResponse('Successfully')
-    else:
-        form = UploadFileForm()
+    try:
+        ID = request.session.get('ID')
+        user = User.objects.get(user_ID__iexact=ID)
+        try:
+            id_pdf_file = request.GET['pdf_file_id']
+            file = UploadPdfFile.objects.get(pk=id_pdf_file)
+            # Delete file tu storage
+            storage, path = file.pdf_file.storage, file.pdf_file.path
+            storage.delete(path)
+            # Sau do delete file tu database
+            file.delete()
+        except Exception:
+            pass
+        # Lay tat ca file pdf va hien thi
+        all_files = UploadPdfFile.objects.all().order_by('-pdf_file')
+        # Kiem tra form co hop le
+        success = ""
+        if request.method == 'POST':
+            form = UploadFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                # Tao doi tuong va luu file
+                instance = UploadPdfFile(pdf_file=request.FILES['pdf_file'])
+                instance.pdf_file.name = time.strftime('%Y-%m-%d') + '-' + instance.pdf_file.name
+                instance.save()
+                success = 'Successfully!'
+        else:
+            form = UploadFileForm()
 
-    context = {
-        'user': user,
-        'form': form,
-        'all_files':all_files,
-    }
-    return render(request, 'login/upload.html', context)
+        context = {
+            'user': user,
+            'form': form,
+            'all_files':all_files,
+            'success' : success,
+        }
+        return render(request, 'login/upload.html', context)
+    except (ObjectDoesNotExist, KeyError):
+        return HttpResponseRedirect(reverse('login:login'))

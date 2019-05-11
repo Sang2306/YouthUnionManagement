@@ -146,4 +146,7 @@ class UploadPdfFile(models.Model):
     """
         Model de luu file vao co so du lieu
     """
-    pdf_file = models.FileField(upload_to='announcements/')
+    pdf_file = models.FileField(upload_to='announcements/', editable=False)
+    
+    def __str__(self):
+        return self.pdf_file.name
