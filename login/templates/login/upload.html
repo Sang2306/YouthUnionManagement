@@ -52,12 +52,8 @@
             class="btn btn-danger btn-sm"
             name="pdf_file_id" 
             value="{{ file.id }}"
-            style="
-                background-color: rgba(255, 38, 38, 0.507); 
-                color: white;
-                border-radius: 3px;
-            ">
-        <i class="glyphicon glyphicon-remove" ></i>
+            >
+        <i class="glyphicon glyphicon-minus" ></i>
     </button>
     <a href="{{ file.pdf_file.url }}">{{ file.pdf_file.name }}</a>
     <br>
