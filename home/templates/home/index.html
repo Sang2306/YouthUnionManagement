@@ -47,10 +47,10 @@
 
 <strong style="font-style: italic; color: #006699;">*THÔNG BÁO</strong>
 <!-- Hien thi thong bao -->
+{% if announce %}
 {% for ann in announce%}
 <object data="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480"></object>
 {% endfor %}
-
 <ul class="pagination justify-content-center">
     <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
     {% if announce.has_previous %}
@@ -72,7 +72,9 @@
     {% endif %}
     <li class="page-item"><a class="page-link" href="?page={{ announce.paginator.num_pages }}">Last</a></li>
 </ul>
-
+{% else %}
+<h4 style="text-align: center;">KHÔNG CÓ THÔNG BÁO NÀO</h4>
+{% endif %}
 {% endblock content %}
 {% block short_script %}
 

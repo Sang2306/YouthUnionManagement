@@ -348,7 +348,7 @@ def upload(request):
         ID = request.session.get('ID')
         user = User.objects.get(user_ID__iexact=ID)
         try:
-            id_pdf_file = request.GET['pdf_file_id']
+            id_pdf_file = request.POST['pdf_file_id']
             file = UploadPdfFile.objects.get(pk=id_pdf_file)
             # Delete file tu storage
             storage, path = file.pdf_file.storage, file.pdf_file.path
