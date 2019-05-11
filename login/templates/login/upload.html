@@ -96,6 +96,12 @@
 {% endblock %}
 <!--Upload page-->
 {% block content %}
+
+{% for file in all_files %}
+<a href="{{ file.pdf_file.url }}"> {{ file.pdf_file.name }} </a>
+<br>
+{% endfor %}
+
 <form action="{% url 'login:upload' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}

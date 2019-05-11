@@ -43,21 +43,27 @@
 {% block content %}
 
 <strong style="font-style: italic; color: #006699;">*THÔNG BÁO</strong>
-<object data="http://www.pdf995.com/samples/pdf.pdf" type="application/pdf" width="100%" height="480">
-</object>
+<!-- Hien thi thong bao -->
+{% for ann in announce%}
+<object data="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480"></object>
+{% endfor %}
 
 <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1">Trước đó</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active">
-        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+    {% if announce.has_previous %}
     <li class="page-item">
-        <a class="page-link" href="#">Tiếp</a>
+        <a class="page-link" href="?page={{ announce.previous_page_number }}" tabindex="-1">Trước đó</a>
     </li>
+    {% endif %}
+    <li class="page-item active">
+        <a class="page-link" href="?page=2">{{ announce.number }} / {{ announce.paginator.num_pages }}</a>
+    </li>
+    {% if announce.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ announce.next_page_number }}">Tiếp</a>
+    </li>
+    {% endif %}
+    <li class="page-item"><a class="page-link" href="?page={{ announce.paginator.num_pages }}">Last</a></li>
 </ul>
 
 {% endblock content %}

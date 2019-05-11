@@ -3,6 +3,7 @@
 """
 import hashlib
 import xlwt
+import time
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
@@ -345,12 +346,15 @@ def export_excel(request):
 def upload(request):
     ID = request.session.get('ID')
     user = User.objects.get(user_ID__iexact=ID)
+    # Lay tat ca file pdf va hien thi
+    all_files = UploadPdfFile.objects.all().order_by('-pdf_file')
     # Kiem tra form co hop le
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             # Tao doi tuong va luu file
             instance = UploadPdfFile(pdf_file=request.FILES['pdf_file'])
+            instance.pdf_file.name = time.strftime('%Y-%m-%d') + '-' + instance.pdf_file.name
             instance.save()
             return HttpResponse('Successfully')
     else:
@@ -359,5 +363,6 @@ def upload(request):
     context = {
         'user': user,
         'form': form,
+        'all_files':all_files,
     }
     return render(request, 'login/upload.html', context)
