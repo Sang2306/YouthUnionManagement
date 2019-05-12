@@ -7,9 +7,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	{% block add_lib %}
 	{% endblock %}
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'login/bootstrap/css/bootstrap.min.css' %}">
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"
+		integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE=" crossorigin="anonymous"></script>
+	<script src="{% static 'login/bootstrap/js/bootstrap.min.js' %}"></script>
 	<script>
 		$(document).ready(function () {
 			var sideslider = $('[data-toggle=collapse-side]');
