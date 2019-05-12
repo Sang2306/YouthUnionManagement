@@ -197,7 +197,7 @@ def check_attendance(request):
             activity_id = request.GET['activityID']
             choosed_activity = Activity.objects.get(activity_ID=activity_id)
             # loc danh sach sinh vien chung lop voi lop truong
-            class_member = User.objects.filter(class_ID=user.class_ID)
+            class_member = User.objects.filter(class_ID__iexact=user.class_ID)
             # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
             for member in class_member:
                 if choosed_activity in member.activities.all():
@@ -251,7 +251,7 @@ def confirm_check(request):
 
             choosed_activity = Activity.objects.get(activity_ID=activity_id)
             # loc danh sach sinh vien chung lop voi lop truong
-            class_member = User.objects.filter(class_ID=user.class_ID)
+            class_member = User.objects.filter(class_ID__iexact=user.class_ID)
             # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
             for member in class_member:
                 if choosed_activity in member.activities.all():
@@ -323,7 +323,7 @@ def export_excel(request):
             ws.write(0, col[0], col[1], font_style)
         # loc danh sach sinh vien chung lop voi lop truong
         class_member = User.objects.filter(
-            class_ID=user.class_ID).order_by('user_ID')
+            class_ID__iexact=user.class_ID).order_by('user_ID')
         # tinh diem cho sinh vien dua vao hoc ky (school_year, school_semester)
         row_num = 1
         for member in class_member:
