@@ -25,7 +25,7 @@ SECRET_KEY = '3a3%(+923o%=1rekp9ep4ta(^1y=ok+i)j+07&(u0+2rq^gci&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sang4vn.pythonanywhere.com']
+ALLOWED_HOSTS = ['sang4vn.pythonanywhere.com', '127.0.0.1']
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
