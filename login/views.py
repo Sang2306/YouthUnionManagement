@@ -194,7 +194,7 @@ def check_attendance(request):
         choosed_activity = None
         members_registered = []
         try:
-            activity_id = request.GET['activityID']
+            activity_id = request.POST['activityID']
             choosed_activity = Activity.objects.get(activity_ID=activity_id)
             # loc danh sach sinh vien chung lop voi lop truong
             class_member = User.objects.filter(class_ID__iexact=user.class_ID)
