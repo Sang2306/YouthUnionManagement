@@ -109,8 +109,9 @@
 <form action="{% url 'login:check-attendance' %}" method="GET">
     <ul class="list-group" id="eventList">
         {% for activity in activities_list %}
+        <!-- hien thi cac hoat dong dang va se dien ra -->
             {% if activity.is_opening and activity.activity_ID not in checked_activity_list %}
-                <!-- Kiem tra neu hoat dong da dien ra moi hien thi de lop truong diem danh -->
+                <!-- Kiem tra neu hoat dong dang dien ra moi hien thi de lop truong diem danh -->
                 {% if activity.start_date.date == today.date %}
                     <button class="btn btn-default" name="activityID" value="{{ activity.activity_ID }}">#{{ activity }}</button>
                 {% else %}

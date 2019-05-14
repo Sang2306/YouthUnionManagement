@@ -114,9 +114,9 @@
 {% endblock %}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
-{% if user.name is not None %}
-(Xin chào {{ user.name }})
-{% endif %}
+    {% if user.name is not None %}
+        (Xin chào {{ user.name }})
+    {% endif %}
 {% endblock hello_user %}
 <!--Bang hoat dong-->
 {% block content %}
@@ -166,15 +166,15 @@
     </div>
     <div class="col col-md-5">
         {% if message_wrong_input %}
-        <div class="alert alert-info" role="alert">
-            <span class="glyphicon glyphicon-info-sign"></span>
-            {{ message_wrong_input }} ---
-            HỌC KỲ {{ school_semester }} {{ school_year }} <i>(mặc định)</i>
-        </div>
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                {{ message_wrong_input }} ---
+                HỌC KỲ {{ school_semester }} {{ school_year }} <i>(mặc định)</i>
+            </div>
         {% elif school_semester is not None and school_year is not None %}
-        <div class="alert alert-success" role="alert">
-            HỌC KỲ {{ school_semester }} {{ school_year }}
-        </div>
+            <div class="alert alert-success" role="alert">
+                HỌC KỲ {{ school_semester }} {{ school_year }}
+            </div>
         {% endif %}
     </div>
 </div>
@@ -190,17 +190,17 @@
             </thead>
             <tbody>
                 {% if activities_in_semester_is_empty %}
-                <div class="alert alert-info" role="alert">
-                    <b> Whoops! Bạn không tham gia bất kỳ hoạt dộng nào trong kỳ học này</b>
-                </div>
+                    <div class="alert alert-info" role="alert">
+                        <b> Whoops! Bạn không tham gia bất kỳ hoạt dộng nào trong kỳ học này</b>
+                    </div>
                 {% else %}
-                {% for activity in activities_in_semester %}
-                <tr>
-                    <td>{{ activity.name }}</td>
-                    <td>{{ activity.organizers }}</td>
-                    <td>{{ activity.point }}</td>
-                </tr>
-                {% endfor %}
+                    {% for activity in activities_in_semester %}
+                    <tr>
+                        <td>{{ activity.name }}</td>
+                        <td>{{ activity.organizers }}</td>
+                        <td>{{ activity.point }}</td>
+                    </tr>
+                    {% endfor %}
                 {% endif %}
             </tbody>
         </table>
