@@ -60,10 +60,10 @@ class Activity(models.Model):
 
     def is_opening(self):
         """
-            tra ve True neu hoat dong nay chua dien ra, nguoc lai False
+            tra ve True neu hoat dong nay chua, hoac dang dien ra, nguoc lai False
         """
         now = timezone.now()
-        return self.start_date > now
+        return self.start_date.date() >= now.date()
 
     def __str__(self):
         return self.name

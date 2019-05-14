@@ -109,22 +109,27 @@
 <form action="{% url 'login:check-attendance' %}" method="GET">
     <ul class="list-group" id="eventList">
         {% for activity in activities_list %}
-        {% if activity.is_opening and activity.activity_ID not in checked_activity_list %}
-        <button class="btn btn-default" name="activityID" value="{{ activity.activity_ID }}">#{{ activity }}</button>
-        {% endif %}
+            {% if activity.is_opening and activity.activity_ID not in checked_activity_list %}
+                <!-- Kiem tra neu hoat dong da dien ra moi hien thi de lop truong diem danh -->
+                {% if activity.start_date.date == today.date %}
+                    <button class="btn btn-default" name="activityID" value="{{ activity.activity_ID }}">#{{ activity }}</button>
+                {% else %}
+                    <button class="btn btn-default" name="activityID" value="{{ activity.activity_ID }}" disabled>#{{ activity }}</button>
+                {% endif %}
+            {% endif %}
         {% endfor %}
     </ul>
 </form>
 <!--hien thi ten cua hoat dong da lua chon-->
 {% if choosed_activity %}
-<div class="alert alert-success" role="alert">
-    Đã chọn {{ choosed_activity.name }}
-</div>
-{% if size_of_members_registered == 0%}
-<div class="alert alert-info" role="alert">
-    <b> Whoops! Hình như không ai trong lớp bạn tham gia hoạt dộng này</b>
-</div>
-{% endif %}
+    <div class="alert alert-success" role="alert">
+        Đã chọn {{ choosed_activity.name }}
+    </div>
+    {% if size_of_members_registered == 0%}
+    <div class="alert alert-info" role="alert">
+        <b> Whoops! Hình như không ai trong lớp bạn tham gia hoạt dộng này</b>
+    </div>
+    {% endif %}
 {% endif %}
 <!--hien thi thong tin sinh vien cua lop tham gia-->
 <br>

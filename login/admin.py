@@ -42,7 +42,7 @@ class ActivityAdmin(admin.ModelAdmin):
         """
             Trả về số  lượng người tham gia
         """
-        if obj.start_date < timezone.now():
+        if obj.start_date.date() <= timezone.now().date():
             return len(obj.user_set.all())
         return '_'
     get_number_of_joins.short_description = "Số lượng tham dự"

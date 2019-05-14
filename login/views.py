@@ -205,11 +205,15 @@ def check_attendance(request):
         except KeyError:
             pass
         members_registered.sort()
+        # lay thoi gian hom nay
+        # + neu hoat dong da dien ra moi cho diem danh
+        today = timezone.now()
         context = {
             'user': user,
+            'today' : today,
             'members_registered': members_registered,
             'checked_activity_list': [
-                # lay id cua cac hoat dong da diem danh
+                # lay id cua cac hoat dong da diem danh cua lop truong
                 act.activity_ID for act in user.checked_activities.all()
             ],
             # chi hien thi nut xac nhan neu co nguoi dung thuoc lop dang ky hoat dong

@@ -8,7 +8,6 @@ def asia_hcm_time(time):
     """
         Custom template de lay user time hien thi tren bang cac hoat dong
     """
-    print('*'*40)
     date = str(time).split()[0]
     time = str(time).split()[1]
     date_splitted = date.split('-')
