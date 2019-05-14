@@ -36,6 +36,7 @@ class ActivityAdmin(admin.ModelAdmin):
     ordering = ["start_date"]
     list_display = ["activity_ID", "name", "start_date",
                     "number_of_register", "get_number_of_joins"]
+    date_hierarchy = 'start_date'
 
     def get_number_of_joins(self, obj):
         """
