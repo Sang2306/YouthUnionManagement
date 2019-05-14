@@ -136,7 +136,7 @@ class Mail(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mail_address = models.EmailField(
-        unique=True, default='n16dccn131@student.ptithcm.edu.vn')
+        unique=True, default='a@b.com')
 
     def __str__(self):
         return self.mail_address
