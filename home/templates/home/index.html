@@ -49,7 +49,7 @@
 <!-- Hien thi thong bao -->
 {% if announce %}
 {% for ann in announce%}
-<object data="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480"></object>
+<embed src="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480">
 {% endfor %}
 <ul class="pagination justify-content-center">
     <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
