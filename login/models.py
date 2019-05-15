@@ -99,7 +99,7 @@ class User(models.Model):
     password = models.CharField(verbose_name="Mật khẩu", max_length=256)
     # muc diem chuyen can mac dinh = 69
     accumulated_point = models.IntegerField(
-        verbose_name="Điểm chuyên cần", default=69)
+        verbose_name="Điểm chuyên cần", default=60)
 
     class Meta:
         verbose_name = "Người dùng"
