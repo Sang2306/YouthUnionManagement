@@ -107,6 +107,7 @@
 <!--Bang hoat dong-->
 {% block content %}
 <form action="{% url 'login:check-attendance' %}" method="POST">
+    {% csrf_token %}
     <ul class="list-group" id="eventList">
         <!-- hien thi cac hoat dong dang va se dien ra -->
         {% for activity in activities_list %}
