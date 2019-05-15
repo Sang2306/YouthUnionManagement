@@ -15,6 +15,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ["user_ID", ]
     ordering = ["user_ID", ]
     list_display = ['user_ID', "name", "password"]
+    list_filter = ['class_ID']
 
 # Tao model quan tri mail
 
