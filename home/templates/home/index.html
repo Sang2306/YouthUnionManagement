@@ -50,6 +50,7 @@
 {% if announce %}
 {% for ann in announce%}
 <embed src="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480">
+</br>
 <strong> {{ ann.pdf_file.url }} </strong>
 {% endfor %}
 <ul class="pagination justify-content-center">
