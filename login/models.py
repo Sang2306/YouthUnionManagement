@@ -111,9 +111,12 @@ class User(models.Model):
             Refresh lai diem cho user moi khi chon hoc ky khac,
             mac dinh la la hoc ky gan nhat
         """
+        total = 0
         for activity in self.activities.all():
             if activity.school_year == school_year and activity.semester == school_semester:
-                self.accumulated_point += activity.point
+                total += activity.point
+        total = total if total <= 30 else 30
+        self.accumulated_point += total
 
     def set_new_password(self, new_password):
         """
