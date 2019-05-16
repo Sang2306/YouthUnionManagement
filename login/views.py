@@ -95,6 +95,7 @@ def activities(request):
                 user.activities.add(activity)
             # Luu lai thay doi gia tri number_of_register
             activity.save()
+            return HttpResponseRedirect(reverse('login:activities'))
         except KeyError:
             pass
         context = {
