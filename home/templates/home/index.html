@@ -51,7 +51,7 @@
 {% for ann in announce%}
 <object data="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480"></object>
 </br>
-<a href="{{ ann.pdf_file.url }}"> {{ ann.pdf_file.url }} </strong>
+<a href="{{ ann.pdf_file.url }}"> {{ ann.pdf_file.url }} </a>
 </br>
 {% endfor %}
 <ul class="pagination justify-content-center">
