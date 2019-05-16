@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'login.apps.LoginConfig', #app for login page
     'home.apps.HomeConfig', #app for home page
+    'easy_select2',
 ]
 
 MIDDLEWARE = [

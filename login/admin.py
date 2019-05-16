@@ -4,7 +4,7 @@
 from django.utils import timezone
 from django.contrib import admin
 from .models import User, Mail, Role, Activity
-
+from easy_select2 import select2_modelform
 # Tao fmodel quan tri User
 
 
@@ -19,11 +19,13 @@ class UserAdmin(admin.ModelAdmin):
 
 # Tao model quan tri mail
 
+MailForm = select2_modelform(Mail, attrs={'width': '250px'})
 
 class MailAdmin(admin.ModelAdmin):
     """
         Hien thi thong tin co ban cua mail VD user_ID, mail address
     """
+    form = MailForm
     search_fields = ["mail_address"]
     list_display = ["user_id", "mail_address"]
 
