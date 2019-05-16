@@ -11,6 +11,6 @@ class UploadFileForm(forms.Form):
     pdf_file = forms.FileField(
         label='Chọn file pdf',
         widget=forms.FileInput(
-            attrs={'accept': 'application/pdf' or None}
+            attrs={'accept': 'application/pdf'}
         ),
     )

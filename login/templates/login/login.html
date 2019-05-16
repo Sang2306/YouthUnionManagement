@@ -66,10 +66,10 @@
 {% block content %}
 {% if logged is False or logged is None%}
 <div class="wrapper">
-    <form style="background-color: #89bcf3; color: rgb(61, 58, 58)" class="form-signin" action="{% url 'login:login' %}"
+    <form style="background-color: #cce9eb; color: rgb(12, 11, 11)" class="form-signin" action="{% url 'login:login' %}"
         method="POST">
         {% csrf_token %}
-        <h2 class="form-signin-heading" style="font-family: 'Courier New', Courier, monospace; text-align: center;">Đăng
+        <h2 class="form-signin-heading">Đăng
             nhập</h2>
         <input type="text" class="form-control" name="ID" placeholder="ID" value="{{ ID }}"
             oninvalid="this.setCustomValidity('Nhập vào MSSV')" oninput="setCustomValidity('')" required=""
