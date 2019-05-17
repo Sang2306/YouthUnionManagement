@@ -153,7 +153,7 @@ def personal(request):
         # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
         begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
         begin_course = 2000+begin_course
-        if school_year < begin_course or school_year > timezone.now().year or school_semester != 1 or school_semester != 2:
+        if school_year < begin_course or school_year > timezone.now().year or not (1 <= school_semester <= 2):
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
             semester_code = str(timezone.now().year-1) + '1'
             school_year = int(semester_code[:4])  # 2019
