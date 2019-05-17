@@ -141,7 +141,7 @@ def personal(request):
             semester_code = request.GET['semester']
             if len(semester_code) != 5:
                 raise SemesterCodeError('Loi ma hoc ky khac 5 so')
-            if semester_code[-1] != '1' or semester_code[-1] != '2':
+            elif semester_code[-1] != '1' or semester_code[-1] != '2':
                 raise SemesterCodeError('This semester is not available for your college!')
         except SemesterCodeError:
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
