@@ -141,8 +141,7 @@ def personal(request):
             semester_code = request.GET['semester']
             if len(semester_code) != 5:
                 raise SemesterCodeError('Loi ma hoc ky khac 5 so')
-            elif semester_code[-1] != '1' or semester_code[-1] != '2':
-                raise SemesterCodeError('This semester is not available for your college!')
+
         except SemesterCodeError:
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
             semester_code = str(timezone.now().year-1) + '1'
@@ -150,10 +149,11 @@ def personal(request):
             pass
         # chuyen doi semester_code thanh ten hoc ky
         school_year = int(semester_code[:4])  # 2019
+        school_semester = int(semester_code[-1:])
         # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
         begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
         begin_course = 2000+begin_course
-        if school_year < begin_course or school_year > timezone.now().year:
+        if school_year < begin_course or school_year > timezone.now().year or school_semester != 1 or school_semester != 2:
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
             semester_code = str(timezone.now().year-1) + '1'
             school_year = int(semester_code[:4])  # 2019
