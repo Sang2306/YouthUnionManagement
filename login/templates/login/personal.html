@@ -2,115 +2,115 @@
 {% block title %} Personal page {% endblock title %}
 <!--Them library-->
 {% block add_lib %}
-<!-- Load icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-{% load static %}
-<script src="{% static 'login/sha512.js' %}"> </script>
+    <!-- Load icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load static %}
+    <script src="{% static 'login/sha512.js' %}"></script>
 {% endblock %}
 {% block add_stylesheet %}
-<style>
-    .progress-value {
-        display: flex;
-        border-radius: 50%;
-        font-size: 36px;
-        text-align: center;
-        line-height: 20px;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        font-weight: 300;
-    }
+    <style>
+        .progress-value {
+            display: flex;
+            border-radius: 50%;
+            font-size: 36px;
+            text-align: center;
+            line-height: 20px;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-weight: 300;
+        }
 
-    .progress-value div {
-        margin-top: 10px;
-    }
+        .progress-value div {
+            margin-top: 10px;
+        }
 
-    .progress-value span {
-        font-size: 12px;
-        text-transform: uppercase;
-    }
+        .progress-value span {
+            font-size: 12px;
+            text-transform: uppercase;
+        }
 
-    #changePwd {
-        background-color: green;
-        color: #f1f1f1;
-        font-size: 12px;
-    }
+        #changePwd {
+            background-color: green;
+            color: #f1f1f1;
+            font-size: 12px;
+        }
 
-    #changePwd:hover {
-        background-color: #f1f1f1;
-        color: green;
-        transition: .4s;
-    }
+        #changePwd:hover {
+            background-color: #f1f1f1;
+            color: green;
+            transition: .4s;
+        }
 
-    * {
-        box-sizing: border-box;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    form.search-semester input[type=text] {
-        padding: 10px;
-        font-size: 17px;
-        border: 1px solid grey;
-        float: left;
-        width: 80%;
-        background: #f1f1f1;
-    }
+        form.search-semester input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
 
-    form.search-semester button {
-        float: left;
-        width: 20%;
-        padding: 10px;
-        background: #2196F3;
-        color: white;
-        font-size: 17px;
-        border: 1px solid grey;
-        border-left: none;
-        cursor: pointer;
-    }
+        form.search-semester button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+        }
 
-    form.search-semester button:hover {
-        background: #0b7dda;
-    }
+        form.search-semester button:hover {
+            background: #0b7dda;
+        }
 
-    form.search-semester::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-</style>
+        form.search-semester::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
 {% endblock %}
 <!--active tab-->
 {% block personal_info_active %} active {% endblock %}
 <!-- Block admin -->
 {% block admin %}
-{% if user.role.role_ID == 2 %}
-<li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-        aria-expanded="false">Quản trị <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li>
-            <a href="#" data-toggle="modal" data-target=".bd-example-modal-sm">
-                <span class="glyphicon glyphicon-export"></span>
-                Export XLS
-            </a>
+    {% if user.role.role_ID == 2 %}
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Quản trị <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#" data-toggle="modal" data-target=".bd-example-modal-sm">
+                        <span class="glyphicon glyphicon-export"></span>
+                        Export XLS
+                    </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="{% url 'login:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+                </li>
+            </ul>
         </li>
-        <li role="separator" class="divider"></li>
-        <li>
-            <a href="{% url 'login:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+    {% elif user.role.role_ID == 3 %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Quản trị <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'login:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
+                        báo</a>
+                </li>
+            </ul>
         </li>
-    </ul>
-</li>
-{% elif user.role.role_ID == 3%}
-<li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-        aria-expanded="false">Quản trị <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li>
-            <a href="{% url 'login:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
-                báo</a>
-        </li>
-    </ul>
-</li>
-{% endif %}
+    {% endif %}
 {% endblock %}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
@@ -120,13 +120,13 @@
 {% endblock hello_user %}
 <!--Bang hoat dong-->
 {% block content %}
-<!--Circle-->
-<div class="row">
-    <div class="col col-md-4">
-        <div class="progress">
-            <!--  {{ style }} de khong bi bao loi-->
-            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                aria-valuenow="{{ user.accumulated_point }}" aria-valuemin="0" aria-valuemax="100"
+    <!--Circle-->
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="progress">
+                <!--  {{ style }} de khong bi bao loi-->
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                     aria-valuenow="{{ user.accumulated_point }}" aria-valuemin="0" aria-valuemax="100"
                 {{ style }}="width: {{ user.accumulated_point }}%">
             </div>
         </div>
@@ -143,7 +143,7 @@
             <strong class="list-group-item">ID: {{ user.user_ID.upper }}</strong>
             <strong class="list-group-item">Lớp: {{ user.class_ID.upper }}</strong>
             <strong class="list-group-item">Ngày sinh:
-                {{ user.date_of_birth.day }}/{{ user.date_of_birth.month }}/{{ user.date_of_birth.year}}
+                {{ user.date_of_birth.day }}/{{ user.date_of_birth.month }}/{{ user.date_of_birth.year }}
             </strong>
             <!-- <strong class="list-group-item">Vai trò:{{ user.role }}</strong> -->
             <strong class="list-group-item">
@@ -156,114 +156,118 @@
             </strong>
         </ul>
     </div>
-</div>
-<div class="row">
-    <div class="col col-md-5">
-        <form class="search-semester" action="{% url 'login:personal' %}" method="GET">
-            <input type="text" placeholder="Nhập học kỳ..(ví dụ 20191)" name="semester" required>
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
     </div>
-    <div class="col col-md-5">
-        {% if message_wrong_input %}
-            <div class="alert alert-info" role="alert">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                {{ message_wrong_input }} ---
-                HỌC KỲ {{ school_semester }} {{ school_year }} <i>(mặc định)</i>
-            </div>
-        {% elif school_semester is not None and school_year is not None %}
-            <div class="alert alert-success" role="alert">
-                HỌC KỲ {{ school_semester }} {{ school_year }}
-            </div>
-        {% endif %}
+    <div class="row">
+        <div class="col col-md-5">
+            <form class="search-semester" action="{% url 'login:personal' %}" method="GET">
+                <input type="text" placeholder="Nhập học kỳ..(ví dụ 20191)" name="semester" required>
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="col col-md-5">
+            {% if message_wrong_input %}
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    {{ message_wrong_input }} ---
+                    HỌC KỲ {{ school_semester }} {{ school_year }} <i>(mặc định)</i>
+                </div>
+            {% elif school_semester is not None and school_year is not None %}
+                <div class="alert alert-success" role="alert">
+                    HỌC KỲ {{ school_semester }} {{ school_year }}
+                </div>
+            {% endif %}
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col col-md-12">
-        <table class="table table-hover">
-            <thead>
+    <div class="row">
+        <div class="col col-md-12">
+            <table class="table table-hover">
+                <thead>
                 <tr>
                     <th>Tên hoạt động</th>
                     <th>Đơn vị</th>
                     <th>Điểm</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {% if activities_in_semester_is_empty %}
                     <div class="alert alert-info" role="alert">
                         <b> Whoops! Bạn không tham gia bất kỳ hoạt dộng nào trong kỳ học này</b>
                     </div>
                 {% else %}
                     {% for activity in activities_in_semester %}
-                    <tr>
-                        <td>{{ activity.name }}</td>
-                        <td>{{ activity.organizers }}</td>
-                        <td>{{ activity.point }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ activity.name }}</td>
+                            <td>{{ activity.organizers }}</td>
+                            <td>{{ activity.point }}</td>
+                        </tr>
                     {% endfor %}
                 {% endif %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<!-- Small modal -->
-<div class="modal fade change-pwd-dialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Thay đổi mật khẩu</h4>
-            </div>
-            <div class="modal-body">
-                <label for="old-Passwd">Nhập mật khẩu cũ</label>
-                <input form="changePwd-form" type="password" class="form-control" id="old-Passwd" required>
-                <br>
-                <label label for="new-Passwd">Nhập mật khẩu mới</label>
-                <input form="changePwd-form" name="newPwd" type="password" class="form-control" id="new-Passwd"
-                    required>
-                <br>
-                <label for="retype-NewPasswd">Nhập lại mật khẩu mới</label>
-                <input form="changePwd-form" type="password" class="form-control" id="retype-NewPasswd" required>
-            </div>
-            <div class="modal-footer">
-                <button form="changePwd-form" type="submit" value="ok" class="btn btn-success" form="confirm-check"
-                    id="ok-button"><span class="glyphicon glyphicon-ok-sign"></span>OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span>Trở lại</button>
+    <!-- Small modal -->
+    <div class="modal fade change-pwd-dialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Thay đổi mật khẩu</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="old-Passwd">Nhập mật khẩu cũ</label>
+                    <input form="changePwd-form" type="password" class="form-control" id="old-Passwd" required>
+                    <br>
+                    <label label for="new-Passwd">Nhập mật khẩu mới</label>
+                    <input form="changePwd-form" name="newPwd" type="password" class="form-control" id="new-Passwd"
+                           required>
+                    <br>
+                    <label for="retype-NewPasswd">Nhập lại mật khẩu mới</label>
+                    <input form="changePwd-form" type="password" class="form-control" id="retype-NewPasswd" required>
+                </div>
+                <div class="modal-footer">
+                    <button form="changePwd-form" type="submit" value="ok" class="btn btn-success" form="confirm-check"
+                            id="ok-button"><span class="glyphicon glyphicon-ok-sign"></span>OK
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove"></span>Trở lại
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock content%}
+{% endblock content %}
 <!--Insert short script-->
 {% block short_script %}
-<script type="module">
-    import Sha512 from "{% static 'login/sha512.js' %}";
-    function checkNewPassword() {
-        var curpwd = "{{ hashed_user_pass }}";
-        var oldpwd = document.getElementById('old-Passwd').value;
-        var nxpwd_1 = document.getElementById('new-Passwd').value;
-        var nxpwd_2 = document.getElementById('retype-NewPasswd').value;
-        var hash = Sha512.hash(oldpwd)
-        if (oldpwd.length == 0) {
-            window.alert('Nhập mật khẩu cũ!')
-            return;
+    <script type="module">
+        import Sha512 from "{% static 'login/sha512.js' %}";
+
+        function checkNewPassword() {
+            var curpwd = "{{ hashed_user_pass }}";
+            var oldpwd = document.getElementById('old-Passwd').value;
+            var nxpwd_1 = document.getElementById('new-Passwd').value;
+            var nxpwd_2 = document.getElementById('retype-NewPasswd').value;
+            var hash = Sha512.hash(oldpwd)
+            if (oldpwd.length == 0) {
+                window.alert('Nhập mật khẩu cũ!')
+                return;
+            }
+            if (hash != curpwd) {
+                document.getElementById('old-Passwd').value = '';
+                window.alert('Mật khẩu cũ không đúng!')
+                return;
+            }
+            if (nxpwd_1.length == 0 || nxpwd_2.length == 0) {
+                window.alert('Vui lòng hoàn thành các trường còn lại!')
+                return;
+            }
+            if (nxpwd_1 != nxpwd_2) {
+                document.getElementById('retype-NewPasswd').value = '';
+                window.alert('Mật khẩu nhập lại không khớp!')
+                return;
+            }
         }
-        if (hash != curpwd) {
-            document.getElementById('old-Passwd').value = '';
-            window.alert('Mật khẩu cũ không đúng!')
-            return;
-        }
-        if (nxpwd_1.length == 0 || nxpwd_2.length == 0) {
-            window.alert('Vui lòng hoàn thành các trường còn lại!')
-            return;
-        }
-        if (nxpwd_1 != nxpwd_2) {
-            document.getElementById('retype-NewPasswd').value = '';
-            window.alert('Mật khẩu nhập lại không khớp!')
-            return;
-        }
-    }
-    document.getElementById("ok-button").addEventListener('click', checkNewPassword);
-</script>
+
+        document.getElementById("ok-button").addEventListener('click', checkNewPassword);
+    </script>
 {% endblock %}

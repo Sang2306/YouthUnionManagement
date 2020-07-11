@@ -3,6 +3,8 @@
 """
 from django.db import models
 from django.utils import timezone
+
+
 # Create your models here.
 
 
@@ -35,7 +37,7 @@ class Activity(models.Model):
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
     # nam hoc mac dinh gan nhat 2018-2019 hien tai
     school_year_default = str(timezone.now().year - 1) + \
-        "-" + str(timezone.now().year)
+                          '-' + str(timezone.now().year)
     school_year = models.CharField(
         verbose_name="Năm học", max_length=50, default=school_year_default)
     # hoc ky
@@ -105,8 +107,7 @@ class User(models.Model):
         verbose_name = "Người dùng"
         verbose_name_plural = "Người dùng"
 
-    def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) +
-                                  "-" + str(timezone.now().year), school_semester=1):
+    def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) + '-' + str(timezone.now().year), school_semester=1):
         """
             Refresh lai diem cho user moi khi chon hoc ky khac,
             mac dinh la la hoc ky gan nhat
@@ -144,12 +145,13 @@ class Mail(models.Model):
     def __str__(self):
         return self.mail_address
 
+
 # Upload pdf file
 class UploadPdfFile(models.Model):
     """
         Model de luu file vao co so du lieu
     """
     pdf_file = models.FileField(upload_to='announcements/', editable=False)
-    
+
     def __str__(self):
         return self.pdf_file.name

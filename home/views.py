@@ -5,6 +5,8 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 
 from login.models import User, UploadPdfFile
+
+
 # Create your views here.
 
 

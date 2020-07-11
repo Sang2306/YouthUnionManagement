@@ -6,84 +6,84 @@
 {% block admin %}
 {% endblock %}
 {% block add_stylesheet %}
-<style>
-    .login-status {
-        color: red;
-    }
+    <style>
+        .login-status {
+            color: red;
+        }
 
-    .wrapper {
-        margin-top: 80px;
-        margin-bottom: 80px;
-    }
+        .wrapper {
+            margin-top: 80px;
+            margin-bottom: 80px;
+        }
 
-    .form-signin {
-        max-width: 380px;
-        padding: 15px 35px 45px;
-        margin: 0 auto;
-        background-color: #fff;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-    }
+        .form-signin {
+            max-width: 380px;
+            padding: 15px 35px 45px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
 
-    .form-signin-heading .checkbox {
-        margin-bottom: 30px;
-    }
+        .form-signin-heading .checkbox {
+            margin-bottom: 30px;
+        }
 
-    .checkbox {
-        font-weight: normal;
-    }
+        .checkbox {
+            font-weight: normal;
+        }
 
-    .form-control {
-        position: relative;
-        font-size: 16px;
-        height: auto;
-        padding: 10px;
-    }
+        .form-control {
+            position: relative;
+            font-size: 16px;
+            height: auto;
+            padding: 10px;
+        }
 
-    input[type="text"] {
-        margin-bottom: -1px;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-    }
+        input[type="text"] {
+            margin-bottom: -1px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
 
-    input[type="password"] {
-        margin-bottom: 20px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
+        input[type="password"] {
+            margin-bottom: 20px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
 
-    footer {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        padding: 1rem;
-        color: black;
-        text-align: center;
-    }
-</style>
+        footer {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            color: black;
+            text-align: center;
+        }
+    </style>
 {% endblock %}
 <!-- Noi dung cua trang dang nhap -->
 {% block content %}
-{% if logged is False or logged is None%}
-<div class="wrapper">
-    <form style="background-color: #cce9eb; color: rgb(12, 11, 11)" class="form-signin" action="{% url 'login:login' %}"
-        method="POST">
-        {% csrf_token %}
-        <h2 class="form-signin-heading">Đăng
-            nhập</h2>
-        <input type="text" class="form-control" name="ID" placeholder="ID" value="{{ ID }}"
-            oninvalid="this.setCustomValidity('Nhập vào MSSV')" oninput="setCustomValidity('')" required=""
-            autofocus="" />
-        <input type="password" class="form-control" name="password" placeholder="Password"
-            oninvalid="this.setCustomValidity('Nhập vào mật khẩu')" required="" oninput="setCustomValidity('')" />
-        <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
-        <div class="login-status">
-            {% if user_not_found %}<i> {{ user_not_found }}!</i> {% endif %}
-            {% if login_status is not None %} <i>{{ login_status }}!</i> {% endif %}
+    {% if logged is False or logged is None %}
+        <div class="wrapper">
+            <form style="background-color: #cce9eb; color: rgb(12, 11, 11)" class="form-signin" action="{% url 'login:login' %}"
+                  method="POST">
+                {% csrf_token %}
+                <h2 class="form-signin-heading">Đăng
+                    nhập</h2>
+                <input type="text" class="form-control" name="ID" placeholder="ID" value="{{ ID }}"
+                       oninvalid="this.setCustomValidity('Nhập vào MSSV')" oninput="setCustomValidity('')" required=""
+                       autofocus=""/>
+                <input type="password" class="form-control" name="password" placeholder="Password"
+                       oninvalid="this.setCustomValidity('Nhập vào mật khẩu')" required="" oninput="setCustomValidity('')"/>
+                <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
+                <div class="login-status">
+                    {% if user_not_found %}<i> {{ user_not_found }}!</i> {% endif %}
+                    {% if login_status is not None %} <i>{{ login_status }}!</i> {% endif %}
+                </div>
+            </form>
         </div>
-    </form>
-</div>
-{% else %}
-<h2> Bạn đã đăng nhập rồi ! </h2>
-{% endif %}
+    {% else %}
+        <h2> Bạn đã đăng nhập rồi ! </h2>
+    {% endif %}
 {% endblock %}

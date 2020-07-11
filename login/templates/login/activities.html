@@ -5,49 +5,49 @@
 {% block activities_active %} active {% endblock %}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
-{% if user.name is not None %}
-(Xin chào {{ user.name }})
-{% endif %}
+    {% if user.name is not None %}
+        (Xin chào {{ user.name }})
+    {% endif %}
 {% endblock hello_user %}
 <!-- Block admin -->
 {% block admin %}
-{% if user.role.role_ID == 2 %}
-<li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-        aria-expanded="false">Quản trị <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li>
-            <a href="#" data-toggle="modal" data-target=".bd-example-modal-sm">
-                <span class="glyphicon glyphicon-export"></span>
-                Export XLS
-            </a>
+    {% if user.role.role_ID == 2 %}
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Quản trị <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#" data-toggle="modal" data-target=".bd-example-modal-sm">
+                        <span class="glyphicon glyphicon-export"></span>
+                        Export XLS
+                    </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="{% url 'login:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+                </li>
+            </ul>
         </li>
-        <li role="separator" class="divider"></li>
-        <li>
-            <a href="{% url 'login:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+    {% elif user.role.role_ID == 3 %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Quản trị <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'login:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
+                        báo</a></li>
+            </ul>
         </li>
-    </ul>
-</li>
-{% elif user.role.role_ID == 3%}
-<li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-        aria-expanded="false">Quản trị <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li>
-            <a href="{% url 'login:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
-                báo</a> </li>
-    </ul>
-</li>
-{% endif %}
+    {% endif %}
 {% endblock %}
 <!--Bang hoat dong-->
 {% block content %}
-<br>
-<input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm..">
-<br>
-<div class="overflow-auto">
-    <table class="table table-hover">
-        <thead>
+    <br>
+    <input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm..">
+    <br>
+    <div class="overflow-auto">
+        <table class="table table-hover">
+            <thead>
             <tr>
                 <th scope="col">Tên hoạt động</th>
                 <th scope="col">Đơn vị</th>
@@ -56,60 +56,64 @@
                 <th scope="col">Đăng ký</th>
                 <th scope="col">Lượng đăng ký</th>
             </tr>
-        </thead>
-        <tbody id="myTable">
+            </thead>
+            <tbody id="myTable">
             {% for activity in activities_list %}
-            {% if activity.is_opening %}
-            <tr>
-                <td>{{ activity.name }}</td>
-                <td>{{ activity.organizers }}</td>
-                <td>
-                    <!-- Load custom template tags -->
-                    {% load usertime %}
-                    {% load tz %}
-                    {{ activity.start_date|localtime|asia_hcm_time }}
-                </td>
-                <td>{{ activity.description }}</td>
-                <td>
-                    <form action="{% url 'login:activities' %}" method="POST">
-                        {% csrf_token %}
-                        {% if activity in user.activities.all %}
-                        {% if activity.start_date > nowplustimedelta  %}
-                        <button type="submit" class="btn btn-danger" name="status"
-                            value="rmo-{{ activity.activity_ID }}"> Hủy </button>
-                        {% else %}
-                        <button type="submit" class="btn btn-danger" name="status" disabled
-                            value="rmo-{{ activity.activity_ID }}"> Hủy </button>
-                        {% endif %}
-                        {% else %}
-                        {% if activity.start_date > nowplustimedelta  %}
-                        <button type="submit" class="btn btn-success" name="status"
-                            value="add-{{ activity.activity_ID }}"> Đăng ký </button>
-                        {% else %}
-                        <button type="submit" class="btn btn-success" name="status" disabled
-                            value="add-{{ activity.activity_ID }}"> Đăng ký </button>
-                        {% endif %}
-                        {% endif %}
-                    </form>
-                </td>
-                <td>{{ activity.number_of_register }}</td>
-            </tr>
-            {% endif %}
+                {% if activity.is_opening %}
+                    <tr>
+                        <td>{{ activity.name }}</td>
+                        <td>{{ activity.organizers }}</td>
+                        <td>
+                            <!-- Load custom template tags -->
+                            {% load usertime %}
+                            {% load tz %}
+                            {{ activity.start_date|localtime|asia_hcm_time }}
+                        </td>
+                        <td>{{ activity.description }}</td>
+                        <td>
+                            <form action="{% url 'login:activities' %}" method="POST">
+                                {% csrf_token %}
+                                {% if activity in user.activities.all %}
+                                    {% if activity.start_date > nowplustimedelta %}
+                                        <button type="submit" class="btn btn-danger" name="status"
+                                                value="rmo-{{ activity.activity_ID }}"> Hủy
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-danger" name="status" disabled
+                                                value="rmo-{{ activity.activity_ID }}"> Hủy
+                                        </button>
+                                    {% endif %}
+                                {% else %}
+                                    {% if activity.start_date > nowplustimedelta %}
+                                        <button type="submit" class="btn btn-success" name="status"
+                                                value="add-{{ activity.activity_ID }}"> Đăng ký
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-success" name="status" disabled
+                                                value="add-{{ activity.activity_ID }}"> Đăng ký
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                            </form>
+                        </td>
+                        <td>{{ activity.number_of_register }}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 <!--Insert short script-->
 {% block short_script %}
-<script>
-    $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         });
-    });
-</script>
+    </script>
 {% endblock %}
