@@ -28,6 +28,8 @@ INSTALLED_APPS = [
 
     'login.apps.LoginConfig',  # app for login page
     'home.apps.HomeConfig',  # app for home page
+
+    'django_rename_app',
     'easy_select2',
 ]
 
