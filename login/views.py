@@ -211,18 +211,10 @@ def check_attendance(request):
         # lay thoi gian hom nay
         # + neu hoat dong da dien ra moi cho diem danh
         today = timezone.now()
-        context = {
-            'user': user,
-            'today' : today,
-            'members_registered': members_registered,
-            'checked_activity_list': [
-                # lay id cua cac hoat dong da diem danh cua lop truong
-                act.activity_ID for act in user.checked_activities.all()
-            ],
-            # chi hien thi nut xac nhan neu co nguoi dung thuoc lop dang ky hoat dong
-            'size_of_members_registered': members_registered.__len__(),
-        }
-        context['choosed_activity'] = choosed_activity
+        context = {'user': user, 'today': today, 'members_registered': members_registered, 'checked_activity_list': [
+            # lay id cua cac hoat dong da diem danh cua lop truong
+            act.activity_ID for act in user.checked_activities.all()
+        ], 'size_of_members_registered': members_registered.__len__(), 'choosed_activity': choosed_activity}
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('login:login'))
 
