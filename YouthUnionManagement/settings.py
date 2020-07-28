@@ -33,7 +33,10 @@ INSTALLED_APPS = [
     'easy_select2',
 
     'myadmin',  # app my admin
+    'crispy_forms',  #Hỗ trợ cho bootstrap cho form có sẵn của django
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
