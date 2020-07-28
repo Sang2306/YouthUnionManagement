@@ -3,7 +3,7 @@ from .forms import UserForm
 from django.http import HttpResponse
 # Create your views here.
 def dashboards(request):
-    return render(request, 'myadmin/base.html')
+    return render(request, 'myadmin/index.html')
 
 def user_list(request):
     return render(request, 'myadmin/user_list.html')
