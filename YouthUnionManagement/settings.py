@@ -31,6 +31,8 @@ INSTALLED_APPS = [
 
     'django_rename_app',
     'easy_select2',
+
+    'myadmin',  # app my admin
 ]
 
 MIDDLEWARE = [
