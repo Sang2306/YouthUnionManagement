@@ -1,5 +1,45 @@
 {% extends "myadmin/base.html" %}
-
+{% load static %}
+{% load widget_tweaks %}
 {% block content %}
-<p> wellcom too</p>
+
+<p>
+    <button type="button" class="btn btn-primary js-create-user" data-url="{% url 'myadmin:create_user' %}">
+        <span class="glyphicon glyphicon-plus"></span>
+        New Student
+    </button>
+</p>
+
+<table class="table table-striped" id="user-table">
+
+    <thead>
+        <tr>
+            <th scope="col">Sinh viên ID</th>
+            <th scope="col">Tên sinh viên</th>
+            <th scope="col">Mật Khẩu</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% include 'myadmin/includes/partial_user_list.html' %}
+    </tbody>
+
+</table>
+
+
+<div class="modal fade" id="modal-user">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}
+
+
+{% block javascript %}
+<script src="{% static 'myadmin/js/student.js' %}"></script>
+{% endblock javascript %}

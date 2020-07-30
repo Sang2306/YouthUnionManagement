@@ -1,0 +1,18 @@
+<form method="post" action="{% url 'myadmin:update_user' form.instance.pk %}" 
+class="js-user-update-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">Cap nhat thong tin sinh vien</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    
+  </div>
+  <div class="modal-body">
+    {% include 'myadmin/includes/partial_user_form.html' %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Dong</button>
+    <button type="submit" class="btn btn-primary">Cap nhat</button>
+  </div>
+</form>

@@ -1,0 +1,20 @@
+    {% for user in users %}
+    <tr>
+        <td>{{ user.user_ID }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.password }}</td>
+        <td>
+            <button type="button" class="btn btn-warning mt-0 btn-sm js-update-user"
+                data-url="{% url 'myadmin:update_user' user.pk %}">
+                <span class="glyphicon glyphicon-pencil"></span> <i class="fa fa-edit" rel="tooltip" title="Edit"></i>
+            </button>
+
+            <button type="button" class="btn btn-danger ml-4 mt-0 btn-sm js-delete-user"
+                data-url="{% url 'myadmin:delete_user' user.user_ID %}">
+                <span class="glyphicon glyphicon-trash"></span> <i class="fa fa-trash" rel="tooltip" title="Delete"></i>
+            </button>
+           
+        </td>
+
+    </tr>
+    {% endfor %}

@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import create_user, user_list, dashboards
+from . import views
 
-app_name = "admin"
+app_name = "myadmin"
 
 urlpatterns = [
-    path('', dashboards, name='dashboard'),
-    path('create-user', create_user, name='create_user'),
-    path('list-user', user_list, name='list_user'),
+    path('', views.dashboards, name='dashboard'),
+    path('list-user', views.user_list, name='list_user'),
+    path('create-user', views.create_user, name='create_user'),
+    path('update-user/<int:pk>', views.update_user, name='update_user'),
+    path('delete-user/<int:pk>', views.delete_user, name='delete_user')
 ]
