@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>YouthPTIT Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static '/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static '/css/mycss.css' %}">
+  <link rel="stylesheet" href="{% static '/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+  <div class="container">
+  <div class="row justify-content-md-center">
+    {% if logged is False or logged is None %}
+    <form class="form-signin mt-5" method="POST" action="{% url 'myadmin:login' %}">
+      {% csrf_token %}
+      <h2 class="h3 mb-3 font-weight-normal">Đăng Nhập</h2>
+
+      <input type="text" class="form-control" name="name" placeholder="Tên" value="{{ name }}"
+        oninvalid="this.setCustomValidity('Nhập vào tên')" oninput="setCustomValidity('')" required=""
+        autofocus=""/>  
+
+        <input type="password" class="form-control" name="password" placeholder="Mật khẩu"
+        oninvalid="this.setCustomValidity('Nhập vào mật khẩu')" required="" oninput="setCustomValidity('')"/>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <div class="login-status">
+        {% if user_not_found %}<i> {{ user_not_found }}!</i> {% endif %}
+        {% if login_status is not None %} <i>{{ login_status }}!</i> {% endif %}
+    </div>
+    </form>
+    {% else %}
+    <h2>Bạn đã đăng nhập rồi<i></i></h2>
+    {% endif %}
+</div>
+</div>
+  
+  <script src="{% static '/js/jquery.min.js' %}"></script>
+  <script src="{% static '/js/popper.min.js' %}"></script>
+  <script src="{% static '/js/bootstrap.min.js' %}"></script>
+  <script src="{% static '/js/adminlte.js' %}"></script>
+  
+  {% block javascript %}
+  {% endblock %}
+</body>
+
+</html>

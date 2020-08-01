@@ -1,10 +1,10 @@
 <form method="post" action="{% url 'myadmin:delete_user' user.pk %}" class="js-user-delete-form">
     {% csrf_token %}
     <div class="modal-header">
+      <h4 class="modal-title">Xac nhan xoa sinh vien</h4>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <h4 class="modal-title">Xac nhan xoa sinh vien</h4>
     </div>
     <div class="modal-body">
       <p class="lead">Ban co muon xoa sinh vien: <strong>{{ user.name }}</strong> khong?</p>
