@@ -7,11 +7,11 @@ class TestViews(TestCase):
     @classmethod
     def setUpTestData(self):
         self.client = Client()
-        self.login_url = reverse('login:login')
-        self.personal_url = reverse('login:personal')
-        self.exit_url = reverse('login:exit')
-        self.activities_url = reverse('login:activities')
-        self.upload_url = reverse('login:upload')
+        self.login_url = reverse('youth_union:login')
+        self.personal_url = reverse('youth_union:personal')
+        self.exit_url = reverse('youth_union:exit')
+        self.activities_url = reverse('youth_union:activities')
+        self.upload_url = reverse('youth_union:upload')
 
     def test_login_view(self):
         response = self.client.get(self.login_url)
@@ -37,7 +37,7 @@ class TestLoginView(TestCase):
     @classmethod
     def setUpTestData(self):
         self.client = Client()
-        self.login_url = reverse('login:login')
+        self.login_url = reverse('youth_union:login')
         role = Role.objects.create(
             role_ID=1,
             role_name='Sinh vien',

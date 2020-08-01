@@ -23,5 +23,5 @@ urlpatterns = [
                   # home/
                   path('', include('home.urls')),
                   # login/
-                  path('login/', include('login.urls')),
+                  path('login/', include('youth_union.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

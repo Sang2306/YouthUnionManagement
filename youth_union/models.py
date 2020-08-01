@@ -3,7 +3,7 @@
 """
 from django.db import models
 from django.utils import timezone
-
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -17,6 +17,7 @@ class Role(models.Model):
         verbose_name="Tên vai trò", max_length=100, default='', unique=True)
 
     class Meta:
+        db_table = 'youth_union_Role'
         verbose_name = "Vai trò"
         verbose_name_plural = "Vai trò"
 
@@ -37,7 +38,7 @@ class Activity(models.Model):
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
     # nam hoc mac dinh gan nhat 2018-2019 hien tai
     school_year_default = str(timezone.now().year - 1) + \
-                          '-' + str(timezone.now().year)
+        '-' + str(timezone.now().year)
     school_year = models.CharField(
         verbose_name="Năm học", max_length=50, default=school_year_default)
     # hoc ky
@@ -56,6 +57,7 @@ class Activity(models.Model):
         verbose_name="Số lượng dăng ký", default=0, editable=False)
 
     class Meta:
+        db_table = 'youth_union_Activity'
         verbose_name = "Hoạt động"
         verbose_name_plural = "Hoạt động"
         ordering = ["start_date"]
@@ -71,25 +73,16 @@ class Activity(models.Model):
         return self.name
 
 
-class CheckedActivity(models.Model):
-    """
-        cac hoat dong da duoc nguoi dung( lop truong ) diem danh
-    """
-    activity_ID = models.IntegerField(primary_key=True)
-
-    def __str__(self):
-        return str(self.activity_ID)
-
-
 class User(models.Model):
     """
         Tao co so du lieu cho nguoi dung
     """
     # user co the co nhieu hoat dong
-    activities = models.ManyToManyField(Activity, blank=True, editable=False)
+    activities = models.ManyToManyField(
+        Activity, related_name='users_join_to', blank=True, editable=False)
     # user ( lop truong ) co the diem danh nhieu hoat dong
     checked_activities = models.ManyToManyField(
-        CheckedActivity, editable=False)
+        Activity, related_name='was_checked_by', editable=False)
     # Cac cot khac cua User table
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
@@ -104,6 +97,7 @@ class User(models.Model):
         verbose_name="Điểm chuyên cần", default=60)
 
     class Meta:
+        db_table = 'youth_union_User'
         verbose_name = "Người dùng"
         verbose_name_plural = "Người dùng"
 
@@ -145,13 +139,43 @@ class Mail(models.Model):
     def __str__(self):
         return self.mail_address
 
+    class Meta:
+        db_table = 'youth_union_Mail'
+
 
 # Upload pdf file
 class UploadPdfFile(models.Model):
     """
         Model de luu file vao co so du lieu
     """
+    owner = models.ForeignKey(
+        User, on_delete=models.DO_NOTHING, help_text='Ai đăng file thông báo')
     pdf_file = models.FileField(upload_to='announcements/', editable=False)
 
     def __str__(self):
         return self.pdf_file.name
+
+    class Meta:
+        db_table = 'youth_union_UploadPdfFile'
+
+
+class Message(models.Model):
+    """
+        Các thông báo dành cho sinh viên
+    """
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, help_text='Ai là nguời đăng thông báo?')
+    title = models.CharField(max_length=1024, help_text='Tiêu đề thông báo')
+    content = models.TextField(help_text='Nội dung thông báo')
+
+    slug = models.SlugField(max_length=1024)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.slug
+
+    class Meta:
+        db_table = 'youth_union_Message'

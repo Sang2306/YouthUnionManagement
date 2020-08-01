@@ -24,7 +24,7 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a href="{% url 'login:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+                    <a href="{% url 'youth_union:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
                 </li>
             </ul>
         </li>
@@ -34,7 +34,7 @@
                aria-expanded="false">Quản trị <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="{% url 'login:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
+                    <a href="{% url 'youth_union:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
                         báo</a></li>
             </ul>
         </li>
@@ -71,7 +71,7 @@
                         </td>
                         <td>{{ activity.description }}</td>
                         <td>
-                            <form action="{% url 'login:activities' %}" method="POST">
+                            <form action="{% url 'youth_union:activities' %}" method="POST">
                                 {% csrf_token %}
                                 {% if activity in user.activities.all %}
                                     {% if activity.start_date > nowplustimedelta %}

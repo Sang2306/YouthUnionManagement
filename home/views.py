@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.urls import reverse
 
-from login.models import User, UploadPdfFile
+from youth_union.models import User, UploadPdfFile
 
 
 # Create your views here.
@@ -30,4 +30,4 @@ def home(request):
         }
         return render(request, 'home/index.html', context)
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))

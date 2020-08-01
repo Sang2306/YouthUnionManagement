@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User, Activity, CheckedActivity, UploadPdfFile  # import cac models
+from .models import User, Activity, UploadPdfFile  # import cac models
 from .form import UploadFileForm
 # login view
 
@@ -40,7 +40,7 @@ def login(request):
     except ObjectDoesNotExist:
         context['user_not_found'] = 'Người dùng không tồn tại'
 
-    return render(request, 'login/login.html', context)
+    return render(request, 'youth_union/login.html', context)
 
 
 def save_session_data(request):
@@ -67,7 +67,7 @@ def clear_session_data(request):
     except KeyError:
         pass
     request.session.flush()
-    return HttpResponseRedirect(reverse('login:login'))
+    return HttpResponseRedirect(reverse('youth_union:login'))
 
 
 def activities(request):
@@ -95,7 +95,7 @@ def activities(request):
                 user.activities.add(activity)
             # Luu lai thay doi gia tri number_of_register
             activity.save()
-            return HttpResponseRedirect(reverse('login:activities'))
+            return HttpResponseRedirect(reverse('youth_union:activities'))
         except KeyError:
             pass
         context = {
@@ -103,10 +103,10 @@ def activities(request):
             'nowplustimedelta': timezone.now() + timezone.timedelta(days=3),
         }
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))
     # lay thong tin cac hoat dong trong co so du lieu va render vao tab hoat dong
     context['activities_list'] = Activity.objects.all()
-    return render(request, 'login/activities.html', context)
+    return render(request, 'youth_union/activities.html', context)
 
 
 class SemesterCodeError(Exception):
@@ -179,9 +179,9 @@ def personal(request):
             'hashed_user_pass': hashlib.sha512(user.password.encode()).hexdigest,
         }
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))
 
-    return render(request, 'login/personal.html', context)
+    return render(request, 'youth_union/personal.html', context)
 
 
 def check_attendance(request):
@@ -216,10 +216,10 @@ def check_attendance(request):
             act.activity_ID for act in user.checked_activities.all()
         ], 'size_of_members_registered': members_registered.__len__(), 'choosed_activity': choosed_activity}
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))
 
     context['activities_list'] = Activity.objects.all()
-    return render(request, 'login/check-attendance.html', context)
+    return render(request, 'youth_union/check-attendance.html', context)
 
 
 def confirm_check(request):
@@ -265,9 +265,9 @@ def confirm_check(request):
         # them id hoat dong vao danh sach da diem danh
         except KeyError:
             pass
-        return HttpResponseRedirect(reverse('login:check-attendance'))
+        return HttpResponseRedirect(reverse('youth_union:check-attendance'))
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))
 
 
 def export_excel(request):
@@ -337,7 +337,7 @@ def export_excel(request):
         wb.save(response)
 
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))
 
     return response
 
@@ -377,6 +377,6 @@ def upload(request):
             'all_files':all_files,
             'success' : success,
         }
-        return render(request, 'login/upload.html', context)
+        return render(request, 'youth_union/upload.html', context)
     except (ObjectDoesNotExist, KeyError):
-        return HttpResponseRedirect(reverse('login:login'))
+        return HttpResponseRedirect(reverse('youth_union:login'))

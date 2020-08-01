@@ -22,7 +22,7 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a href="{% url 'login:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+                    <a href="{% url 'youth_union:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
                 </li>
             </ul>
         </li>
@@ -32,7 +32,7 @@
                aria-expanded="false">Quản trị <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="{% url 'login:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
+                    <a href="{% url 'youth_union:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
                         báo</a></li>
             </ul>
         </li>
@@ -106,7 +106,7 @@
 {% endblock %}
 <!--Bang hoat dong-->
 {% block content %}
-    <form action="{% url 'login:check-attendance' %}" method="POST">
+    <form action="{% url 'youth_union:check-attendance' %}" method="POST">
         {% csrf_token %}
         <ul class="list-group" id="eventList">
             <!-- hien thi cac hoat dong dang va se dien ra -->
@@ -139,7 +139,7 @@
     <input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm..">
     <br>
     <div class="overflow-auto">
-        <form action="{% url 'login:confirm-check' %}" method="POST" id="confirm-check">
+        <form action="{% url 'youth_union:confirm-check' %}" method="POST" id="confirm-check">
             {% csrf_token %}
             <table class="table table-bordered table-striped">
                 <thead>

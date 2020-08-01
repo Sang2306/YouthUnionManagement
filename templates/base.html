@@ -8,10 +8,10 @@
     {% block add_lib %}
     {% endblock %}
     {% load staticfiles %}
-    <link rel="stylesheet" href="{% static 'login/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'youth_union/bootstrap/css/bootstrap.min.css' %}">
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"
             integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE=" crossorigin="anonymous"></script>
-    <script src="{% static 'login/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'youth_union/bootstrap/js/bootstrap.min.js' %}"></script>
     <script>
         $(document).ready(function () {
             var sideslider = $('[data-toggle=collapse-side]');
@@ -82,7 +82,7 @@
                         </a>
                     </li>
                     <li class="{% block activities_active %}{% endblock %}">
-                        <a href="{% url 'login:activities' %}">Hoạt động</a>
+                        <a href="{% url 'youth_union:activities' %}">Hoạt động</a>
                     </li>
 
                     {% block admin %}
@@ -90,7 +90,7 @@
                     {% endblock admin %}
 
                     <li class="{% block personal_info_active %}{% endblock %}">
-                        <a href="{% url 'login:personal' %}">
+                        <a href="{% url 'youth_union:personal' %}">
                             <span class="glyphicon glyphicon-user"></span>
                             Account
                             {% block hello_user %}
@@ -100,7 +100,7 @@
 
                     {% block logout_button %}
                         <li>
-                            <a href="{% url 'login:exit' %}"><span class="glyphicon glyphicon-log-out"></span>
+                            <a href="{% url 'youth_union:exit' %}"><span class="glyphicon glyphicon-log-out"></span>
                                 Đăng xuất
                             </a>
                         </li>
@@ -124,7 +124,7 @@
                 <h4>Nhập học kỳ muốn xuất</h4>
             </div>
             <div class="modal-body">
-                <form id="input-semester-form" action="{% url 'login:export-xls' %}" method="GET">
+                <form id="input-semester-form" action="{% url 'youth_union:export-xls' %}" method="GET">
                     <input type="number" placeholder="E.g. 20192" name="semester-code" class="form-control"
                            id="semester-code-input" required>
                 </form>

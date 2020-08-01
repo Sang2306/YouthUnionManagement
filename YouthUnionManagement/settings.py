@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'login.apps.LoginConfig',  # app for login page
+    'youth_union.apps.YouthUnionConfig',  # app for youth_union page
     'home.apps.HomeConfig',  # app for home page
 
     'django_rename_app',
