@@ -14,6 +14,8 @@ from django.utils import timezone
 
 from .models import User, Activity, UploadPdfFile  # import cac models
 from .form import UploadFileForm
+
+
 # login view
 
 
@@ -33,7 +35,7 @@ def login(request):
         if user.password == context['password']:
             # Luu lai thong tin trong session truoc khi chuyen huong den trang chu
             save_session_data(request)
-            return HttpResponseRedirect(reverse('home:home'))
+            return HttpResponseRedirect(reverse('home:index'))
         context['login_status'] = 'Sai mật khẩu'
     except MultiValueDictKeyError:
         pass
@@ -128,7 +130,7 @@ def personal(request):
     """
     context = {}
     # hien thi thong tin nguoi dung dang nhap
-    semester_code = str(timezone.now().year-1) + '1'
+    semester_code = str(timezone.now().year - 1) + '1'
     school_year = None
     school_semester = None
     activities_in_semester = []
@@ -144,7 +146,7 @@ def personal(request):
 
         except SemesterCodeError:
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
-            semester_code = str(timezone.now().year-1) + '1'
+            semester_code = str(timezone.now().year - 1) + '1'
         except KeyError:
             pass
         # chuyen doi semester_code thanh ten hoc ky
@@ -152,14 +154,14 @@ def personal(request):
         school_semester = int(semester_code[-1:])
         # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
         begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
-        begin_course = 2000+begin_course
+        begin_course = 2000 + begin_course
         if school_year < begin_course or school_year > timezone.now().year or not (1 <= school_semester <= 2):
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
-            semester_code = str(timezone.now().year-1) + '1'
+            semester_code = str(timezone.now().year - 1) + '1'
             school_year = int(semester_code[:4])  # 2019
 
         school_year = str(school_year) + '-' + \
-            str(school_year + 1)  # '2019-2020'
+                      str(school_year + 1)  # '2019-2020'
         school_semester = int(semester_code[-1:])
         for activity in user.activities.all():
             if activity.school_year == school_year and activity.semester == school_semester:
@@ -230,38 +232,25 @@ def confirm_check(request):
     try:
         user_id = request.session.get('ID')
         user = User.objects.get(user_ID__iexact=user_id)
-        choosed_activity = None
         members_registered = []
         try:
             activity_id = request.POST['activityID']
-            try:
-                # kiem tra trong CheckedActivity.objects da co id hoat dong nay chua
-                # neu chua co thi raise exception ObjectDoesNotExist
-                checked_activity = CheckedActivity.objects.get(pk=activity_id)
-                user.checked_activities.add(checked_activity)
-            except ObjectDoesNotExist:
-                # tao mot record trong cac hoat dong da diem danh
-                # luu lai
-                # them record vao danh sach da diem danh cua nguoi dung
-                checked_activity = CheckedActivity.objects.create(
-                    activity_ID=activity_id)
-                checked_activity.save()
-                user.checked_activities.add(checked_activity)
-
-            choosed_activity = Activity.objects.get(activity_ID=activity_id)
-            # loc danh sach sinh vien chung lop voi lop truong
+            # Láy hoạt đông ra để thêm vào danh sách mà user với quyền hạn là lớp trưởng đa điểm danh hoạt động
+            activity = Activity.objects.get(activity_ID=activity_id)
+            user.checked_activities.add(activity)
+            # Danh sách sinh viên chung lơp với lớp trưởng
             class_member = User.objects.filter(class_ID__iexact=user.class_ID)
-            # loc danh sach sinh vien co dang ky tham gia hoat dong choosed_activity
+            # Danh sách sinh viên tham gia hoạt động cùng lớp với lớp trưởng
             for member in class_member:
-                if choosed_activity in member.activities.all():
+                if member in activity.users_join_to.all():
                     members_registered.append(member)
-            # duyet danh sach dang ky neu request.POST[mssv] gay ra exception la khong co tham gia
-            # nen ta se remove hoat dong khoi activities cua sinh vien
+
+            # Xóa hoạt động trong danh sách hoạt động của sinh viên nếu sinh viên không tham gia
             for member in members_registered:
                 try:
                     request.POST[member.user_ID]
                 except KeyError:
-                    member.activities.remove(choosed_activity)
+                    member.activities.remove(activity)
         # them id hoat dong vao danh sach da diem danh
         except KeyError:
             pass
@@ -281,9 +270,9 @@ def export_excel(request):
         # Lay semester code tu request
         semester_code = request.GET['semester-code']
         if len(semester_code) != 5:
-            raise SemesterCodeError('Loi ma hoc ky khac 5 so')
+            raise SemesterCodeError('Lỗi mã ký tự nhập không đúng 5 số')
     except (SemesterCodeError, KeyError):
-        return HttpResponse("<script> window.alert('Khong tim thay {}') </script>".format(semester_code))
+        return HttpResponse("<script> window.alert('Không tìm thấy {}') </script>".format(semester_code))
         # chuyen doi semester_code thanh ten hoc ky
     school_year = int(semester_code[:4])  # 2019
     school_semester = int(semester_code[-1:])
@@ -300,18 +289,18 @@ def export_excel(request):
         user_id = request.session.get('ID')
         # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
         begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
-        begin_course = 2000+begin_course
+        begin_course = 2000 + begin_course
         if school_year < begin_course or school_year > timezone.now().year:
-            return HttpResponse("<script> window.alert('Khong tim thay {}') </script>".format(semester_code))
+            return HttpResponse("<script> window.alert('Không tìm thấy {}') </script>".format(semester_code))
 
         school_year = str(school_year) + '-' + \
-            str(school_year + 1)  # '2019-2020'
+                      str(school_year + 1)  # '2019-2020'
         user = User.objects.get(user_ID__iexact=user_id)
         # Sheet Dxxxxxxx
         ws = wb.add_sheet('{}'.format(str(user.class_ID).upper()))
         # N16dccn130_report.xls
         file_name = user.class_ID.upper() + '_HK' + str(school_semester) + \
-            '_' + school_year + file_name
+                    '_' + school_year + file_name
         response['Content-Disposition'] = 'attachment; filename="{file_name}"'.format(
             file_name=file_name)
         columns = [
@@ -374,8 +363,8 @@ def upload(request):
         context = {
             'user': user,
             'form': form,
-            'all_files':all_files,
-            'success' : success,
+            'all_files': all_files,
+            'success': success,
         }
         return render(request, 'youth_union/upload.html', context)
     except (ObjectDoesNotExist, KeyError):
