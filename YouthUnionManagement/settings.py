@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'youth_union.apps.YouthUnionConfig',  # app for youth_union page
+    'youth_union_admin.apps.YouthUnionAdminConfig',
     'home.apps.HomeConfig',  # app for home page
 
     'django_rename_app',
