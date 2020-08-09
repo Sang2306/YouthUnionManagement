@@ -9,13 +9,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Trang quản trị{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'youth_union_admin/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'youth_union_admin/vendor/datatables.min.css' %}"/>
     <!-- Custom styles for this template -->
     <link href="{% static 'youth_union_admin/css/simple-sidebar.css' %}" rel="stylesheet">
+    {% block extra-css %}
+    
+    {% endblock %}
 
 </head>
 
@@ -27,7 +30,7 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Quản trị YouthPTIT</div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action bg-light">Sinh viên</a>
+            <a href="{% url 'youth_union_admin:user-view' %}" class="list-group-item list-group-item-action bg-light">Sinh viên</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Vai trò</a>
         </div>
     </div>
@@ -37,7 +40,9 @@
     <div id="page-content-wrapper">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <button class="btn btn-success rounded-0" id="menu-toggle">Mở/đóng menu</button>
+            <button class="btn btn-light rounded-0" id="menu-toggle">
+                <img src="https://img.icons8.com/color/32/000000/circled-menu.png"/>
+            </button>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +59,7 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">Đăng xuất</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Xem trang web</a>
+                            <a class="dropdown-item" href="{% url 'home:index' %}">Xem trang web</a>
                         </div>
                     </li>
                 </ul>
@@ -62,7 +67,9 @@
         </nav>
 
         <div class="container-fluid">
-            Danh sách user
+            {% block content %}
+                {% lorem %}
+            {% endblock %}
         </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -73,7 +80,11 @@
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'youth_union_admin/vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'youth_union_admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'youth_union_admin/vendor/datatables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'youth_union_admin/vendor/DataTables-1.10.21/js/jquery.dataTables.min.js' %}"></script>
+{% block extra-js %}
 
+{% endblock %}
 <!-- Menu Toggle Script -->
 <script>
     $("#menu-toggle").click(function (e) {

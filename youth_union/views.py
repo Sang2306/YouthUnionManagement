@@ -53,6 +53,11 @@ def save_session_data(request):
     request.session['password'] = request.POST['password']
 
 
+def get_user_from_session(request):
+    user_id = request.session.get('ID')
+    return User.objects.get(user_ID__iexact=user_id)
+
+
 def clear_session_data(request):
     """
         Xoa du lieu luu trong session
@@ -81,8 +86,7 @@ def activities(request):
     context = {}
     # hien thi thong tin nguoi dung dang nhap
     try:
-        user_id = request.session.get('ID')
-        user = User.objects.get(user_ID__iexact=user_id)
+        user = get_user_from_session(request)
         # kiem tra request de add hoac remove hoat dong cua user ../?status=rmo-22
         try:
             behaviour = request.POST['status'][:3]  # rmo - remove, add
@@ -136,8 +140,7 @@ def personal(request):
     activities_in_semester = []
     message_wrong_input = None
     try:
-        user_id = request.session.get('ID')
-        user = User.objects.get(user_ID__iexact=user_id)
+        user = get_user_from_session(request)
         try:
             # Lay semester code tu request
             semester_code = request.GET['semester']
@@ -153,7 +156,7 @@ def personal(request):
         school_year = int(semester_code[:4])  # 2019
         school_semester = int(semester_code[-1:])
         # rang buoc hoc ky phai thuoc hoc ky ma sinh vien bat dau vao truong -> tot nghiep
-        begin_course = int(user_id[1:3])  # N16DCCNxxx -> 16
+        begin_course = int(user.user_ID[1:3])  # N16DCCNxxx -> 16
         begin_course = 2000 + begin_course
         if school_year < begin_course or school_year > timezone.now().year or not (1 <= school_semester <= 2):
             message_wrong_input = 'Không thể tìm thấy {}'.format(semester_code)
@@ -194,8 +197,7 @@ def check_attendance(request):
     context = {}
     # hien thi thong tin nguoi dung dang nhap
     try:
-        user_id = request.session.get('ID')
-        user = User.objects.get(user_ID__iexact=user_id)
+        user = get_user_from_session(request)
         choosed_activity = None
         members_registered = []
         try:
@@ -230,8 +232,7 @@ def confirm_check(request):
     """
     # hien thi thong tin nguoi dung dang nhap
     try:
-        user_id = request.session.get('ID')
-        user = User.objects.get(user_ID__iexact=user_id)
+        user = get_user_from_session(request)
         members_registered = []
         try:
             activity_id = request.POST['activityID']
@@ -333,8 +334,7 @@ def export_excel(request):
 
 def upload(request):
     try:
-        ID = request.session.get('ID')
-        user = User.objects.get(user_ID__iexact=ID)
+        user = get_user_from_session(request)
         try:
             id_pdf_file = request.POST['pdf_file_id']
             file = UploadPdfFile.objects.get(pk=id_pdf_file)

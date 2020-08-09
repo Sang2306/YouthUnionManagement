@@ -1,0 +1,156 @@
+{% extends 'youth_union_admin/base.html' %}
+
+{% block title %}
+    Quản lý người dùng
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 my-5">
+            <form method="post" class="create-update-user-form">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <input class="form-control" name="user_id" type="text" placeholder="Mã sinh viên">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <input class="form-control" name="class_id" type="text" placeholder="Mã lớp">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <input class="form-control" name="name" type="text" placeholder="Họ và tên">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <input class="form-control" name="date_of_birth" type="date" placeholder="Ngày sinh">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <input class="form-control" name="password" type="text" placeholder="Mật khẩu">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <button type="submit" class="btn btn-success rounded-0">Tạo tài khoản!</button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <input class="form-control" name="email" type="email" placeholder="Email">
+                    </div>
+                    <div class="col-lg-2 col-sm-12 my-sm-2">
+                        <select class="form-control" name="role_id">
+                            {% for role in roles %}
+                                <option value="{{ role.role_ID }}">{{ role.role_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-sm"
+                            onclick="window.open('{% url 'youth_union_admin:role-view' %}', 'Thêm vai trò', 'width=600,height=210')"
+                    >+ Thêm vai trò
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            {% for user in users %}
+                <span class="email-{{ forloop.counter0 }}" hidden>{{ user.mail_set.all.first }}</span>
+                <span class="role-id-{{ forloop.counter0 }}" hidden>{{ user.role_id }}</span>
+            {% endfor %}
+            <table id="list_user" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Mã sinh viên</th>
+                    <th>Lớp</th>
+                    <th>Tên</th>
+                    <th>Ngày Sinh</th>
+                    <th>Mật khẩu</th>
+                    <th>Điểm rèn luyện</th>
+                    <th>Khác</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td class="userid-{{ forloop.counter0 }}">{{ user.user_ID }}</td>
+                        <td class="classid-{{ forloop.counter0 }}">{{ user.class_ID }}</td>
+                        <td class="name-{{ forloop.counter0 }}">{{ user.name }}</td>
+                        <td class="date-of-birth-{{ forloop.counter0 }}">{{ user.date_of_birth|date:'Y-m-d' }}</td>
+                        <td class="password-{{ forloop.counter0 }}">{{ user.password }}</td>
+                        <td class="accumulated-{{ forloop.counter0 }}">{{ user.accumulated_point }}</td>
+                        <td>
+                            <a href="#" class="text-success edit-{{ forloop.counter0 }}" onclick="edit_user(this);">Chỉnh sửa</a>
+                            <a href="#" class="text-danger del-{{ forloop.counter0 }}" onclick="del_user(this)">Xóa</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra-js %}
+    <script>
+        $(document).ready(function () {
+            $('#list_user').DataTable(
+                {
+                    paging: false,
+                    language: {
+                        decimal: "",
+                        emptyTable: "Không có dữ liệu",
+                        info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                        infoEmpty: "Hiển thị 0 đến 0 của 0 mục",
+                        infoFiltered: "(được lọc từ _MAX_ mục)",
+                        infoPostFix: "",
+                        thousands: ",",
+                        lengthMenu: "Hiện _MENU_ mục",
+                        loadingRecords: "Đang tải...",
+                        processing: "Đang xủ lý...",
+                        search: "Tìm kiếm:",
+                        zeroRecords: "Không có kết quả nào",
+                        aria: {
+                            sortAscending: ": sắp xêp cột tăng dần",
+                            sortDescending: ": sắp xếp cột giảm dần"
+                        }
+                    }
+                }
+            );
+        })
+
+        const changeSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/quan-tri-nguoi-dung/'
+        );
+
+        changeSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data)
+        };
+
+        changeSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+    </script>
+    <script>
+        function edit_user(_this) {
+            'use strict';
+            let row_pos = _this.getAttribute("class");
+            row_pos = row_pos[row_pos.length-1];
+
+            $("input[name=user_id]").val($(`.userid-${row_pos}`).text());
+            $("input[name=class_id]").val($(`.classid-${row_pos}`).text());
+            $("input[name=name]").val($(`.name-${row_pos}`).text());
+            $("input[name=date_of_birth]").val($(`.date-of-birth-${row_pos}`).text());
+            $("input[name=password]").val($(`.password-${row_pos}`).text());
+            $("input[name=accumulated]").val($(`.accumulated-${row_pos}`).text());
+            $("input[name=email]").val($(`.email-${row_pos}`).text());
+            $("select[name=role_id]").val(Number.parseInt($(`.role-id-${row_pos}`).text()));
+
+            {#  Thay đổi form action  #}
+            $(".create-update-user-form").attr("action", "{% url 'youth_union_admin:update-user' %}")
+            $("button[type=submit]").text("Cập nhật");
+        }
+
+        function del_user(_this) {
+            let row_pos = _this.getAttribute("class");
+            row_pos = row_pos[row_pos.length-1]
+        }
+    </script>
+{% endblock %}

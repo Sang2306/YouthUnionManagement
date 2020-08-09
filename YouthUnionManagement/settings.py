@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',  # app for home page
 
     'django_rename_app',
+    'channels',
     'easy_select2',
 ]
 
@@ -65,6 +66,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'YouthUnionManagement.wsgi.application'
+ASGI_APPLICATION = "YouthUnionManagement.routing.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
