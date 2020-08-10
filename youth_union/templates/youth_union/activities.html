@@ -24,7 +24,8 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a href="{% url 'youth_union:check-attendance' %}"><span class="glyphicon glyphicon-check"></span> Điểm danh</a>
+                    <a href="{% url 'youth_union:check-attendance' %}"><span class="glyphicon glyphicon-check"></span>
+                        Điểm danh</a>
                 </li>
             </ul>
         </li>
@@ -34,8 +35,12 @@
                aria-expanded="false">Quản trị <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="{% url 'youth_union:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload thông
+                    <a href="{% url 'youth_union:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span>
+                        Upload thông
                         báo</a></li>
+                <li>
+                <li><a href="{% url 'youth_union_admin:user-view' %}">Quản lý người dùng</a></li>
+
             </ul>
         </li>
     {% endif %}

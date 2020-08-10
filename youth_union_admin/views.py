@@ -1,5 +1,6 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -15,6 +16,16 @@ from youth_union_admin.forms import RoleForm
 class UserView(View):
 
     def get(self, request, *args, **kwargs):
+        # Bắt buộc phải đăng nhập mới có thể quản lý
+        try:
+            user_id = request.session.get('ID')
+            user = User.objects.get(user_ID__iexact=user_id)
+            # Không có quyền ban chấp hành đoàn
+            if user.role_id != 3:
+                raise KeyError
+        except (ObjectDoesNotExist, KeyError):
+            return HttpResponseRedirect(reverse('youth_union:login'))
+
         roles = Role.objects.all()
         users = User.objects.all()
         return render(request, 'youth_union_admin/sub/user.html', {'users': users, 'roles': roles})
@@ -61,7 +72,7 @@ def delete_user(request):
     if user.role_id != 3:
         return JsonResponse(data={'status': 'Bạn không có quyền thực thi hành động này!'}, status=403)
     User.objects.get(user_ID=user_id).delete()
-    return JsonResponse(data={'status': 'Xóa thành công!'}, status=204)
+    return JsonResponse(data={'status': 'Xóa thành công!'}, status=200)
 
 
 @require_POST

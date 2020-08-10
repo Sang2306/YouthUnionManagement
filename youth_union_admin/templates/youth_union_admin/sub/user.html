@@ -11,30 +11,31 @@
                 {% csrf_token %}
                 <div class="form-group row">
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="user_id" type="text" placeholder="Mã sinh viên">
+                        <input class="form-control" name="user_id" type="text" placeholder="Mã sinh viên" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="class_id" type="text" placeholder="Mã lớp">
+                        <input class="form-control" name="class_id" type="text" placeholder="Mã lớp" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="name" type="text" placeholder="Họ và tên">
+                        <input class="form-control" name="name" type="text" placeholder="Họ và tên" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="date_of_birth" type="date" placeholder="Ngày sinh">
+                        <input class="form-control" name="date_of_birth" type="date" placeholder="Ngày sinh" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="password" type="text" placeholder="Mật khẩu">
+                        <input class="form-control" name="password" type="text" placeholder="Mật khẩu" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
                         <button type="submit" class="btn btn-success rounded-0">Tạo tài khoản!</button>
+                        <a href="#" class="create-acc" style="text-decoration: underline; color: #30d454;" hidden>Tạo tài khoản</a>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="email" type="email" placeholder="Email">
+                        <input class="form-control" name="email" type="email" placeholder="Email" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <select class="form-control" name="role_id">
+                        <select class="form-control" name="role_id" required>
                             {% for role in roles %}
                                 <option value="{{ role.role_ID }}">{{ role.role_name }}</option>
                             {% endfor %}
@@ -60,7 +61,7 @@
                     <th>Tên</th>
                     <th>Ngày Sinh</th>
                     <th>Mật khẩu</th>
-                    <th>Điểm rèn luyện</th>
+                    <th>Điểm ban đầu</th>
                     <th>Khác</th>
                 </tr>
                 </thead>
@@ -74,8 +75,11 @@
                         <td class="password-{{ forloop.counter0 }}">{{ user.password }}</td>
                         <td class="accumulated-{{ forloop.counter0 }}">{{ user.accumulated_point }}</td>
                         <td>
-                            <a href="#" class="text-success edit-{{ forloop.counter0 }}" onclick="edit_user(this);">Chỉnh sửa</a>
-                            <a href="#" class="text-danger del-{{ forloop.counter0 }}" onclick="del_user(this)">Xóa</a>
+                            <a href="#" class="text-success edit-{{ forloop.counter0 }}" onclick="edit_user(this);">Chỉnh
+                                sửa</a>
+                            {% if request.session.ID != user.user_ID  %}
+                                <a href="#" class="text-danger del-{{ forloop.counter0 }}" onclick="del_user(this)">Xóa</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -111,7 +115,7 @@
                     }
                 }
             );
-        })
+        });
 
         const changeSocket = new WebSocket(
             'ws://'
@@ -119,12 +123,12 @@
             + '/ws/quan-tri-nguoi-dung/'
         );
 
-        changeSocket.onmessage = function(e) {
+        changeSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log(data)
         };
 
-        changeSocket.onclose = function(e) {
+        changeSocket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
         };
     </script>
@@ -132,7 +136,7 @@
         function edit_user(_this) {
             'use strict';
             let row_pos = _this.getAttribute("class");
-            row_pos = row_pos[row_pos.length-1];
+            row_pos = row_pos[row_pos.length - 1];
 
             $("input[name=user_id]").val($(`.userid-${row_pos}`).text());
             $("input[name=class_id]").val($(`.classid-${row_pos}`).text());
@@ -144,13 +148,41 @@
             $("select[name=role_id]").val(Number.parseInt($(`.role-id-${row_pos}`).text()));
 
             {#  Thay đổi form action  #}
-            $(".create-update-user-form").attr("action", "{% url 'youth_union_admin:update-user' %}")
+            $(".create-update-user-form").attr("action", "{% url 'youth_union_admin:update-user' %}");
             $("button[type=submit]").text("Cập nhật");
+
+            {#  Hiển thị link nhấp tạo tài khoản  #}
+            $(".create-acc").removeAttr("hidden");
         }
+
+        $(".create-acc").on("click", function () {
+            window.location.reload();
+        });
 
         function del_user(_this) {
             let row_pos = _this.getAttribute("class");
-            row_pos = row_pos[row_pos.length-1]
+            row_pos = row_pos[row_pos.length - 1];
+
+            let user_id = $(`.userid-${row_pos}`).text();
+
+            $.ajax({
+                url: "{% url 'youth_union_admin:delete-user' %}",
+                method: "post",
+                data: {
+                    "csrfmiddlewaretoken": document.querySelector("input[name=csrfmiddlewaretoken]").value,
+                    "user_id": user_id,
+                },
+                statusCode: {
+                    200: function (data) {
+                        console.info(data["status"]);
+                        window.location.reload();
+                    },
+                    403: function (data) {
+                        console.info(data["status"]);
+                        window.location.reload();
+                    }
+                }
+            })
         }
     </script>
 {% endblock %}

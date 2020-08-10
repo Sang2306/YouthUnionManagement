@@ -4,7 +4,7 @@
 import hashlib
 import xlwt
 import time
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
@@ -24,24 +24,28 @@ def login(request):
         Hien thi form dang nhap, neu nguoi dung dang nhap thanh cong
         Ghi lai thong tin dang nhap trong session neu nguoi dung chon 'Ghi nho'
     """
-    context = {}
     try:
-        # Neu trong session van con nguoi dung thi thong bao da dang nhap roi
-        context = {
-            'ID': request.POST['ID'],
-            'password': request.POST['password'],
-        }
-        user = User.objects.get(user_ID__iexact=context['ID'])
-        if user.password == context['password']:
-            # Luu lai thong tin trong session truoc khi chuyen huong den trang chu
-            save_session_data(request)
-            return HttpResponseRedirect(reverse('home:index'))
-        context['login_status'] = 'Sai mật khẩu'
-    except MultiValueDictKeyError:
-        pass
-    except ObjectDoesNotExist:
-        context['user_not_found'] = 'Người dùng không tồn tại'
-
+        user_id = request.session.get('ID')
+        User.objects.get(user_ID__iexact=user_id)
+        return redirect('home:index')
+    except (ObjectDoesNotExist, KeyError):
+        context = {}
+        try:
+            # Neu trong session van con nguoi dung thi thong bao da dang nhap roi
+            context = {
+                'ID': request.POST['ID'],
+                'password': request.POST['password'],
+            }
+            user = User.objects.get(user_ID__iexact=context['ID'])
+            if user.password == context['password']:
+                # Luu lai thong tin trong session truoc khi chuyen huong den trang chu
+                save_session_data(request)
+                return HttpResponseRedirect(reverse('home:index'))
+            context['login_status'] = 'Sai mật khẩu'
+        except MultiValueDictKeyError:
+            pass
+        except ObjectDoesNotExist:
+            context['user_not_found'] = 'Người dùng không tồn tại'
     return render(request, 'youth_union/login.html', context)
 
 
@@ -353,7 +357,7 @@ def upload(request):
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
                 # Tao doi tuong va luu file
-                instance = UploadPdfFile(pdf_file=request.FILES['pdf_file'])
+                instance = UploadPdfFile(owner=user, pdf_file=request.FILES['pdf_file'])
                 instance.pdf_file.name = time.strftime('%Y-%m-%d') + '-' + instance.pdf_file.name
                 instance.save()
                 success = 'Successfully!'
