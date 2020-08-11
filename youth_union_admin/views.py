@@ -7,10 +7,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
+from django.views.generic import FormView
 
-from youth_union.models import User, Role, Mail
+from youth_union.models import User, Role, Mail, Activity
 from youth_union.views import get_user_from_session
-from youth_union_admin.forms import RoleForm
+from youth_union_admin.forms import RoleForm, ActivityForm
 
 
 class UserView(View):
@@ -89,3 +90,38 @@ def update_user(request):
                                                 role_id=int(role_id), password=password)
     Mail.objects.filter(user_id=user_id).update(mail_address=email)
     return redirect('youth_union_admin:user-view')
+
+
+class ActivityFormView(FormView):
+    http_method_names = ['get', 'post']
+    form_class = ActivityForm
+    success_url = 'quan-tri/quan-ly-hoat-dong/'
+    template_name = 'youth_union_admin/sub/activity.html'
+
+    def get_context_data(self, **kwargs):
+        form = super().get_form()
+        context = super().get_context_data()
+        context['form'] = form
+        all_activities = Activity.objects.all()
+        context['all_activities'] = all_activities
+        return context
+
+    def get(self, request, *args, **kwargs):
+        # Bắt buộc phải đăng nhập mới có thể quản lý
+        try:
+            user_id = request.session.get('ID')
+            user = User.objects.get(user_ID__iexact=user_id)
+            # Không có quyền ban chấp hành đoàn
+            if user.role_id != 3:
+                raise KeyError
+        except (ObjectDoesNotExist, KeyError):
+            return HttpResponseRedirect(reverse('youth_union:login'))
+
+        return super(ActivityFormView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        form = ActivityForm(request.POST)
+        if super().form_valid(form):
+            if form.is_valid():
+                form.save()
+        return super(ActivityFormView, self).post(request, *args, **kwargs)

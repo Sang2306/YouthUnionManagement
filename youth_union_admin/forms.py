@@ -1,6 +1,6 @@
-from django.forms import ModelForm, NumberInput, TextInput
+from django.forms import ModelForm, NumberInput, TextInput, DateTimeInput
 
-from youth_union.models import Role
+from youth_union.models import Role, Activity
 
 
 class RoleForm(ModelForm):
@@ -10,4 +10,13 @@ class RoleForm(ModelForm):
         widgets = {
             'role_ID': NumberInput(attrs={'class': 'form-control mx-1'}),
             'role_name': TextInput(attrs={'class': 'form-control mx-1'}),
+        }
+
+
+class ActivityForm(ModelForm):
+    class Meta:
+        model = Activity
+        fields = '__all__'
+        widgets = {
+            'start_date': DateTimeInput(attrs={'type': 'datetime-local'})
         }

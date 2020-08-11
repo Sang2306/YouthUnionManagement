@@ -1,0 +1,29 @@
+{% extends 'youth_union_admin/base.html' %}
+
+{% block title %}
+    Hoạt động
+{% endblock %}
+
+{% block extra-css %}
+    <style>
+        .errorlist{
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-4 ml-5 mt-5">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary">Tạo hoạt động</button>
+            </form>
+        </div>
+        <div class="col-sm-12 col-lg-7 mt-5">
+{#            todo tao bang hien hoat dong va chinh sua hoat dong#}
+            {{ all_activities }}
+        </div>
+    </div>
+{% endblock %}
