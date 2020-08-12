@@ -17,6 +17,7 @@ class ActivityForm(ModelForm):
     class Meta:
         model = Activity
         fields = '__all__'
+        exclude = ['is_approved']
         widgets = {
             'start_date': DateTimeInput(attrs={'type': 'date'})
         }

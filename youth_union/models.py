@@ -32,7 +32,7 @@ class Activity(models.Model):
         moi user co the tham gia nhieu hoat dong,
         moi hoat dong co the duoc tham gia boi nhieu user
     """
-    activity_ID = models.IntegerField(primary_key=True)
+    activity_ID = models.IntegerField(primary_key=True, verbose_name='Mã hoạt động')
     name = models.CharField(verbose_name="Tên hoạt động",
                             max_length=255, unique=True)
     organizers = models.CharField(verbose_name="Ban tổ chức", max_length=512)

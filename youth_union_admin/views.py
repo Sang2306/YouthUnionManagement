@@ -95,8 +95,10 @@ def update_user(request):
 class ActivityFormView(FormView):
     http_method_names = ['get', 'post']
     form_class = ActivityForm
-    success_url = 'quan-tri/quan-ly-hoat-dong/'
     template_name = 'youth_union_admin/sub/activity.html'
+
+    def get_success_url(self):
+        return reverse('youth_union_admin:activity_form_view')
 
     def get_context_data(self, **kwargs):
         form = super().get_form()
@@ -119,9 +121,6 @@ class ActivityFormView(FormView):
 
         return super(ActivityFormView, self).get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        form = ActivityForm(request.POST)
-        if super().form_valid(form):
-            if form.is_valid():
-                form.save()
-        return super(ActivityFormView, self).post(request, *args, **kwargs)
+    def form_valid(self, form):
+        form.save()
+        return super(ActivityFormView, self).form_valid(form)
