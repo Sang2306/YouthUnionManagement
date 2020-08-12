@@ -11,28 +11,71 @@ from django.contrib.auth import models
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import UserSerializer
+from rest_framework import status
+
+class UserListCreate(ListCreateAPIView):
+    model = User
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        return User.objects.all()
+    def create(self, request, *args, **kwargs):
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return JsonResponse({
+                'message': 'Create a new User successful'
+            }, status = status.HTTP_201_CREATED)
+
+        return JsonResponse({
+            'message': 'Create a new User Unsuccessful'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+class UpdateDeleteUser(RetrieveUpdateDestroyAPIView):
+    model = User
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        return User.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        user = get_object_or_404(User, user_ID=kwargs.get('pk'))
+        serializer = UserSerializer(user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({
+                'message': 'Update user successful'
+            }, status=status.HTTP_200_OK)
+        return JsonResponse({
+            'message':'Update user unsucessful'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        user = get_object_or_404(User, user_ID=kwargs.get('pk'))
+        user.delete()
+        return JsonResponse({
+            'message': 'Delete user successful!'
+        }, status=status.HTTP_200_OK)
 
 
-# Create your views here.
 
-# def login_myadmin(request):
-#     context = {}
-#     try:
-#         context = {
-#             'name': request.POST['name'],
-#             'password': request.POST['password'],
-#         }
-#         user = models.User.objects.get(username__iexact=context['name'])
-#         if user.password == context['password'] and user.is_active == True and user.is_superuser == True and user.is_staff == True:
-#             save_session_data(request)
-#             return HttpResponseRedirect(reverse('myadmin:dashboard'))
-#         else:
-#             context['login-status'] = 'Sai mật khẩu'
-#     except MultiValueDictKeyError:
-#         pass
-#     except ObjectDoesNotExist:
-#         context['user_not_found'] = 'Người dùng khoonng tồn tại'
-#     return render(request, 'myadmin/login_myadmin.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def login_myadmin(request):
     context = {}

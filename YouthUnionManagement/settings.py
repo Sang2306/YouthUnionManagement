@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'myadmin',  # app my admin
     'crispy_forms',  #Hỗ trợ cho bootstrap cho form có sẵn của django
     'widget_tweaks',
+    'rest_framework',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -131,3 +132,5 @@ STATICFILES_DIRS = [
 # File management
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+ALLOWED_HOSTS = []
