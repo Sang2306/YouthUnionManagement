@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 # Create your models here.
+from django.utils.timezone import now
 
 
 class Role(models.Model):
@@ -38,7 +39,7 @@ class Activity(models.Model):
     start_date = models.DateTimeField(verbose_name="Ngày bắt đầu")
     # nam hoc mac dinh gan nhat 2018-2019 hien tai
     school_year_default = str(timezone.now().year - 1) + \
-        '-' + str(timezone.now().year)
+                          '-' + str(timezone.now().year)
     school_year = models.CharField(
         verbose_name="Năm học", max_length=50, default=school_year_default)
     # hoc ky
@@ -55,6 +56,7 @@ class Activity(models.Model):
     # So luong nguoi dang ky tham gia
     number_of_register = models.SmallIntegerField(
         verbose_name="Số lượng dăng ký", default=0, editable=False)
+    is_approved = models.BooleanField(default=False, help_text='Được user với quyền giáo viên approved!')
 
     class Meta:
         db_table = 'youth_union_Activity'
@@ -79,10 +81,17 @@ class User(models.Model):
     """
     # user co the co nhieu hoat dong
     activities = models.ManyToManyField(
-        Activity, related_name='users_join_to', blank=True, editable=False)
+        to=Activity, related_name='users_join_to', blank=True, editable=False)
     # user ( lop truong ) co the diem danh nhieu hoat dong
     checked_activities = models.ManyToManyField(
-        Activity, related_name='was_checked_by', editable=False)
+        Activity, related_name='was_checked_by',
+        through='CheckActivity', through_fields=('user', 'activity'),
+        editable=False
+    )
+    # Bình luận
+    comments = models.ManyToManyField(
+        to='Message', related_name='who_comments', through='Comment', through_fields=('user', 'message')
+    )
     # Cac cot khac cua User table
     user_ID = models.CharField(
         verbose_name="Sinh viên ID", max_length=12, primary_key=True)
@@ -101,7 +110,8 @@ class User(models.Model):
         verbose_name = "Người dùng"
         verbose_name_plural = "Người dùng"
 
-    def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) + '-' + str(timezone.now().year), school_semester=1):
+    def refresh_accumulated_point(self, school_year=str(timezone.now().year - 1) + '-' + str(timezone.now().year),
+                                  school_semester=1):
         """
             Refresh lai diem cho user moi khi chon hoc ky khac,
             mac dinh la la hoc ky gan nhat
@@ -124,6 +134,33 @@ class User(models.Model):
 
     def __str__(self):
         return self.user_ID
+
+
+class CheckActivity(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    activity = models.ForeignKey(to=Activity, on_delete=models.CASCADE)
+    checked_date = models.DateField(auto_now_add=True, help_text='Ngày điểm danh')
+
+    class Meta:
+        db_table = 'youth_union_CheckActivity'
+        verbose_name = 'Hoạt động đã điểm danh'
+        verbose_name_plural = 'Hoạt động đã điểm danh'
+
+    def __str__(self):
+        return self.checked_date.strftime('%Y-%m-%d')
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(to='User', on_delete=models.CASCADE)
+    message = models.ForeignKey(to='Message', on_delete=models.CASCADE)
+    content = models.TextField(help_text='Nội dung bình luận')
+    date_created = models.DateTimeField(auto_now_add=True, help_text='Ngày giờ bình luận')
+
+    class Meta:
+        db_table = 'youth_union_Comment'
+
+    def __str__(self):
+        return self.date_created.strftime('%Y-%m-%d')
 
 
 class Mail(models.Model):

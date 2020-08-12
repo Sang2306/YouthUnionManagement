@@ -1,7 +1,7 @@
 {% extends 'youth_union_admin/base.html' %}
 
 {% block title %}
-    Quản lý người dùng
+    Quản trị
 {% endblock %}
 
 {% block content %}
@@ -26,8 +26,13 @@
                         <input class="form-control" name="password" type="text" placeholder="Mật khẩu" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <button type="submit" class="btn btn-success rounded-0">Tạo tài khoản!</button>
-                        <a href="#" class="create-acc" style="text-decoration: underline; color: #30d454;" hidden>Tạo tài khoản</a>
+                        <button type="submit" class="btn btn-success rounded-0">
+                            <i class="fas fa-user-circle"></i>
+                            Tạo tài khoản!
+                        </button>
+                        <a href="#" class="create-acc" style="text-decoration: underline; color: #30d454;" hidden>
+                            Click để reset
+                        </a>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -149,7 +154,7 @@
 
             {#  Thay đổi form action  #}
             $(".create-update-user-form").attr("action", "{% url 'youth_union_admin:update-user' %}");
-            $("button[type=submit]").text("Cập nhật");
+            $("button[type=submit]").html(`<i class="fas fa-chevron-up"></i> Cập nhật`);
 
             {#  Hiển thị link nhấp tạo tài khoản  #}
             $(".create-acc").removeAttr("hidden");

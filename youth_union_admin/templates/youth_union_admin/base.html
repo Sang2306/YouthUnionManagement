@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'youth_union_admin/vendor/datatables.min.css' %}"/>
     <!-- Custom styles for this template -->
     <link href="{% static 'youth_union_admin/css/simple-sidebar.css' %}" rel="stylesheet">
+    <script src="{% static 'youth_union/all.min.js' %}"></script>
     {% block extra-css %}
     
     {% endblock %}
@@ -54,12 +55,18 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Tùy chọn
+                            Tùy chọn <i class="fas fa-cog"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'youth_union:exit' %}">Đăng xuất</a>
+                            <a class="dropdown-item" href="{% url 'youth_union:exit' %}">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Đăng xuất
+                            </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'home:index' %}">Xem trang web</a>
+                            <a class="dropdown-item" href="{% url 'home:index' %}">
+                                <i class="fas fa-desktop"></i>
+                                Xem trang web
+                            </a>
                         </div>
                     </li>
                 </ul>

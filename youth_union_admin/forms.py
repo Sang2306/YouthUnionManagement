@@ -18,5 +18,5 @@ class ActivityForm(ModelForm):
         model = Activity
         fields = '__all__'
         widgets = {
-            'start_date': DateTimeInput(attrs={'type': 'datetime-local'})
+            'start_date': DateTimeInput(attrs={'type': 'date'})
         }

@@ -30,18 +30,6 @@
             text-transform: uppercase;
         }
 
-        #changePwd {
-            background-color: green;
-            color: #f1f1f1;
-            font-size: 12px;
-        }
-
-        #changePwd:hover {
-            background-color: #f1f1f1;
-            color: green;
-            transition: .4s;
-        }
-
         * {
             box-sizing: border-box;
         }
@@ -110,7 +98,7 @@
                         Upload thông
                         báo</a>
                 </li>
-                <li><a href="{% url 'youth_union_admin:user-view' %}">Quản lý người dùng</a></li>
+                <li><a href="{% url 'youth_union_admin:user-view' %}">Quản trị</a></li>
 
             </ul>
         </li>
@@ -153,8 +141,8 @@
             <strong class="list-group-item">
                 <form action="{% url 'youth_union:exit' %}" method="POST" id="changePwd-form">
                     {% csrf_token %}
-                    <button type="button" id="changePwd" data-toggle="modal" data-target=".change-pwd-dialog">
-                        Đổi mật khẩu
+                    <button type="button" class="btn btn-sm btn-primary" id="changePwd" data-toggle="modal" data-target=".change-pwd-dialog">
+                        Đổi mật khẩu <i class="fas fa-key"></i>
                     </button>
                 </form>
             </strong>

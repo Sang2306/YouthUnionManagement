@@ -6,7 +6,7 @@
 
 {% block extra-css %}
     <style>
-        .errorlist{
+        .errorlist {
             color: red;
         }
     </style>
@@ -22,8 +22,37 @@
             </form>
         </div>
         <div class="col-sm-12 col-lg-7 mt-5">
-{#            todo tao bang hien hoat dong va chinh sua hoat dong#}
-            {{ all_activities }}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên hoạt động</th>
+                    <th scope="col">Thông tin</th>
+                    <th scope="col">Khác</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for activity in all_activities %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ activity.name }}</td>
+                        <td>
+                            <span class="sp-info">
+                                Thông tin
+                            </span>
+                        </td>
+                        <td>
+                            <span class="sp-delete">
+                                Xóa
+                            </span>
+                            <span class="sp-edit">
+                                Chỉnh sửa
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
