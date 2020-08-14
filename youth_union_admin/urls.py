@@ -1,6 +1,8 @@
 from django.urls import path, include
 
-from youth_union_admin.views import RoleView, delete_user, update_user, ActivityFormView
+from youth_union_admin.views import (
+    RoleView, delete_user, update_user, ActivityFormView, ActivityUpdateView
+)
 from .views import UserView
 
 app_name = 'youth_union_admin'
@@ -12,7 +14,14 @@ urlpatterns = [
         path('cap-nhat/', update_user, name='update-user')
     ])),
     path('quan-ly-hoat-dong/', include([
-        path('', ActivityFormView.as_view(), name='activity_form_view')
+        path('', ActivityFormView.as_view(), name='activity_form_view'),
+        path('cap-nhat/<int:pk>', ActivityUpdateView.as_view(), name='activity_update_form')
     ])),
     path('vai-tro/them/', RoleView.as_view(), name='role-view')
 ]
+
+api_urlpatterns = [
+
+]
+
+urlpatterns += api_urlpatterns

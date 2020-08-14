@@ -16,9 +16,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'youth_union_admin/vendor/datatables.min.css' %}"/>
     <!-- Custom styles for this template -->
     <link href="{% static 'youth_union_admin/css/simple-sidebar.css' %}" rel="stylesheet">
-    <script src="{% static 'youth_union/all.min.js' %}"></script>
+    <link href="{% static 'youth_union/flatpickr.min.css' %}" rel="stylesheet">
     {% block extra-css %}
-    
+
     {% endblock %}
 
 </head>
@@ -31,8 +31,10 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Quản trị YouthPTIT</div>
         <div class="list-group list-group-flush">
-            <a href="{% url 'youth_union_admin:user-view' %}" class="list-group-item list-group-item-action bg-light">Sinh viên</a>
-            <a href="{% url 'youth_union_admin:activity_form_view' %}" class="list-group-item list-group-item-action bg-light">Hoạt động</a>
+            <a href="{% url 'youth_union_admin:user-view' %}" class="list-group-item list-group-item-action bg-light">Sinh
+                viên</a>
+            <a href="{% url 'youth_union_admin:activity_form_view' %}"
+               class="list-group-item list-group-item-action bg-light">Hoạt động</a>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -88,7 +90,10 @@
 <script src="{% static 'youth_union_admin/vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'youth_union_admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'youth_union_admin/vendor/datatables.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'youth_union_admin/vendor/DataTables-1.10.21/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript"
+        src="{% static 'youth_union_admin/vendor/DataTables-1.10.21/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'youth_union/flatpickr.js' %}"></script>
+<script type="text/javascript" src="{% static 'youth_union_admin/js/script.js' %}"></script>
 {% block extra-js %}
 
 {% endblock %}

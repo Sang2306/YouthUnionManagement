@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
-from django.views.generic import FormView
+from django.views.generic import FormView, UpdateView
 
 from youth_union.models import User, Role, Mail, Activity
 from youth_union.views import get_user_from_session
@@ -124,3 +124,24 @@ class ActivityFormView(FormView):
     def form_valid(self, form):
         form.save()
         return super(ActivityFormView, self).form_valid(form)
+
+
+class ActivityUpdateView(UpdateView):
+    form_class = ActivityForm
+    template_name = 'youth_union_admin/sub/activity_update.html'
+
+    def get_queryset(self):
+        return Activity.objects.all()
+
+    def get_success_url(self):
+        return reverse('youth_union_admin:activity_form_view')
+    
+    def form_valid(self, form):
+        form.save()
+        return super(ActivityUpdateView, self).form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        all_activities = Activity.objects.all()
+        context['all_activities'] = all_activities
+        return context
