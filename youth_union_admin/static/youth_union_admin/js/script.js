@@ -5,4 +5,14 @@ $(document).ready(function () {
         enableTime: true,
         dateFormat: "Y-m-d H:i",
     });
+
+    $(".sp-info").on("click", function () {
+        $.get(
+            Urls["youth_union_admin:activity_detail_view"](this.getAttribute("data-id")),
+            {},
+            function (data) {
+                $(".info-modal").html(data["rendered"])
+            }
+        )
+    })
 });

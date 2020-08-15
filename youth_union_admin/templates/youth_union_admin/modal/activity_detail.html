@@ -1,0 +1,32 @@
+<div class="modal fade" id="see-activity-detail" tabindex="-1" role="dialog" aria-labelledby="see-activity-detail-title"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="see-activity-detail-title">Chi tiết hoạt động</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Mã hoạt động: {{ activity.activity_ID }}</li>
+                    <li>Tên hoạt động: {{ activity.name }}</li>
+                    <li>Ai tổ chức? {{ activity.organizers }}</li>
+                    <li>Ngày bắt đầu: {{ activity.start_date }}</li>
+                    <li>Năm học: {{ activity.school_year }}</li>
+                    <li>Học kỳ: {{ activity.semester }}</li>
+                    <li>Mô tả: {{ activity.description }}</li>
+                    <li>Điểm hoạt động: {{ activity.point }}</li>
+                    <li>Só lượng đăng ký: {{ activity.number_of_register }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#see-activity-detail").modal('show');
+    })
+</script>

@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',  # app for home page
 
     'django_rename_app',
+    'django_js_reverse',
     'channels',
     'easy_select2',
 ]

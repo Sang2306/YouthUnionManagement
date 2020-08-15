@@ -18,6 +18,16 @@
     <link href="{% static 'youth_union_admin/css/simple-sidebar.css' %}" rel="stylesheet">
     <link href="{% static 'youth_union/all.min.css' %}" rel="stylesheet">
     <link href="{% static 'youth_union/flatpickr.min.css' %}" rel="stylesheet">
+    <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'youth_union_admin/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'youth_union_admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'youth_union_admin/vendor/datatables.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'youth_union_admin/vendor/DataTables-1.10.21/js/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'youth_union/all.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'youth_union/flatpickr.js' %}"></script>
+    <script type="text/javascript" src="{% static 'youth_union_admin/js/script.js' %}"></script>
     {% block extra-css %}
 
     {% endblock %}
@@ -81,21 +91,12 @@
                 {% lorem %}
             {% endblock %}
         </div>
+        <div class="info-modal"></div>
     </div>
     <!-- /#page-content-wrapper -->
 
 </div>
 <!-- /#wrapper -->
-
-<!-- Bootstrap core JavaScript -->
-<script src="{% static 'youth_union_admin/vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'youth_union_admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'youth_union_admin/vendor/datatables.min.js' %}"></script>
-<script type="text/javascript"
-        src="{% static 'youth_union_admin/vendor/DataTables-1.10.21/js/jquery.dataTables.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'youth_union/all.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'youth_union/flatpickr.js' %}"></script>
-<script type="text/javascript" src="{% static 'youth_union_admin/js/script.js' %}"></script>
 {% block extra-js %}
 
 {% endblock %}

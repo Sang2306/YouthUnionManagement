@@ -1,9 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseGone
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
@@ -135,13 +136,22 @@ class ActivityUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('youth_union_admin:activity_form_view')
-    
+
     def form_valid(self, form):
         form.save()
         return super(ActivityUpdateView, self).form_valid(form)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         all_activities = Activity.objects.all()
         context['all_activities'] = all_activities
         return context
+
+
+class ActivityDetailView(View):
+    def get(self, request, *args, **kwargs):
+        activity = Activity.objects.filter(activity_ID=kwargs.get('pk')).first()
+        if activity is None:
+            return HttpResponseGone()
+        rendered = render_to_string('youth_union_admin/modal/activity_detail.html', {'activity': activity})
+        return JsonResponse(data={'rendered': rendered}, status=200)
