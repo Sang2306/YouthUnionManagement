@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Home page {% endblock title %}
 <!--active tab-->
 {% block home_active %} active {% endblock %}
 {% block add_lib %}
+    <script type="text/javascript" src="{% static 'youth_union/all.min.js' %}"></script>
+    <script src="{% static 'youth_union/pdfobject.min.js' %}"></script>
 {% endblock %}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
@@ -49,40 +51,71 @@
 {% endblock %}
 <!--Thong bao trang chu-->
 {% block content %}
-
-    <strong style="font-style: italic; color: #006699;">*THÔNG BÁO</strong>
-    <!-- Hien thi thong bao -->
-    {% if announce %}
-        {% for ann in announce %}
-            <object data="{{ ann.pdf_file.url }}" type="application/pdf" width="100%" height="480"></object>
-            </br>
-            <a href="{{ ann.pdf_file.url }}"> {{ ann.pdf_file.url }} </a>
-            </br>
-        {% endfor %}
-        <ul class="pagination justify-content-center">
-            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-            {% if announce.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ announce.previous_page_number }}" tabindex="-1">
-                        <i class="glyphicon glyphicon-chevron-left"></i>
-                    </a>
-                </li>
+    <div class="row" style="margin-left: 10px; margin-right: 10px;">
+        <div class="col-12">
+            <strong style="font-style: italic; color: #006699;">*THÔNG BÁO</strong>
+            <!-- Hien thi thong bao -->
+            <h4 class="font-weight-light text-center text-uppercase bg-success text-white" style="padding: 40px">Thông
+                báo bằng file pdf</h4>
+            <div id="announce_pdf"></div>
+            {% if announce %}
+                {% for ann in announce %}
+                    <script>PDFObject.embed("{{ ann.pdf_file.url }}", "#announce_pdf");</script>
+                    </br>
+                    <a href="{{ ann.pdf_file.url }}"> {{ ann.pdf_file.url }} </a>
+                    </br>
+                {% endfor %}
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                    {% if announce.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ announce.previous_page_number }}" tabindex="-1">
+                                <i class="glyphicon glyphicon-chevron-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page=2">{{ announce.number }}
+                            / {{ announce.paginator.num_pages }}</a>
+                    </li>
+                    {% if announce.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ announce.next_page_number }}">
+                                <i class="glyphicon glyphicon-chevron-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item"><a class="page-link" href="?page={{ announce.paginator.num_pages }}">Last</a>
+                    </li>
+                </ul>
+            {% else %}
+                <h4 style="text-align: center;">KHÔNG CÓ THÔNG BÁO NÀO</h4>
             {% endif %}
-            <li class="page-item active">
-                <a class="page-link" href="?page=2">{{ announce.number }} / {{ announce.paginator.num_pages }}</a>
-            </li>
-            {% if announce.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ announce.next_page_number }}">
-                        <i class="glyphicon glyphicon-chevron-right"></i>
-                    </a>
-                </li>
-            {% endif %}
-            <li class="page-item"><a class="page-link" href="?page={{ announce.paginator.num_pages }}">Last</a></li>
-        </ul>
-    {% else %}
-        <h4 style="text-align: center;">KHÔNG CÓ THÔNG BÁO NÀO</h4>
-    {% endif %}
+        </div>
+        <hr>
+        <div class="col-12" style="margin-bottom: 10px;">
+            <h4 class="font-weight-light text-center text-uppercase bg-success text-white" style="padding: 40px">Thông
+                báo
+                bằng
+                bài viết</h4>
+            <hr>
+            {% for message in messages %}
+                <div class="row shadow-sm" style="background-color: white; padding: 40px;
+                    margin-left: 10px; margin-right: 10px; border-radius: 5px; border: 1px solid rgba(0,0,0,.125);">
+                    <div class="col-12" style="margin-left: 10px; margin-right: 10px;">
+                        <p style="font-size: 14px;">{{ message.title }}</p>
+                        <small><i class="far fa-clock"></i> {{ message.date_created }}</small>
+                    </div>
+                    <div class="col-12" style="margin-left: 10px; margin-right: 10px;
+                         border-radius: 5px;
+                         padding: 15px; margin-top: 10px;
+                         border: 1px solid rgba(30,192,74,0.88);">
+                        <span style="padding: 5px;">{{ message.content|safe }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock content %}
 {% block short_script %}
 

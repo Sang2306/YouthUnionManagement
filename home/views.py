@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.urls import reverse
 
-from youth_union.models import User, UploadPdfFile
+from youth_union.models import User, UploadPdfFile, Message
 
 
 # Create your views here.
@@ -24,8 +24,10 @@ def home(request):
         paginator = Paginator(all_files, 1)
         page = request.GET.get('page')
         announce = paginator.get_page(page)
+        messages = Message.objects.all()
         context = {
             'user': user,
+            'messages': messages,
             'announce': announce,
         }
         return render(request, 'home/index.html', context)

@@ -204,7 +204,7 @@ class Message(models.Model):
         User, on_delete=models.CASCADE, help_text='Ai là nguời đăng thông báo?')
     title = models.CharField(max_length=1024, help_text='Tiêu đề thông báo')
     content = models.TextField(help_text='Nội dung thông báo')
-
+    date_created = models.DateTimeField(auto_now_add=True, help_text='Ngày giờ đăng bài viết')
     slug = models.SlugField(max_length=1024)
 
     def save(self, *args, **kwargs):
