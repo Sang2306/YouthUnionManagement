@@ -9,6 +9,13 @@
         (Xin chào {{ user.name }})
     {% endif %}
 {% endblock hello_user %}
+{% block add_stylesheet %}
+    <style>
+        tr td {
+            vertical-align: middle;
+        }
+    </style>
+{% endblock %}
 <!-- Block admin -->
 {% block admin %}
     {% if user.role.role_ID == 2 %}
@@ -59,7 +66,7 @@
                 <th scope="col">Ngày diễn ra</th>
                 <th scope="col">Mô tả</th>
                 <th scope="col">Đăng ký</th>
-                <th scope="col">Lượng đăng ký</th>
+                <th scope="col">Lượt đăng ký</th>
             </tr>
             </thead>
             <tbody id="myTable">

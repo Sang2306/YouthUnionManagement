@@ -8,10 +8,12 @@ from django.shortcuts import render, redirect
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 
+from youth_union.models import Message
 from .models import User, Activity, UploadPdfFile  # import cac models
 from .form import UploadFileForm
 
@@ -373,3 +375,15 @@ def upload(request):
         return render(request, 'youth_union/upload.html', context)
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('youth_union:login'))
+
+
+@require_POST
+def upload_message(request):
+    try:
+        user = get_user_from_session(request)
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        Message.objects.create(owner=user, title=title, content=content)
+    except Exception as e:
+        return JsonResponse(data={'status': 'save failed!'}, status=400)
+    return JsonResponse(data={'status': 'save failed!'}, status=201)

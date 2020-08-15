@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %} Upload {% endblock title %}
+{% load static %}
+
+{% block title %} Đăng thông báo! {% endblock title %}
 <!--active tab-->
 {% block add_lib %}
-
 {% endblock %}
 <!-- Xin chao Ten nguoi dung -->
 {% block hello_user %}
@@ -48,31 +49,107 @@
     {% endif %}
 {% endblock %}
 {% block add_stylesheet %}
-
+    <style>
+        .ck-editor__editable {
+            min-height: 200px !important;
+        }
+    </style>
 {% endblock %}
 <!--Upload page-->
 {% block content %}
-
-    {% for file in all_files %}
-        <form action="{% url 'youth_union:upload' %}" method="POST">
-            {% csrf_token %}
-            <button title="Xóa file" type="submit" class="btn btn-danger btn-sm" name="pdf_file_id"
-                    value="{{ file.id }}">
-                <i class="glyphicon glyphicon-minus"></i>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="font-weight-light text-center text-uppercase bg-success text-white" style="padding: 40px">Đăng
+                thông báo bằng file pdf</h4>
+            {% for file in all_files %}
+                <form action="{% url 'youth_union:upload' %}" method="POST">
+                    {% csrf_token %}
+                    <button title="Xóa file" type="submit" class="btn btn-danger btn-sm" name="pdf_file_id"
+                            value="{{ file.id }}">
+                        <i class="glyphicon glyphicon-minus"></i>
+                    </button>
+                    <a href="{{ file.pdf_file.url }}">{{ file.pdf_file.name }}</a>
+                    <br>
+                    <br>
+                </form>
+            {% endfor %}
+            <form action="{% url 'youth_union:upload' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <br>
+                <i class="glyphicon glyphicon-cloud-upload"></i>
+                <button type="submit" class="btn btn-success" style="border-radius: 0px">Tải lên file đã chọn</button>
+            </form>
+        </div>
+        <hr>
+        <div class="col-12">
+            <h4 class="font-weight-light text-center text-uppercase bg-success text-white" style="padding: 40px">Đăng
+                thông báo bằng văn bản</h4>
+            <input type="text" class="form-control" name="title" placeholder="Nhập tiêu đề bài viết" required>
+            <div id="editor">
+                <p>Nhập thông báo ở đây</p>
+            </div>
+            <button class="btn btn-success rounded-0 mt-2 submit" style="float: right; border-radius: 0px">Đăng ngay!
             </button>
-            <a href="{{ file.pdf_file.url }}">{{ file.pdf_file.name }}</a>
-            <br>
-            <br>
-        </form>
-    {% endfor %}
-    <form action="{% url 'youth_union:upload' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <br>
-        <i class="glyphicon glyphicon-cloud-upload"></i>
-        <button type="submit" class="btn btn-success">Upload</button>
-    </form>
+        </div>
+    </div>
 {% endblock content %}
 {% block short_script %}
-
+    <script>
+        let message_editor;
+        $(document).ready(function () {
+            ClassicEditor
+                .create(document.querySelector('#editor'), {
+                    toolbar: ["selectAll", "undo", "redo", "bold", "italic",
+                              "blockQuote", "imageTextAlternative",
+                              "heading", "imageStyle:full", "imageStyle:side", "indent", "outdent",
+                              "link", "numberedList", "bulletedList", "mediaEmbed",
+                              "insertTable", "tableColumn", "tableRow", "mergeTableCells"],
+                    heading: {
+                        options: [
+                            {model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph'},
+                            {model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1'},
+                            {model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2'}
+                        ]
+                    },
+                    language: 'vi',
+                })
+                .then(editor => {
+                    message_editor = editor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+        document.querySelector('.submit').addEventListener('click', () => {
+            const title = $("input[name=title]").val();
+            if (title === ""){
+                alert("TIêu đề đang trống!");
+                return;
+            }
+            const editorData = message_editor.getData();
+            if (editorData === ""){
+                alert("Nội dung đang trống!");
+                return;
+            }
+            $.ajax({
+                url: "{% url 'youth_union:upload_message' %}",
+                method: "post",
+                data: {
+                    "csrfmiddlewaretoken": document.querySelector("input[name=csrfmiddlewaretoken]").value,
+                    "title": title,
+                    "content": editorData,
+                },
+                statusCode: {
+                    201: function (data) {
+                        console.log(data["status"]);
+                        window.location.reload()
+                    },
+                    400: function (data) {
+                        console.error(data["status"]);
+                    }
+                }
+            })
+        });
+    </script>
 {% endblock %}

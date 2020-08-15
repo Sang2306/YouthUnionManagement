@@ -12,4 +12,5 @@ urlpatterns = [
     path('check-attendance/', views.check_attendance, name='check-attendance'),
     path('confirm-check/', views.confirm_check, name='confirm-check'),
     path('tai-len/', views.upload, name='upload'),
+    path('tai-len-thong-bao/', views.upload_message, name='upload_message'),
 ]
