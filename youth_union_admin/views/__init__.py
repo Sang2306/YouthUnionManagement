@@ -2,7 +2,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseGone
 from django.shortcuts import render, redirect
-
 # Create your views here.
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -10,7 +9,7 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import FormView, UpdateView
 
-from youth_union.models import User, Role, Mail, Activity
+from youth_union.models import User, Role, Mail, Activity, Comment
 from youth_union.views import get_user_from_session
 from youth_union_admin.forms import RoleForm, ActivityForm
 
@@ -155,3 +154,12 @@ class ActivityDetailView(View):
             return HttpResponseGone()
         rendered = render_to_string('youth_union_admin/modal/activity_detail.html', {'activity': activity})
         return JsonResponse(data={'rendered': rendered}, status=200)
+
+
+@require_POST
+def upload_comment(request):
+    user = get_user_from_session(request)
+    message_id = request.POST.get('message_id')
+    content = request.POST.get('content')
+    Comment.objects.create(user=user, message_id=int(message_id), content=content)
+    return JsonResponse(data={'status': 'created'}, status=201)
