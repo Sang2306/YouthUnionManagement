@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from .forms import UserForm
 from login.models import User
 from django.http import HttpResponse, HttpResponseRedirect
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,10 +30,10 @@ class UserListCreate(ListCreateAPIView):
             return JsonResponse({
                 'message': 'Create a new User successful'
             }, status = status.HTTP_201_CREATED)
-
-        return JsonResponse({
-            'message': 'Create a new User Unsuccessful'
-        }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return JsonResponse({
+                'message': 'Create a new User Unsuccessful'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateDeleteUser(RetrieveUpdateDestroyAPIView):
     model = User
