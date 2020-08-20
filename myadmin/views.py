@@ -13,8 +13,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .serializers import UserSerializer
 from rest_framework import status
+from .serializers import UserSerializer
 
 class UserListCreate(ListCreateAPIView):
     model = User
@@ -61,22 +61,7 @@ class UpdateDeleteUser(RetrieveUpdateDestroyAPIView):
             'message': 'Delete user successful!'
         }, status=status.HTTP_200_OK)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# ======== ^^^ On that API for ReactJS ^^^^=============
 
 def login_myadmin(request):
     context = {}
