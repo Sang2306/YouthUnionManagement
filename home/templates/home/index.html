@@ -240,8 +240,8 @@
                 focusCancel: true
             };
             var swal_alert = Swal.fire(configs);
-            swal_alert.then((yes) => {
-                if (yes) {
+            swal_alert.then((result) => {
+                if (result.value) {
                     $.ajax({
                         url: "{% url 'youth_union_admin:del-comment' %}",
                         method: 'post',
