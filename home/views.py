@@ -30,6 +30,8 @@ def home(request):
             'messages': messages,
             'announce': announce,
         }
-        return render(request, 'home/index.html', context)
+        response = render(request, 'home/index.html', context)
+        response['X-Frame-Options'] = 'sameorigin'
+        return response
     except (ObjectDoesNotExist, KeyError):
         return HttpResponseRedirect(reverse('youth_union:login'))

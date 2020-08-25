@@ -1,7 +1,8 @@
 from django.urls import path, include
 
 from youth_union_admin.views import (
-    RoleView, delete_user, update_user, ActivityFormView, ActivityUpdateView, ActivityDetailView, upload_comment
+    RoleView, delete_user, update_user, ActivityFormView, ActivityUpdateView, ActivityDetailView, upload_comment,
+    delete_activity
 )
 from .views import UserView
 
@@ -16,7 +17,8 @@ urlpatterns = [
     path('quan-ly-hoat-dong/', include([
         path('', ActivityFormView.as_view(), name='activity_form_view'),
         path('cap-nhat/<int:pk>', ActivityUpdateView.as_view(), name='activity_update_form'),
-        path('xem-hoat-dong/<int:pk>', ActivityDetailView.as_view(), name='activity_detail_view')
+        path('xem-hoat-dong/<int:pk>', ActivityDetailView.as_view(), name='activity_detail_view'),
+        path('xoa-hoat-dong/<int:pk>', delete_activity, name='delete_activity'),
     ])),
     path('vai-tro/them/', RoleView.as_view(), name='role-view'),
     path('phan-hoi/them/', upload_comment, name='add-comment')

@@ -157,6 +157,16 @@ class ActivityDetailView(View):
 
 
 @require_POST
+def delete_activity(request, pk=None):
+    the_activity = Activity.objects.filter(id=pk).first()
+    if the_activity is not None:
+        the_activity.delete()
+    else:
+        return JsonResponse(data={'status': 'Not found'}, status=404)
+    return JsonResponse(data={'status': 'No content'}, status=204)
+
+
+@require_POST
 def upload_comment(request):
     user = get_user_from_session(request)
     message_id = request.POST.get('message_id')

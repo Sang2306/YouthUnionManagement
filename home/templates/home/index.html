@@ -72,7 +72,13 @@
             <div id="announce_pdf"></div>
             {% if announce %}
                 {% for ann in announce %}
-                    <script>PDFObject.embed("{{ ann.pdf_file.url }}", "#announce_pdf");</script>
+                    <script>
+                        var options = {
+                            width: "100%",
+                            height: "500px"
+                        };
+                        PDFObject.embed("{{ ann.pdf_file.url }}", "#announce_pdf", options);
+                    </script>
                     </br>
                     <a href="{{ ann.pdf_file.url }}"> {{ ann.pdf_file.url }} </a>
                     </br>
@@ -116,7 +122,8 @@
                     margin-left: 10px; margin-right: 10px; border-radius: 5px; border: 1px solid rgba(0,0,0,.125);">
                     <div class="col-12" style="margin-left: 10px; margin-right: 10px;">
                         <p style="font-size: 14px; color: blue; display: inline-block">{{ message.title }}</p>
-                        <button onclick="up({{ message.id }})"><i class="far fa-arrow-alt-circle-up" style="cursor: pointer" title="Thu gọn"></i>
+                        <button onclick="up({{ message.id }})"><i class="far fa-arrow-alt-circle-up"
+                                                                  style="cursor: pointer" title="Thu gọn"></i>
                         </button>
                         <button onclick="down({{ message.id }})">
                             <i class="far fa-arrow-alt-circle-down down"
@@ -198,9 +205,11 @@
                 }
             )
         });
+
         function up(id) {
             $(`.commented-sec-${id}`).attr("hidden", "");
         }
+
         function down(id) {
             $(`.commented-sec-${id}`).removeAttr("hidden");
         }

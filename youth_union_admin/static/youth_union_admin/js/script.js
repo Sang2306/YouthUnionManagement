@@ -14,5 +14,20 @@ $(document).ready(function () {
                 $(".info-modal").html(data["rendered"])
             }
         )
-    })
+    });
+
+    $(".sp-delete").on("click", function () {
+        $.ajax({
+            url: Urls["youth_union_admin:delete_activity"](this.getAttribute("data-id")),
+            method: "post",
+            statusCode: {
+                404: function (data) {
+                    console.error(data["status"]);
+                },
+                204: function (data) {
+                    window.location.reload();
+                }
+            }
+        })
+    });
 });
