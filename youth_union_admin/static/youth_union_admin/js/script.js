@@ -20,6 +20,9 @@ $(document).ready(function () {
         $.ajax({
             url: Urls["youth_union_admin:delete_activity"](this.getAttribute("data-id")),
             method: "post",
+            data:{
+                "csrfmiddlewaretoken": document.querySelector("input[name=csrfmiddlewaretoken]").value
+            },
             statusCode: {
                 404: function (data) {
                     console.error(data["status"]);
@@ -30,4 +33,12 @@ $(document).ready(function () {
             }
         })
     });
+    
+    $("#id_point").on("keyup", function (e) {
+        let point = parseInt($(this).val());
+        if (point > 10){
+            alert("Điểm hoạt động không được >= 10");
+            $(this).val(10);
+        }
+    })
 });

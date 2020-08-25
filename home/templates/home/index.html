@@ -147,6 +147,14 @@
                                     <span style="font-weight: bolder">{{ comment.user }}</span>
                                     <small>{{ comment.date_created|date:'d-m-Y H:i' }}</small>
                                     <blockquote>{{ comment.content }}</blockquote>
+                                    {% if user.user_ID == comment.user.user_ID %}
+                                        <p style="font-size: 12px; color: red;
+                                            cursor: pointer;
+                                            text-decoration: underline;" data-id="{{ comment.id }}"
+                                           class="del-comment">
+                                            Xóa
+                                        </p>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
@@ -190,6 +198,10 @@
         $(".sent-comment").on("click", function () {
             let message_id = this.getAttribute("data-message-id");
             let content = $(`.content-${message_id}`).val();
+            if (content === "") {
+                alert('Phản hồi không được bỏ trống!');
+                return;
+            }
             let html;
             $("#pls-wait").modal({backdrop: 'static', keyboard: false});
             $("#pls-wait").modal("show");
@@ -213,5 +225,42 @@
         function down(id) {
             $(`.commented-sec-${id}`).removeAttr("hidden");
         }
+
+        $(".del-comment").on("click", function () {
+            var comment_id = this.getAttribute("data-id");
+            var configs = {
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn với hành động này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Thoát',
+                confirmButtonColor: '#db3700',
+                cancelButtonColor: '#1ec04a',
+                focusCancel: true
+            };
+            var swal_alert = Swal.fire(configs);
+            swal_alert.then((yes) => {
+                if (yes) {
+                    $.ajax({
+                        url: "{% url 'youth_union_admin:del-comment' %}",
+                        method: 'post',
+                        data: {
+                            "comment_id": comment_id,
+                            "csrfmiddlewaretoken": document.querySelector("input[name=csrfmiddlewaretoken]").value,
+                        },
+                        statusCode: {
+                            204: function (data) {
+                                Swal.fire('Đã xóa!',
+                                    'Phản hồi đã được xóa thành công!',
+                                    'success').then((yes) => {
+                                    window.location.reload();
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        })
     </script>
 {% endblock %}

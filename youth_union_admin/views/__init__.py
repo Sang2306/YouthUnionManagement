@@ -158,7 +158,7 @@ class ActivityDetailView(View):
 
 @require_POST
 def delete_activity(request, pk=None):
-    the_activity = Activity.objects.filter(id=pk).first()
+    the_activity = Activity.objects.filter(activity_ID=pk).first()
     if the_activity is not None:
         the_activity.delete()
     else:
@@ -173,3 +173,10 @@ def upload_comment(request):
     content = request.POST.get('content')
     Comment.objects.create(user=user, message_id=int(message_id), content=content)
     return JsonResponse(data={'status': 'created'}, status=201)
+
+
+@require_POST
+def delete_comment(request):
+    comment_id = request.POST.get('comment_id')
+    Comment.objects.get(pk=comment_id).delete()
+    return JsonResponse(data={'status': 'deleted'}, status=204)

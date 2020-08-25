@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from youth_union_admin.views import (
     RoleView, delete_user, update_user, ActivityFormView, ActivityUpdateView, ActivityDetailView, upload_comment,
-    delete_activity
+    delete_activity, delete_comment
 )
 from .views import UserView
 
@@ -21,7 +21,8 @@ urlpatterns = [
         path('xoa-hoat-dong/<int:pk>', delete_activity, name='delete_activity'),
     ])),
     path('vai-tro/them/', RoleView.as_view(), name='role-view'),
-    path('phan-hoi/them/', upload_comment, name='add-comment')
+    path('phan-hoi/them/', upload_comment, name='add-comment'),
+    path('phan-hoi/xoa/', delete_comment, name='del-comment')
 ]
 
 api_urlpatterns = [
