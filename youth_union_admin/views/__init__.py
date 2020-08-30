@@ -47,7 +47,11 @@ class UserView(View):
             user = User.objects.create(user_ID=user_id, class_ID=class_id,
                                        name=name, date_of_birth=date_of_birth,
                                        accumulated_point=65, password=password, role_id=role_id)
-            Mail.objects.create(user=user, mail_address=email)
+            mail = Mail.objects.filter(mail_address=email)
+            if mail.exists():
+                return HttpResponse('<script>alert("Email đã tồn tại!"); location.reload();</script>')
+            else:
+                Mail.objects.create(user=user, mail_address=email)
         except IntegrityError as ie:
             pass
         return redirect('youth_union_admin:user-view')
