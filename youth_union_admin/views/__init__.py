@@ -90,14 +90,15 @@ def update_user(request):
     role_id = request.POST.get('role_id')
     email = request.POST.get('email')
 
-    User.objects.filter(user_ID=user_id).update(class_ID=class_id, name=name, date_of_birth=date_of_birth,
-                                                role_id=int(role_id), password=password)
-
-    mail = Mail.objects.filter(user_id=user_id)
-    if mail.first() is not None:
-        mail.update(mail_address=email)
-    else:
-        Mail.objects.create(user_id=user_id, mail_address=email)
+    user = User.objects.filter(user_ID=user_id)
+    if user.exists():
+        user.update(class_ID=class_id, name=name, date_of_birth=date_of_birth,
+                    role_id=int(role_id), password=password)
+        mail = Mail.objects.filter(user_id=user_id)
+        if mail.exists():
+            mail.update(mail_address=email)
+        else:
+            Mail.objects.create(user_id=user_id, mail_address=email)
 
     return redirect('youth_union_admin:user-view')
 

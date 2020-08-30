@@ -11,7 +11,7 @@
                 {% csrf_token %}
                 <div class="form-group row">
                     <div class="col-lg-2 col-sm-12 my-sm-2">
-                        <input class="form-control" name="user_id" type="text" placeholder="Mã sinh viên" required>
+                        <input class="form-control" name="user_id" id="user_id" type="text" placeholder="Mã sinh viên" required>
                     </div>
                     <div class="col-lg-2 col-sm-12 my-sm-2">
                         <input class="form-control" name="class_id" type="text" placeholder="Mã lớp" required>
@@ -31,7 +31,7 @@
                             Tạo tài khoản!
                         </button>
                         <a href="#" class="create-acc" style="text-decoration: underline; color: #30d454;" hidden>
-                            Click để reset
+                            Thêm mới
                         </a>
                     </div>
                 </div>
