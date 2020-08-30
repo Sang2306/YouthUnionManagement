@@ -45,15 +45,15 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="row" style="margin-top: 80px">
         <div class="col-sm-12 col-lg-4 ml-5 mt-5">
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button class="btn btn-primary">Cập nhật hoạt động</button>
+                <button class="btn btn-primary mb-5">Cập nhật hoạt động</button>
             </form>
         </div>
-        <div class="col-sm-12 col-lg-7 mt-5">
+        <div class="col-sm-12 col-lg-7 mt-5 bg-light shadow-sm rounded-5">
             <table class="table table-hover">
                 <thead>
                 <tr>

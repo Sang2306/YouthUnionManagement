@@ -86,7 +86,7 @@
                             <form action="{% url 'youth_union:activities' %}" method="POST">
                                 {% csrf_token %}
                                 {% if activity in user.activities.all %}
-                                    {% if activity.start_date > nowplustimedelta %}
+                                    {% if activity.is_open_for_register %}
                                         <button type="submit" class="btn btn-danger" name="status"
                                                 value="rmo-{{ activity.activity_ID }}"> Hủy
                                         </button>
@@ -96,7 +96,7 @@
                                         </button>
                                     {% endif %}
                                 {% else %}
-                                    {% if activity.start_date > nowplustimedelta %}
+                                    {% if activity.is_open_for_register %}
                                         <button type="submit" class="btn btn-success" name="status"
                                                 value="add-{{ activity.activity_ID }}"> Đăng ký
                                         </button>

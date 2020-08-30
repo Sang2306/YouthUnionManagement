@@ -51,6 +51,8 @@ class Activity(models.Model):
     semester = models.SmallIntegerField(
         verbose_name="Học kỳ", choices=SEMESTER_IN_SCHOOL)
     description = models.TextField(verbose_name="Mô tả hoạt động")
+    limit_register_day = models.SmallIntegerField(default=3, verbose_name='Mở đăng ký trước ngày bắt đầu',
+                                                  help_text='Giới hạn số ngày được đăng ký')
     point = models.SmallIntegerField(verbose_name="Điểm")
 
     # So luong nguoi dang ky tham gia
@@ -63,6 +65,10 @@ class Activity(models.Model):
         verbose_name = "Hoạt động"
         verbose_name_plural = "Hoạt động"
         ordering = ["start_date"]
+
+    @property
+    def is_open_for_register(self):
+        return (timezone.now() + timezone.timedelta(days=self.limit_register_day)) < self.start_date
 
     def is_opening(self):
         """
