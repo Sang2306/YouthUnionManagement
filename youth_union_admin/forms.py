@@ -1,4 +1,4 @@
-from django.forms import ModelForm, NumberInput, TextInput, DateTimeInput, Textarea
+from django.forms import ModelForm, NumberInput, TextInput, DateTimeInput, Textarea, Select
 
 from youth_union.models import Role, Activity
 
@@ -27,6 +27,6 @@ class ActivityForm(ModelForm):
             'description': Textarea(attrs={'class': 'form-control mx-1'}),
             'school_year': TextInput(attrs={'class': 'form-control mx-1'}),
             'organizers': TextInput(attrs={'class': 'form-control mx-1'}),
-            'semester': TextInput(attrs={'class': 'form-control mx-1'}),
+            'semester': Select(attrs={'class': 'form-control mx-1'}),
             'point': NumberInput(attrs={'class': 'form-control mx-1'}),
         }
