@@ -1,10 +1,14 @@
 $(document).ready(function () {
-    $("#id_start_date").addClass("flatpickr");
-    const start_date = document.querySelector(".flatpickr");
-    const fp = flatpickr(start_date, {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-    });
+    try {
+        $("#id_start_date").addClass("flatpickr");
+        const start_date = document.querySelector(".flatpickr");
+        const fp = flatpickr(start_date, {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+    } catch (e) {
+
+    }
 
     $(".sp-info").on("click", function () {
         $.get(
@@ -20,7 +24,7 @@ $(document).ready(function () {
         $.ajax({
             url: Urls["youth_union_admin:delete_activity"](this.getAttribute("data-id")),
             method: "post",
-            data:{
+            data: {
                 "csrfmiddlewaretoken": document.querySelector("input[name=csrfmiddlewaretoken]").value
             },
             statusCode: {
@@ -33,10 +37,10 @@ $(document).ready(function () {
             }
         })
     });
-    
+
     $("#id_point").on("keyup", function (e) {
         let point = parseInt($(this).val());
-        if (point > 10){
+        if (point > 10) {
             alert("Điểm hoạt động không được >= 10");
             $(this).val(10);
         }

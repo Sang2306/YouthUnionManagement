@@ -58,6 +58,8 @@ class Activity(models.Model):
     # So luong nguoi dang ky tham gia
     number_of_register = models.SmallIntegerField(
         verbose_name="Số lượng dăng ký", default=0, editable=False)
+    number_of_joined = models.SmallIntegerField(
+        verbose_name="Số lượng tham gia", default=0, editable=False)
     is_approved = models.BooleanField(default=False, help_text='Được user với quyền giáo viên approved!')
 
     class Meta:

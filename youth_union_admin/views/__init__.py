@@ -1,13 +1,15 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseGone
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseGone, \
+    Http404
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.timezone import now
 from django.views import View
 from django.views.decorators.http import require_POST
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, MonthArchiveView
 
 from youth_union.models import User, Role, Mail, Activity, Comment
 from youth_union.views import get_user_from_session
@@ -165,6 +167,34 @@ class ActivityDetailView(View):
             return HttpResponseGone()
         rendered = render_to_string('youth_union_admin/modal/activity_detail.html', {'activity': activity})
         return JsonResponse(data={'rendered': rendered}, status=200)
+
+
+class ActivityByMonth(MonthArchiveView):
+    model = Activity
+    date_field = 'start_date'
+    context_object_name = 'all_activities'
+    template_name = 'youth_union_admin/sub/report-activity.html'
+    month_format = '%m'
+    year_format = '%Y'
+
+    def get_context_data(self, **kwargs):
+        context = super(ActivityByMonth, self).get_context_data()
+        context['date_list'] = super(ActivityByMonth, self).get_date_list(super().get_queryset())
+        return context
+
+    def get_month(self):
+        try:
+            month = super(ActivityByMonth, self).get_month()
+        except Http404:
+            month = now().strftime(self.get_month_format())
+        return month
+
+    def get_year(self):
+        try:
+            year = super(ActivityByMonth, self).get_year()
+        except Http404:
+            year = now().strftime(self.get_year_format())
+        return year
 
 
 @require_POST

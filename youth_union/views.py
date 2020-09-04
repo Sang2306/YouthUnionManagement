@@ -253,11 +253,15 @@ def confirm_check(request):
                     members_registered.append(member)
 
             # Xóa hoạt động trong danh sách hoạt động của sinh viên nếu sinh viên không tham gia
+            count = 0
             for member in members_registered:
                 try:
                     request.POST[member.user_ID]
                 except KeyError:
+                    count += 1
                     member.activities.remove(activity)
+            activity.number_of_joined = activity.number_of_register - count
+            activity.save()
         # them id hoat dong vao danh sach da diem danh
         except KeyError:
             pass

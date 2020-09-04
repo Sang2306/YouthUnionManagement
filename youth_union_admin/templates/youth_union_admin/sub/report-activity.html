@@ -1,0 +1,96 @@
+{% extends 'youth_union_admin/base.html' %}
+
+{% block title %}
+    Thống kê các hoạt động
+{% endblock %}
+
+{% block extra-css %}
+    <style>
+        .sp-info {
+            background-color: #28a745;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .sp-delete {
+            background-color: #dc5d5d;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 2px;
+        }
+
+        .sp-edit > a {
+            background-color: #3b9eff;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+
+        @media screen and (max-width: 900px) {
+            .activity-name {
+                font-size: 12px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row text-center" style="margin-top: 80px">
+        <div class="col">
+            <h2>THỐNG KÊ CÁC HOẠT ĐỘNG ĐÃ DIỄN RA THEO THÁNG</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-5 bg-light shadow-sm rounded-5">
+            <div class="row">
+                <div class="col">
+                    {% for date in date_list %}
+                        <a href="{% url 'youth_union_admin:activity-by-month' %}?month={{ date.month }}&year={{ date.year }}"><span
+                                class="badge badge-success">Tháng {{ date.month }}/{{ date.year }}</span></a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Tên hoạt động</th>
+                            <th scope="col">Thông tin</th>
+                            <th scope="col">Khác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for activity in all_activities %}
+                            <tr>
+                                <th scope="row">{{ activity.activity_ID }}</th>
+                                <td class="activity-name">{{ activity.name }}</td>
+                                <td>
+                            <span class="sp-info" data-id="{{ activity.activity_ID }}">
+                                Thông tin
+                            </span>
+                                </td>
+                                <td>
+                            <span class="sp-delete" data-id="{{ activity.activity_ID }}">
+                                Xóa
+                            </span>
+                                    <span class="sp-edit">
+                                <a href="{% url 'youth_union_admin:activity_update_form' pk=activity.activity_ID %}">Chỉnh sửa</a>
+                            </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

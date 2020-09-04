@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3a3%(+923o%=1rekp9ep4ta(^1y=ok+i)j+07&(u0+2rq^gci&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['sang4vn.pythonanywhere.com', '127.0.0.1']
 
